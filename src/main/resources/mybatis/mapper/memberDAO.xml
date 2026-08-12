@@ -13,6 +13,11 @@
 		SELECT *
 		  FROM MEMBER
 		 WHERE MEMAIL=#{memail}
+  </select>
+	<select id="memberView" resultType="com.springboot.pageland.dto.MemberDTO">
+		SELECT *
+		  FROM MEMBER
+		  WHERE mno = #{mno}
 	</select>
 	
 	<insert id="memberInsert">
@@ -31,4 +36,10 @@
 		DELETE FROM MEMBER
 		 WHERE MNO=#{mno}
 	</delete>
+	
+	<select id="findByEmail" resultType="com.springboot.pageland.dto.MemberDTO">
+		SELECT *
+		  FROM MEMBER
+		  WHERE MEMAIL = #{memail}
+	</select>
 </mapper>

@@ -15,6 +15,7 @@
 		<input type="submit" value="로그인">
 	</form>
 
+	
 	<!-- 컨트롤러에서 msg가 넘어왔을 때만 alert 띄우기 -->
 	<c:if test="${not empty msg}">
 		<script>
