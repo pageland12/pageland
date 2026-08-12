@@ -18,5 +18,8 @@ public interface IMemberDAO {
 		public int memberUpdate(MemberDTO dto);
 		
 		// 회원 삭제
-		public int memberDelete(int bno);
+		public int memberDelete(int mno);
+		
+		// 로그인용 조회
+		public MemberDTO findByEmail(String memail);
 }

@@ -1,13 +1,57 @@
 package com.springboot.pageland.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import com.springboot.pageland.dao.IMemberDAO;
+import com.springboot.pageland.dto.MemberDTO;
 
 @Controller
 public class MemberController {
+	@Autowired
+	private IMemberDAO mdao;
+	
+	@Autowired
+	private PasswordEncoder passwordEncoder;
+	
 	@RequestMapping("/")
 	public String main() {
 		return "guest/main";
+	}
+	
+	@RequestMapping("/guest/writeForm")
+	public String writeForm() {
+		return "guest/writeForm";
+	}
+	
+	@RequestMapping("/guest/write")
+	public String write(MemberDTO mdto,
+						@RequestParam("mtel1") String mtel1,
+						@RequestParam("mtel2") String mtel2,
+						@RequestParam("mtel3") String mtel3,
+						@RequestParam("maddr1") String maddr1,
+						@RequestParam("maddr2") String maddr2,
+						@RequestParam("mzipno") String mzipno,
+						@RequestParam("maccount1") String maccount1,
+						@RequestParam("maccount2") String maccount2,
+						@RequestParam("maccount3") String maccount3
+						) {
+		mdto.setMtel(mtel1+"-"+mtel2+"-"+mtel3);
+		mdto.setMaddr(maddr1+","+maddr2+","+mzipno);
+		mdto.setMaccount(maccount1+","+maccount2+","+maccount3);
+
+		mdto.setMpasswd(passwordEncoder.encode(mdto.getMpasswd()));
+		
+		mdao.memberInsert(mdto);
+		return "redirect:/main";
+	}
+	
+	@RequestMapping("/guest/jusoPopup")
+	public String jusoPopup() {
+		return "guest/jusoPopup";
 	}
 	
 	@RequestMapping("/loginForm")

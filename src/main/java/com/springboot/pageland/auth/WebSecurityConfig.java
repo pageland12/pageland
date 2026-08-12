@@ -22,7 +22,7 @@ public class WebSecurityConfig {
 			.cors((cors) -> cors.disable())	// CORS 비활성화
 			.authorizeHttpRequests(request -> request
 					.dispatcherTypeMatchers(DispatcherType.FORWARD).permitAll()	// 내부 포인트 요청 허용
-					.requestMatchers("/","/main").permitAll()	// root(/)는 모두 허용
+					.requestMatchers("/","/main", "/j_spring_security_check").permitAll()	// root(/)는 모두 허용
 					.requestMatchers("/css/**","/js/**","/images/**", "/favicon.ico").permitAll()// 정적 리소스 모두 허용
 					.requestMatchers("/guest/**", "/admin/**", "/member/**","/board/**", "/cart/**", "/pay/**").permitAll()	// 모두 허용 (게스트 페이지)
 					// .requestMatchers().hasAnyRole("USER","ADMIN") // USER와 ADMIN만 허용 (회원 페이지)
@@ -33,10 +33,10 @@ public class WebSecurityConfig {
 		http.formLogin((formLogin) -> formLogin
 			.loginPage("/loginForm")
 			.loginProcessingUrl("/j_spring_security_check")
-			.defaultSuccessUrl("/main")
+			.defaultSuccessUrl("/main", true)
 			.failureUrl("/loginError")
-			.usernameParameter("id")
-			.passwordParameter("passwd")
+			.usernameParameter("memail")
+			.passwordParameter("mpasswd")
 			.permitAll()
 		);
 		
@@ -44,6 +44,8 @@ public class WebSecurityConfig {
 		http.logout((logout) -> logout
 			.logoutUrl("/logout")
 			.logoutSuccessUrl("/")
+			.invalidateHttpSession(true) // ★ 로그아웃 시 세션 완전히 삭제
+		    .clearAuthentication(true)   // ★ 인증 정보 초기화
 			.permitAll()
 		);
 		
