@@ -9,10 +9,17 @@
 		 ORDER BY BNO DESC
 	</select>
 	
+	<select id="bookDetail" resultType="com.springboot.pageland.dto.BookDTO">
+		SELECT *
+		  FROM BOOK
+		 WHERE BNO=#{bno}
+	</select>
+	
+
 	<insert id="bookInsert">
-		INSERT INTO BOOK(BNO,BNAME,BPRICE,BAGE,BGENRE,BPUBLISHER,BIMG,BINFO,BIMAGE,BSTOCK,BLIKE)
-		 VALUES(BOOK_SEQ.NEXTVAL,#{bname},#{bprice},#{bage},#{bgenre},#{bpublisher},#{bimg},
-		 		#{bstock},#{blike})
+		INSERT INTO BOOK(BNO,BNAME,BPRICE,BAGE,BGENRE,BPUBLISHER,BIMG,BINFO,BSTOCK,BLIKE)
+		 VALUES(BOOK_SEQ.NEXTVAL,#{bname},#{bprice},#{bage},#{bgenre},#{bpublisher},#{bimg},#{binfo},
+		 		#{bstock},0)
 	</insert>
 	
 	<update id="bookUpdate">

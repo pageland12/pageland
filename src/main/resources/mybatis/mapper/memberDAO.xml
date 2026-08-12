@@ -5,20 +5,25 @@
 <mapper namespace="com.springboot.pageland.dao.IMemberDAO">
 	<select id="memberList" resultType="com.springboot.pageland.dto.MemberDTO">
 		SELECT *
-		  FROM BOOK
+		  FROM MEMBER
 		 ORDER BY BNO DESC
+	</select>
+	
+	<select id="findByEmail" resultType="com.springboot.pageland.dto.MemberDTO">
+		SELECT *
+		  FROM MEMBER
+		 WHERE MEMAIL=#{memail}
 	</select>
 	
 	<insert id="memberInsert">
 		INSERT INTO MEMBER(MNO,MEMAIL,MPASSWD,MNAME,MADDR,MTEL,MACCOUNT,MGRADE,MDATE,MPOINT)
 		 VALUES(MEMBER_SEQ.NEXTVAL,#{memail},#{mpasswd},#{mname},#{maddr},#{mtel},#{maccount},
-		 '일반회원',SYSDATE,0)
+		 'NORMAL',SYSDATE,0)
 	</insert>
 	
 	<update id="memberUpdate">
 		UPDATE MEMBER
-		   SET MNAME=#{mname},MEMAIL=#{memail},MADDR=#{maddr},MTEL=#{mtel},
-		   		   	   MACCOUNT=#{maccount}
+		   SET MNAME=#{mname},MADDR=#{maddr},MTEL=#{mtel},MACCOUNT=#{maccount}
 		 WHERE MNO=#{mno}
 	</update>
 	

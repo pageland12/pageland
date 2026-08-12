@@ -14,7 +14,7 @@ public class BookDTO {
 	private String			bpublisher;		// 출판사
 	private MultipartFile 	pricture;			
 	private String			bimg;			// 도서 이미지
-	private MultipartFile	binfo;			// 도서 정보
+	private String			binfo;			// 도서 정보
 	private int				bstock;			// 재고 수량
 	private int				blike;			// 추천수
 }
