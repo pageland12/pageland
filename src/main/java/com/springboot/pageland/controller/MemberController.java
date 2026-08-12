@@ -66,8 +66,14 @@ public class MemberController {
 	}
 	
 	@RequestMapping("/loginError")
-	public String loginError() {
-		return "guest/loginError";
+	public String loginError(Model model) {
+		model.addAttribute("msg", "이메일과 비밀번호를 확인해주세요.");
+	    return "guest/loginForm"; // 바로 loginForm.jsp를 뿌려줌
+	}
+	
+	@RequestMapping("/admin/main")
+	public String adminMain() {
+		return "admin/adminMain";
 	}
 	
 	@RequestMapping("/logout")

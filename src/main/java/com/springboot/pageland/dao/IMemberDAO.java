@@ -13,6 +13,9 @@ public interface IMemberDAO {
 		
 		//회원정보상세보기, 수정폼
 		public MemberDTO memberView(int mno);
+  
+		// Email로 회원 찾기
+		public MemberDTO findByEmail(String memail);
 	
 		// 회원 등록
 		public int memberInsert(MemberDTO dto);
@@ -21,7 +24,7 @@ public interface IMemberDAO {
 		public int memberUpdate(MemberDTO dto);
 		
 		// 회원 삭제
-		public int memberDelete(int bno);
+		public int memberDelete(int mno);
 		
 		// 로그인용 조회
 		public MemberDTO findByEmail(String memail);
