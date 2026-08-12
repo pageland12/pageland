@@ -20,7 +20,7 @@ public class MemberController {
 	
 	@RequestMapping("/")
 	public String root() {
-		return "redirect:/main";
+		return "guest/main";
 	}
 	
 	@RequestMapping("/main")
@@ -75,4 +75,42 @@ public class MemberController {
 	public String adminMain() {
 		return "admin/adminMain";
 	}
+	
+	@RequestMapping("/logout")
+	public String logout() {
+		return "logout";
+	}	
+	
+	// 마이페이지
+	@RequestMapping("/member/main")
+	public String membermain() {
+		return "member/memberMain";
+	}
+	
+	// 회원 수정폼
+	@RequestMapping("/member/memberUpdateForm")
+	public String memberUpdateForm(@RequestParam("mno") int mno, Model model) {
+		model.addAttribute("update", mdao.memberView(mno));
+		return "member/memberUpdateForm";
+	}
+	
+	// 회원 탈퇴
+	@RequestMapping("/member/memberdelete")
+	public String deleteForm(@RequestParam("mno") int mno) {
+		mdao.memberDelete(mno);
+		return "redirect:/main";
+	}
+	
+	// 관리자페이지
+	@RequestMapping("/admin/main")
+	public String adminMain() {
+		return "admin/adminMain";
+	}
+	
+	// 관리자 신규도서 등록 폼
+	@RequestMapping("/admin/bookWriteForm")
+	public String bookWriteForm() {
+		return "admin/bookWriteForm";
+	}
+	
 }

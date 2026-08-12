@@ -19,24 +19,17 @@
 	}
 </script>
 <body>
-	<form name="member" method="post" action="/guest/write">
-		<h2>회원가입</h2>
+	<form name="memberupdate" method="post" action="/member/memberUpdate">
+		<input type="hidden" name="mno" value="${update.mno}">
+		<h2>회원수정</h2>
 		<table>
 			<tr>
 				<td>이메일</td>
-				<td><input type="text" name="memail"></td>
-			</tr>
-			<tr>
-				<td>비밀번호</td>
-				<td><input type="password" name="mpasswd"></td>
-			</tr>
-			<tr>
-				<td>비밀번호 확인</td>
-				<td><input type="password" name="mpasswd2"></td>
+				<td><input type="text" name="memail" value="${update.meamil}"></td>
 			</tr>
 			<tr>
 				<td>이름</td>
-				<td><input type="text" name="mname"></td>
+				<td><input type="text" name="mname" value="${update.ename}"></td>
 			</tr>
 			<tr>
 				<td>주소</td>
@@ -82,7 +75,6 @@
 			</tr>
 		</table>
 		<input type="submit" value="회원가입">
-		<input type="button" value="취소" onclick="history.back()">
 	</form>
 </body>
 </html>
