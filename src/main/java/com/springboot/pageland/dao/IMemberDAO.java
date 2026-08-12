@@ -10,6 +10,9 @@ import com.springboot.pageland.dto.MemberDTO;
 public interface IMemberDAO {
 		// 회원 목록 (관리자)
 		public List<MemberDTO> memberList();
+		
+		//회원정보상세보기, 수정폼
+		public MemberDTO memberView(int mno);
 	
 		// 회원 등록
 		public int memberInsert(MemberDTO dto);
@@ -19,4 +22,7 @@ public interface IMemberDAO {
 		
 		// 회원 삭제
 		public int memberDelete(int bno);
+		
+		// 로그인용 조회
+		public MemberDTO findByEmail(String memail);
 }
