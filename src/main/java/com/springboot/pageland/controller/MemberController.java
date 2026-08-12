@@ -3,6 +3,7 @@ package com.springboot.pageland.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -18,6 +19,11 @@ public class MemberController {
 	private PasswordEncoder passwordEncoder;
 	
 	@RequestMapping("/")
+	public String root() {
+		return "redirect:/main";
+	}
+	
+	@RequestMapping("/main")
 	public String main() {
 		return "guest/main";
 	}
@@ -60,7 +66,13 @@ public class MemberController {
 	}
 	
 	@RequestMapping("/loginError")
-	public String loginError() {
-		return "loginError";
+	public String loginError(Model model) {
+		model.addAttribute("msg", "이메일과 비밀번호를 확인해주세요.");
+	    return "guest/loginForm"; // 바로 loginForm.jsp를 뿌려줌
+	}
+	
+	@RequestMapping("/admin/main")
+	public String adminMain() {
+		return "admin/adminMain";
 	}
 }

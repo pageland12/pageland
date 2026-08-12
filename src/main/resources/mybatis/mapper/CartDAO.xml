@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.springboot.pageland.dao.ICartDAO">
+	<insert id="cartInsert">
+		INSERT INTO CART(CNO,CTYPE,CSTOCK,MNO,BNO,PNO)
+		 VALUES(CART_SEQ.NEXTVAL,#{ctype},#{cstock},#{mno},#{bno, jdbcType=INTEGER},#{pno, jdbcType=INTEGER})
+	</insert>
+	
+</mapper>

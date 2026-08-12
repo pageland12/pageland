@@ -25,7 +25,7 @@ public class WebSecurityConfig {
 					.requestMatchers("/","/main", "/j_spring_security_check").permitAll()	// root(/)는 모두 허용
 					.requestMatchers("/css/**","/js/**","/images/**", "/favicon.ico").permitAll()// 정적 리소스 모두 허용
 					.requestMatchers("/guest/**", "/admin/**", "/member/**","/board/**", "/cart/**", "/pay/**").permitAll()	// 모두 허용 (게스트 페이지)
-					// .requestMatchers().hasAnyRole("USER","ADMIN") // USER와 ADMIN만 허용 (회원 페이지)
+					// .requestMatchers().hasAnyRole("NORMAL","ADMIN") // USER와 ADMIN만 허용 (회원 페이지)
 					// .requestMatchers().hasAnyRole("ADMIN") // ADMIN만 허용 (관리자 페이지)
 					.anyRequest().authenticated() // 나머지는 모두 인증 필요
 			);

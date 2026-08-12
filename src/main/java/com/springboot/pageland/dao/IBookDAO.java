@@ -10,6 +10,9 @@ import com.springboot.pageland.dto.BookDTO;
 public interface IBookDAO {
 		// 도서 목록 (관리자)
 		public List<BookDTO> bookList();
+		
+		// 도서 상세
+		public BookDTO bookDetail(int bno);
 	
 		// 도서 등록
 		public int bookInsert(BookDTO dto);

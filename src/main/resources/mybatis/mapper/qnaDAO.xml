@@ -9,21 +9,25 @@
     	 join member m on q.mno = m.mno
     	 order by q.qno desc
 	</select>
+	
 	<select id="qnaView" resultType="com.springboot.pageland.dto.QnaDTO">
 		select q.*, m.mname
      	 from qna q
      	 join member m on q.mno = m.mno
      	 where q.qno = #{qno}
 	</select>
+	
 	<insert id="qnaWrite">
 		insert into qna(qno, qtitle, qcontent, qfiles, qpasswd, qsecret, qdate, mno)
      	 values(QNA_SEQ.NEXTVAL, #{qtitle}, #{qcontent}, #{qfiles, jdbcType=VARCHAR}, #{qpasswd}, #{qsecret}, SYSDATE, #{mno})
 	</insert>
+	
 	<update id="qnaUpdate">
 		update qna
 		 set qtitle = #{qtitle}, qcontent = #{qcontent}, qfiles = #{qfiles, jdbcType=VARCHAR}, qpasswd = #{qpasswd}, qsecret = #{qsecret}
 		 where qno = #{qno}
 	</update>
+	
 	<delete id="qnaDelete">
 		delete from qna
 		 where qno = #{qno}
