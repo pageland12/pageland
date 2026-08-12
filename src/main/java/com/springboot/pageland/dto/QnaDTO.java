@@ -18,4 +18,6 @@ public class QnaDTO {
 	private Date qdate;
 	private int qhit;
 	private int mno;
+	private String memail;
+	private String mname;
 }
