@@ -10,7 +10,7 @@
 <body>
 	<h3>로그인</h3>
 	<form name="login" method="post" action="/j_spring_security_check">
-	   : <input type="text" name="memail" autofocus> <br>
+	   	이메일: <input type="text" name="memail" autofocus> <br>
 		비밀번호 : <input type="password" name="mpasswd"> <br>
 		<input type="submit" value="로그인">
 		<input type="button" value="취소" onclick="history.back()">
