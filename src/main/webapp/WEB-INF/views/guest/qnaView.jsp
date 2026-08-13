@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="fmt" uri="jakarta.tags.fmt" %>
+<%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -20,7 +21,11 @@
 		</tr>
 		<tr>
 			<th>첨부파일</th>
-			<td><img src="/images/${view.qfiles}" alt="첨부파일"></td>
+			<td>
+				<c:if test="${not empty view.qfiles}">
+					<img src="/images/${view.qfiles}">
+				</c:if>
+			</td>
 		</tr>
 		<tr>
 			<th>내용</th>
@@ -36,9 +41,9 @@
 		</tr>
 		<tr>
 			<td colspan="2">
-				<a href="/board/qnaList">목록</a> / 
-				<a href="/board/qnaUpdateForm?qno=${view.qno}">수정</a> / 
-				<a href="/board/qnaDelete?qno=${view.qno}">삭제</a>
+				<a href="/guest/qnaList">목록</a> / 
+				<a href="/board/qnaPasswordCheckForm?qno=${view.qno}&mode=update">수정</a> / 
+				<a href="/board/qnaPasswordCheckForm?qno=${view.qno}&mode=delete">삭제</a>
 			</td>
 		</tr>
 	</table>

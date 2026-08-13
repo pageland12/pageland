@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="fmt" uri="jakarta.tags.fmt" %>
+<%@ taglib prefix="c" uri="jakarta.tags.core" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -24,7 +26,11 @@
 		</tr>
 		<tr>
 			<th>첨부파일</th>
-			<td><img src="/images/${view.abfiles}" alt="첨부파일"></td>
+			<td>
+				<c:if test="${not empty view.abfiles}">
+					<img src="/images/${view.abfiles}">
+				</c:if>
+			</td>
 		</tr>
 		<tr>
 			<th>내용</th>
@@ -40,9 +46,18 @@
 		</tr>
 		<tr>
 			<td colspan="2">
-				<a href="#" onclick="history.back()">목록</a> / 
-				<a href="/board/abUpdateForm?abno=${view.abno}">수정</a> / 
-				<a href="/board/abDelete?abno=${view.abno}">삭제</a>
+				<c:if test="${view.abcategory == 'NOTICE'}">
+        			<a href="/guest/noticeList">목록</a>
+    			</c:if>
+    			<c:if test="${view.abcategory == 'EVENT'}">
+        			<a href="/guest/eventList">목록</a>
+    			</c:if> / 
+				<sec:authorize access="hasRole('ADMIN')">
+					<a href="/admin/abUpdateForm?abno=${view.abno}">수정</a> / 
+					<a href="/admin/abDelete?abno=${view.abno}">삭제</a>
+				</sec:authorize>
+				 
+				
 			</td>
 		</tr>
 	</table>
