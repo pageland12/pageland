@@ -36,10 +36,4 @@
 		DELETE FROM MEMBER
 		 WHERE MNO=#{mno}
 	</delete>
-	
-	<select id="findByEmail" resultType="com.springboot.pageland.dto.MemberDTO">
-		SELECT *
-		  FROM MEMBER
-		  WHERE MEMAIL = #{memail}
-	</select>
 </mapper>

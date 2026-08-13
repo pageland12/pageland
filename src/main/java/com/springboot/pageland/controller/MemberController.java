@@ -71,11 +71,6 @@ public class MemberController {
 	    return "guest/loginForm"; // 바로 loginForm.jsp를 뿌려줌
 	}
 	
-	@RequestMapping("/admin/main")
-	public String adminMain() {
-		return "admin/adminMain";
-	}
-	
 	@RequestMapping("/logout")
 	public String logout() {
 		return "logout";
