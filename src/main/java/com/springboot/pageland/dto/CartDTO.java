@@ -11,7 +11,4 @@ public class CartDTO {
 	private	Integer	 	bno;
 	private String 	bname;
 	private String 	bprice;
-	private	Integer		pno;
-	private String	pname;
-	private String	pprice;
 }

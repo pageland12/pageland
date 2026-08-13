@@ -8,7 +8,7 @@
 </head>
 <body>
 	<h3>관리자 게시판 수정</h3>
-	<form method="post" name="adminBoard" action="/board/abUpdate" enctype="multipart/form-data">
+	<form method="post" name="adminBoard" action="/admin/abUpdate" enctype="multipart/form-data">
 		<input type="hidden" name="abno" value="${update.abno}">
 		제목 : <input type="text" name="abtitle" value="${update.abtitle}"> <br>
 		카테고리 : <select name="abcategory" value="${update.abcategory}">

@@ -19,7 +19,7 @@
 		</tr>
 	<c:forEach var="event" items="${event}">	
 		<tr>
-			<td><a href="/board/abView?abno=${event.abno}">${event.abtitle}</a></td>
+			<td><a href="/guest/abView?abno=${event.abno}">${event.abtitle}</a></td>
 			<td>${event.mname}</td>
 			<td><fmt:formatDate value="${event.abdate}" pattern="yyyy-MM-dd" /></td>
 			<td>${event.abhit}</td>

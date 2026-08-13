@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.security.Principal;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,11 +27,14 @@ public class QnaController {
 	@Autowired
 	private IMemberDAO mDao;
 	
-	@RequestMapping("/board/qnaList")
+	@Autowired
+	private PasswordEncoder passwordEncoder;
+	
+	@RequestMapping("/guest/qnaList")
 	public String qnaList(Model model) {
 		model.addAttribute("qnaList", dao.qnaList());
 	
-		return "board/qnaList";
+		return "guest/qnaList";
 	}
 	
 	@RequestMapping("/board/qnaWriteForm")
@@ -45,6 +49,8 @@ public class QnaController {
 		MemberDTO mDto = mDao.findByEmail(memail);
 		
 		dto.setMno(mDto.getMno());
+		
+		dto.setQpasswd(passwordEncoder.encode(dto.getQpasswd()));
 				
 		if (qupload != null && !qupload.isEmpty()) {
 	        String qfiles = qupload.getOriginalFilename();
@@ -54,22 +60,64 @@ public class QnaController {
 			
 		dao.qnaWrite(dto);
 		
-		return "redirect:/board/qnaList";
+		return "redirect:/guest/qnaList";
 	}
 	
-	@RequestMapping("/board/qnaView")
+	@RequestMapping("/guest/qnaView")
 	public String qnaView(HttpServletRequest request, Model model) {
 		int qno = Integer.parseInt(request.getParameter("qno"));
 		model.addAttribute("view", dao.qnaView(qno));
 		
-		return "board/qnaView";
+		return "guest/qnaView";
+	}
+	
+	// 비밀번호 확인폼 (수정/삭제 공용)
+	@RequestMapping("/board/qnaPasswordCheckForm")
+	public String qnaPasswordCheckForm(HttpServletRequest request, Model model) {
+		String mode = request.getParameter("mode");
+	    int qno = Integer.parseInt(request.getParameter("qno"));
+	    
+	    model.addAttribute("qno", qno);
+	    model.addAttribute("mode", mode);
+	    
+	    return "board/qnaPasswordCheckForm";
+	}
+
+	// 비밀번호 확인 처리
+	@RequestMapping("/board/qnaPasswordCheck")
+	public String qnaPasswordCheck(HttpServletRequest request, Model model) {
+	    String mode = request.getParameter("mode");
+	    int qno = Integer.parseInt(request.getParameter("qno"));
+	    String qpasswd = request.getParameter("qpasswd");
+		
+	    QnaDTO dto = dao.qnaView(qno);
+	    
+	    if (dto != null && passwordEncoder.matches(qpasswd, dto.getQpasswd())) {
+	        if ("update".equals(mode)) {
+	            model.addAttribute("update", dto);
+	            return "board/qnaUpdateForm";
+	            
+	        } else if ("delete".equals(mode)) {
+	            dao.qnaDelete(qno);
+	            return "redirect:/guest/qnaList";
+	        } else if ("view".equals(mode)) {
+	        	model.addAttribute("view", dto);
+	        	return "guest/qnaView";
+	        }
+	    }
+	    
+	    model.addAttribute("msg", "비밀번호가 틀렸습니다.");
+	    model.addAttribute("qno", qno);
+	    model.addAttribute("mode", mode);
+	    
+	    return "board/qnaPasswordCheckForm";
 	}
 	
 	@RequestMapping("/board/qnaDelete")
 	public String qnaDelete(@RequestParam("qno") int qno) {
 		dao.qnaDelete(qno);
 		
-		return "redirect:/board/qnaList";
+		return "redirect:/guest/qnaList";
 	}
 	
 	@RequestMapping("/board/qnaUpdateForm")
@@ -81,6 +129,8 @@ public class QnaController {
 	
 	@RequestMapping("/board/qnaUpdate")
 	public String qnaUpdate(@RequestParam(value = "qupload", required = false) MultipartFile qupload, QnaDTO dto) throws IOException {
+		dto.setQpasswd(passwordEncoder.encode(dto.getQpasswd()));
+		
 		if (qupload != null && !qupload.isEmpty()) {
 	        String qfiles = qupload.getOriginalFilename();
 	        qupload.transferTo(new File("C:\\pageland\\src\\main\\resources\\static\\images\\" + qfiles));
@@ -89,6 +139,6 @@ public class QnaController {
 		
 		dao.qnaUpdate(dto);
 		
-		return "redirect:/board/qnaList";
+		return "redirect:/guest/qnaList";
 	}
 }
