@@ -37,6 +37,6 @@ public class BookController {
 	public String bookWrite(BookDTO dto) {
 		bdao.bookInsert(dto);
 		
-		return "redirect:/admin/main";
+		return "redirect:/admin/adminMain";
 	}
 }

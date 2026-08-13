@@ -6,7 +6,7 @@
 	<select id="memberList" resultType="com.springboot.pageland.dto.MemberDTO">
 		SELECT *
 		  FROM MEMBER
-		 ORDER BY BNO DESC
+		 ORDER BY MNO DESC
 	</select>
 	
 	<select id="findByEmail" resultType="com.springboot.pageland.dto.MemberDTO">
