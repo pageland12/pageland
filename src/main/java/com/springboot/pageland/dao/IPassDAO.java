@@ -8,15 +8,18 @@ import com.springboot.pageland.dto.PassDTO;
 
 @Mapper
 public interface IPassDAO {
-	// 도서 목록 (관리자)
+	// 구독권 목록 (관리자)
 	public List<PassDTO> passList();
+	
+	// 구독권 상세
+	public PassDTO passDetail(int pno);
 
-	// 도서 등록
+	// 구독권 등록
 	public int passInsert(PassDTO dto);
 	
-	// 도서정보 수정
+	// 구독권정보 수정
 	public int passUpdate(PassDTO dto);
 	
-	// 도서 삭제
+	// 구독권 삭제
 	public int passDelete(int pno);
 }

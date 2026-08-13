@@ -6,7 +6,13 @@
 	<select id="passList" resultType="com.springboot.pageland.dto.PassDTO">
 		SELECT *
 		  FROM PASS
-		 ORDER BY BNO DESC
+		 ORDER BY PNO DESC
+	</select>
+	
+	<select id="passDetail" resultType="com.springboot.pageland.dto.PassDTO">
+		SELECT *
+		  FROM PASS
+		 WHERE PNO=#{pno}
 	</select>
 	
 	<insert id="passInsert">

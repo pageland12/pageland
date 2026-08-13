@@ -24,7 +24,7 @@
 			<td><fmt:formatDate value="${event.abdate}" pattern="yyyy-MM-dd" /></td>
 			<td>${event.abhit}</td>
 		</tr>
-	</c:forEach>
+	</c:forEach> 
 	</table>
 </body>
 </html>

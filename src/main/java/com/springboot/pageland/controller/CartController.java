@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import com.springboot.pageland.dao.IBookDAO;
 import com.springboot.pageland.dao.ICartDAO;
 import com.springboot.pageland.dao.IMemberDAO;
+import com.springboot.pageland.dao.IPassDAO;
 import com.springboot.pageland.dto.CartDTO;
 
 @Controller
@@ -19,6 +20,9 @@ public class CartController {
 	
 	@Autowired
 	private IBookDAO bdao;
+
+	@Autowired
+	private IPassDAO pdao;
 	
 	@Autowired
 	private IMemberDAO mdao;
@@ -32,8 +36,16 @@ public class CartController {
 		
 		cdao.cartInsert(cdto);
 		
-		model.addAttribute("book", bdao.bookDetail(cdto.getBno()));
-		
-		return "guest/bookDetail";
+		if (cdto.getBno() != null) {
+			model.addAttribute("book", bdao.bookDetail(cdto.getBno()));
+			
+			return "guest/bookDetail";
+		} else {
+			model.addAttribute("pass", pdao.passDetail(cdto.getPno()));
+			
+			return "guest/passDetail";
+		}
 	}
+	
+	
 }
