@@ -101,11 +101,4 @@ public class MemberController {
 	public String adminMain() {
 		return "admin/adminMain";
 	}
-	
-	// 관리자 신규도서 등록 폼
-	@RequestMapping("/admin/bookWriteForm")
-	public String bookWriteForm() {
-		return "admin/bookWriteForm";
-	}
-	
 }
