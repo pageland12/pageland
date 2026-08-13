@@ -8,7 +8,7 @@
 </head>
 <body>
 	<h3>관리자 게시판</h3>
-	<form method="post" name="adminBoard" action="/board/abWrite" enctype="multipart/form-data">
+	<form method="post" name="adminBoard" action="/admin/abWrite" enctype="multipart/form-data">
 		제목 : <input type="text" name="abtitle"> <br>
 		카테고리 : <select name="abcategory">
 					<option value="NOTICE">공지사항</option>
