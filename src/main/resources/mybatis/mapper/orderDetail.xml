@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.springboot.pageland.dao.IOrderDetailDAO">
+	<insert id="orderDetailInsert">
+		INSERT INTO ORDER_DETAIL(ODNO,ODSTOCK,ODPRICE,ODSALE,OLNO,BNO,PNO,MPNO)
+		 VALUES(OD_SEQ.NEXTVAL,#{odstock},#{odprice},#{odsale},#{olno},
+		        #{bno, jdbcType=INTEGER},#{pno, jdbcType=INTEGER},
+		        #{mpno, jdbcType=INTEGER})
+	</insert>
+	
+</mapper>

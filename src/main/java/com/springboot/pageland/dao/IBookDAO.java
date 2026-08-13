@@ -13,7 +13,7 @@ public interface IBookDAO {
 		
 		// 도서 상세
 		public BookDTO bookDetail(int bno);
-	
+		
 		// 도서 등록
 		public int bookInsert(BookDTO dto);
 		
