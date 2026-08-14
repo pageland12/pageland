@@ -9,8 +9,10 @@ import com.springboot.pageland.dto.RatingDTO;
 @Mapper
 public interface IRatingDAO {
 	public List<RatingDTO> ratingList();
+	public List<RatingDTO> ratingCheck(int mno);
 	public RatingDTO ratingView(int rno);
 	public int ratingWrite(RatingDTO dto);
 	public int ratingUpdate(RatingDTO dto);
 	public int ratingDelete(int rno);
+	public int ratingHit(int rno);
 }

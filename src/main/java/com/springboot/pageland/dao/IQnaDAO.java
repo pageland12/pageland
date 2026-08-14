@@ -13,4 +13,5 @@ public interface IQnaDAO {
 	public int qnaWrite(QnaDTO dto); 	// qna 등록
 	public int qnaUpdate(QnaDTO dto); 	// qna 수정
 	public int qnaDelete(int qno); 		// qna 삭제
+	public int qnaHit(int qno);			// qna 조회수 증가
 }

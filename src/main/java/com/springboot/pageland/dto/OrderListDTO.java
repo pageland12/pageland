@@ -14,5 +14,5 @@ public class OrderListDTO {
 	private	String	olpayment;	// 결제 방식
 	private	Date	oldate;		// 결제 일시
 	private	int		mno;		// 회원 번호
-	private	int 	memail;		// 회원 이메일
+	private	String 	memail;		// 회원 이메일
 }
