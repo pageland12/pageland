@@ -11,6 +11,21 @@
 	<!-- 공통 -->
 	<h2>페이지랜드</h2>
 		<p>반갑습니다. 환상의 나라 페이지랜드입니다. ^_^~*</p>
+		<p>
+			<a href="/guest/">BEST | </a>
+			<a href="/guest/allBookList">전체도서 | </a>
+			<a href="/guest/">연령별 | </a>
+			<a href="/guest/">구독 서비스 | </a>
+			<a href="/guest/">분야별 | </a>
+			<a href="/guest/">출판사별 | </a>
+			<select onchange="if(this.value) location.href=this.value;">
+			    <option value="">-- 고객센터 --</option>
+			    <option value="/board/noticeList">공지사항</option>
+			    <option value="/board/eventList">이벤트</option>
+			    <option value="/board/qnaList">Q&A</option>
+			</select>
+
+		</p>
 	<!-- 비회원 -->
 	<sec:authorize access="isAnonymous()">
 		<a href="/loginForm">로그인</a><br>
@@ -18,13 +33,15 @@
 	</sec:authorize>
 	<!-- 회원 -->
 	<sec:authorize access="hasRole('NORMAL')">
-		<a href="/member/main">마이페이지</a>
-		<a href="/logout">로그아웃</a>
+		<a href="/logout">로그아웃 | </a>
+		<a href="/member/memberMain">마이페이지 | </a>
+		<a href="/member/">주문조회 | </a>
+		<a href="/member/">장바구니</a>
 	</sec:authorize>
 	<!-- 관리자 -->
 	<sec:authorize access="hasRole('ADMIN')">
-		<a href="/admin/main">관리자페이지</a>
 		<a href="/logout">로그아웃</a><br>
+		<a href="/admin/adminMain">관리자페이지</a>
 	</sec:authorize>		
 </body>
 </html>

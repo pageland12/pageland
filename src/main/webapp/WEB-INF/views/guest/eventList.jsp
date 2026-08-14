@@ -6,10 +6,10 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>공지사항</title>
+<title>이벤트</title>
 </head>
 <body>
-	<h3>공지사항</h3>
+	<h3>이벤트</h3>
 	<table border=1>
 		<tr>
 			<th>제목</th>
@@ -17,12 +17,12 @@
 			<th>작성일</th>
 			<th>조회수</th>
 		</tr>
-	<c:forEach var="notice" items="${notice}">	
+	<c:forEach var="event" items="${event}">	
 		<tr>
-			<td><a href="/board/abView?abno=${notice.abno}">${notice.abtitle}</a></td>
-			<td>${notice.mname}</td>
-			<td><fmt:formatDate value="${notice.abdate}" pattern="yyyy-MM-dd" /></td>
-			<td>${notice.abhit}</td>
+			<td><a href="/guest/abView?abno=${event.abno}">${event.abtitle}</a></td>
+			<td>${event.mname}</td>
+			<td><fmt:formatDate value="${event.abdate}" pattern="yyyy-MM-dd" /></td>
+			<td>${event.abhit}</td>
 		</tr>
 	</c:forEach>
 	</table>

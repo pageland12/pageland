@@ -13,11 +13,11 @@
     
     <div class="admin-grid">
         
-        <a href="/member/memberUpdateForm">
+        <a href="/member/passwordCheckForm?mode=update">
             <div>회원수정</div>
         </a>
         
-        <a href="/member/memberDelete">
+        <a href="/member/passwordCheckForm?mode=delete">
             <div>회원탈퇴</div>
         </a>
         

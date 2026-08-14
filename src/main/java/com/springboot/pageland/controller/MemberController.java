@@ -1,6 +1,7 @@
 package com.springboot.pageland.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -9,6 +10,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.springboot.pageland.dao.IMemberDAO;
 import com.springboot.pageland.dto.MemberDTO;
+
+import jakarta.servlet.http.HttpServletRequest;
 
 @Controller
 public class MemberController {
@@ -35,18 +38,18 @@ public class MemberController {
 	
 	@RequestMapping("/guest/write")
 	public String write(MemberDTO mdto,
-						@RequestParam("mtel1") String mtel1,
-						@RequestParam("mtel2") String mtel2,
-						@RequestParam("mtel3") String mtel3,
 						@RequestParam("maddr1") String maddr1,
 						@RequestParam("maddr2") String maddr2,
 						@RequestParam("mzipno") String mzipno,
+						@RequestParam("mtel1") String mtel1,
+						@RequestParam("mtel2") String mtel2,
+						@RequestParam("mtel3") String mtel3,
 						@RequestParam("maccount1") String maccount1,
 						@RequestParam("maccount2") String maccount2,
 						@RequestParam("maccount3") String maccount3
 						) {
-		mdto.setMtel(mtel1+"-"+mtel2+"-"+mtel3);
 		mdto.setMaddr(maddr1+","+maddr2+","+mzipno);
+		mdto.setMtel(mtel1+"-"+mtel2+"-"+mtel3);
 		mdto.setMaccount(maccount1+","+maccount2+","+maccount3);
 
 		mdto.setMpasswd(passwordEncoder.encode(mdto.getMpasswd()));
@@ -77,9 +80,43 @@ public class MemberController {
 	}	
 	
 	// 마이페이지
-	@RequestMapping("/member/main")
-	public String membermain() {
-		return "member/memberMain";
+	@RequestMapping("/member/memberMain")
+	public String membermain(Authentication authentication, Model model) {
+	    model.addAttribute("view", mdao.findByEmail(authentication.getName()));	    
+	    return "member/memberMain";
+	}
+	
+	// 비밀번호 확인폼 (수정/탈퇴 공용)
+	@RequestMapping("/member/passwordCheckForm")
+	public String passwordCheckForm(Authentication authentication,HttpServletRequest request,Model model) {
+		String mode = request.getParameter("mode");
+		model.addAttribute("mode", mode);			
+		return "member/passwordCheckForm";
+	}
+	
+	// 비밀번호 확인 처리 (수정/탈퇴 공용)
+	@RequestMapping("/member/passwordCheck")
+	public String passwordCheck(Authentication authentication,HttpServletRequest request,Model model) {
+		String mode = request.getParameter("mode"); // update, delete
+		String mpasswd = request.getParameter("mpasswd");
+		
+		String memail = authentication.getName();
+		MemberDTO mdto = mdao.findByEmail(memail);
+		
+		if(mdto != null && passwordEncoder.matches(mpasswd, mdto.getMpasswd())) {
+			if("update".equals(mode)) {      // 비밀번호 확인 시 회원수정
+				model.addAttribute("update",mdto);
+				return "member/memberUpdateForm";
+			}
+			else if("delete".equals(mode)) { // 비밀번호 확인 시 회원탈퇴
+				mdao.memberDelete(mdto.getMno());
+				return "redirect:/logout";
+			}
+		}
+		
+		model.addAttribute("msg","비밀번호가 틀렸습니다.");
+		model.addAttribute("mode", mode);
+		return "member/passwordCheckForm";
 	}
 	
 	// 회원 수정폼
@@ -89,16 +126,46 @@ public class MemberController {
 		return "member/memberUpdateForm";
 	}
 	
-	// 회원 탈퇴
-	@RequestMapping("/member/memberdelete")
-	public String deleteForm(@RequestParam("mno") int mno) {
-		mdao.memberDelete(mno);
-		return "redirect:/main";
+			
+	// 회원 수정
+	@RequestMapping("/member/memberUpdate")
+	public String memberUpdate(MemberDTO mdto,
+						@RequestParam("maddr1") String maddr1,
+						@RequestParam("maddr2") String maddr2,
+						@RequestParam("mzipno") String mzipno,
+						@RequestParam("mtel1") String mtel1,
+						@RequestParam("mtel2") String mtel2,
+						@RequestParam("mtel3") String mtel3,
+						@RequestParam("maccount1") String maccount1,
+						@RequestParam("maccount2") String maccount2,
+						@RequestParam("maccount3") String maccount3
+						) {
+		mdto.setMtel(mtel1+"-"+mtel2+"-"+mtel3);
+		mdto.setMaddr(maddr1+","+maddr2+","+mzipno);
+		mdto.setMaccount(maccount1+","+maccount2+","+maccount3);
+		
+		mdao.memberUpdate(mdto);
+		return "redirect:/member/memberMain";
 	}
 	
 	// 관리자페이지
-	@RequestMapping("/admin/main")
+	@RequestMapping("/admin/adminMain")
 	public String adminMain() {
 		return "admin/adminMain";
 	}
+	
+	// 모든 회원관리
+	@RequestMapping("/admin/memberList")
+	public String memberList(Model model) {
+		model.addAttribute("list", mdao.memberList());
+	       return "admin/memberList";
+	}
+	
+	// 회원상세보기
+	@RequestMapping("/admin/memberView")
+	public String memberView(@RequestParam("mno") int mno,Model model) {
+		model.addAttribute("view", mdao.memberView(mno));
+	    return "admin/memberView";
+	}
+	
 }
