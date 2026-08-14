@@ -100,6 +100,7 @@ public class OrderController {
 	    int cstock = ((Number) reqData.get("cstock")).intValue();
 	    int totalAmount = ((Number) reqData.get("totalAmount")).intValue();
 	    int fee = ((Number) reqData.get("fee")).intValue();
+	    Integer sale = null;	// 구독권까지 적용하는 단계에서는 반드시 바꿀 것
 	    int prodAmount = totalAmount - fee;
 	    String payment = (String) reqData.get("payment");
 	    String buyerEmail = (String) reqData.get("buyerEmail");
@@ -130,7 +131,8 @@ public class OrderController {
 	    } else {
 	    	oddto.setPno(pno);
 	    }
-	    // mpno는 나중에 등록할 것
+	    // 나중에 구독권까지 적용하면 바꿀것
+	    oddto.setMpno(null);
 	    
 	    oddao.orderDetailInsert(oddto);
 	    
