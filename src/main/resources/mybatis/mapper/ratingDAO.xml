@@ -3,6 +3,29 @@
 	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.springboot.pageland.dao.IRatingDAO">
+	<select id="ratingCheck" resultType="com.springboot.pageland.dto.RatingDTO">
+		SELECT 
+	        m.mno,
+	        m.mname,
+	        od.odno,
+	        od.bno,
+	        b.bname,
+	        b.bimg,
+	        b.bprice,
+	        (SELECT COUNT(*) 
+           	FROM rating 
+          	WHERE odno = od.odno 
+            AND bno = od.bno 
+            AND mno = m.mno) AS cnt
+	    FROM member m
+	    JOIN order_list ol ON m.mno = ol.mno
+	    JOIN order_detail od ON ol.olno = od.olno
+	    LEFT JOIN book b ON od.bno = b.bno
+	    WHERE m.mno = #{mno}
+	      AND od.bno IS NOT NULL
+	    ORDER BY od.odno DESC
+	</select>
+	
 	<select id="ratingList" resultType="com.springboot.pageland.dto.RatingDTO">
 		select r.*, m.mname
     	 from rating r
@@ -27,4 +50,10 @@
 		delete from rating
 		 where rno = #{rno}
 	</delete>
+	
+	<update id="ratingHit">
+		update rating
+		 set rhit = rhit + 1
+		 where rno = #{rno}
+	</update>
 </mapper>

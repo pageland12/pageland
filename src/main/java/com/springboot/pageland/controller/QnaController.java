@@ -66,6 +66,7 @@ public class QnaController {
 	@RequestMapping("/guest/qnaView")
 	public String qnaView(HttpServletRequest request, Model model) {
 		int qno = Integer.parseInt(request.getParameter("qno"));
+		dao.qnaHit(qno);
 		model.addAttribute("view", dao.qnaView(qno));
 		
 		return "guest/qnaView";
@@ -101,12 +102,13 @@ public class QnaController {
 	            dao.qnaDelete(qno);
 	            return "redirect:/guest/qnaList";
 	        } else if ("view".equals(mode)) {
+	        	dao.qnaHit(qno);
 	        	model.addAttribute("view", dto);
 	        	return "guest/qnaView";
 	        }
 	    }
 	    
-	    model.addAttribute("msg", "비밀번호가 틀렸습니다.");
+	    model.addAttribute("msg", "비밀번호가 일치하지 않습니다.");
 	    model.addAttribute("qno", qno);
 	    model.addAttribute("mode", mode);
 	    
