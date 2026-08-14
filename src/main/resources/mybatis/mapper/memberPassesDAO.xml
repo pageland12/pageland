@@ -23,7 +23,7 @@
             TRUNC(mp.mpend) - TRUNC(SYSDATE) AS daysLeft
 	    FROM MEMBER_PASSES mp
 	    JOIN PASS p ON mp.pno = p.pno
-	    WHERE mp.olno = #{olno}
+	    WHERE mp.mno = #{mno}
          AND mp.mpstatus = '사용중'
         ORDER BY mp.mpno DESC
     </select>

@@ -20,9 +20,9 @@ public class MemberPassesController {
 	
 	@RequestMapping("/member/myPassList")
 	public String myPassList(HttpServletRequest request, Model model) {
-		String olno = request.getParameter("olno");
+		int mno = Integer.parseInt(request.getParameter("mno"));
 		
-		List<MemberPassesDTO> passList = dao.mbCheck(olno);
+		List<MemberPassesDTO> passList = dao.mbCheck(mno);
 		
 		model.addAttribute("passList", passList);
 		

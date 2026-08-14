@@ -11,5 +11,5 @@ import com.springboot.pageland.dto.RatingDTO;
 public interface IMemberPassesDAO {
 	public int memberPassesInsert(MemberPassesDTO dto);
 	public List<MemberPassesDTO> mbList();
-	public List<MemberPassesDTO> mbCheck(String olno);
+	public List<MemberPassesDTO> mbCheck(int mno);
 }
