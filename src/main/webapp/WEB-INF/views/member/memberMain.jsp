@@ -21,11 +21,19 @@
             <div>회원탈퇴</div>
         </a>
         
-        <a href="/member/">
+        <a href="/member/orderList">
             <div>주문 조회</div>
         </a>
         
-        <a href="/member/passList">
+        <a href="/member/myBookOrderList">
+            <div>대여 도서 조회</div>
+        </a>
+        
+        <a href="/member/myBookList">
+            <div>대여중인 도서 조회</div>
+        </a>
+        
+        <a href="/member/myPassList">
             <div>구독권 조회</div>
         </a>
         

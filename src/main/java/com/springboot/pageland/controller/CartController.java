@@ -6,6 +6,7 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.springboot.pageland.dao.IBookDAO;
 import com.springboot.pageland.dao.ICartDAO;
@@ -47,5 +48,25 @@ public class CartController {
 		}
 	}
 	
+	@RequestMapping("/cart/cartList")
+	public String cartList(Model model,
+						@AuthenticationPrincipal User user) {
+		String memberEmail = user.getUsername();
+		int mno = mdao.findByEmail(memberEmail).getMno();
+		
+		CartDTO cdto = new CartDTO();
+		
+		cdto.setMno(mno);
+		
+		model.addAttribute("carts", cdao.mcartList(mno));
+		
+		return "cart/cartList";
+	}
 	
+	@RequestMapping("/cart/cartDelete")
+	public String cartDelete(@RequestParam("cno") int cno) {
+		cdao.cartDelete(cno);
+		
+		return "redirect:/cart/cartList";
+	}
 }
