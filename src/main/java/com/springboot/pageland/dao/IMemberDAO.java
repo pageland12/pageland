@@ -25,4 +25,10 @@ public interface IMemberDAO {
 		
 		// 회원 삭제
 		public int memberDelete(int mno);
+		
+		// 관리자가 회원 수정
+		public int adminUpdate(MemberDTO dto);
+		
+		// 관리자가 회원 삭제
+		public int adminDelete(int mno);
 }

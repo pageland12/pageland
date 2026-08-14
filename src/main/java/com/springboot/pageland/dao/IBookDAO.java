@@ -23,6 +23,9 @@ public interface IBookDAO {
 		
 		// 도서 삭제
 		public int bookDelete(int bno);
+
+		// best 도서 목록 (상위 16개)
+		public List<BookDTO> bestList();
 		
 		// 연령별 도서 목록 조회
 		public List<BookDTO> bookListByCategory(@Param("category") String category);
