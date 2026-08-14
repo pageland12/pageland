@@ -14,10 +14,10 @@
 		<p>
 			<a href="/guest/">BEST | </a>
 			<a href="/guest/allBookList">전체도서 | </a>
-			<a href="/guest/">연령별 | </a>
+			<a href="/guest/allBookAgeList">연령별 | </a>
 			<a href="/guest/allPassList">구독 서비스 | </a>
-			<a href="/guest/">분야별 | </a>
-			<a href="/guest/">출판사별 | </a>
+			<a href="/guest/allBookGenreList">분야별 | </a>
+			<a href="/guest/allBookPublisherList">출판사별 | </a>
 			<select onchange="if(this.value) location.href=this.value;">
 			    <option value="">-- 고객센터 --</option>
 			    <option value="/guest/noticeList">공지사항</option>

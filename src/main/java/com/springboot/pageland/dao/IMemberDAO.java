@@ -16,7 +16,7 @@ public interface IMemberDAO {
 		
 		//회원정보상세보기, 수정폼
 		public MemberDTO memberView(int mno);
-	
+			
 		// 회원 등록
 		public int memberInsert(MemberDTO dto);
 		
