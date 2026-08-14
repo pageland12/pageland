@@ -106,7 +106,7 @@ public class QnaController {
 	        }
 	    }
 	    
-	    model.addAttribute("msg", "비밀번호가 틀렸습니다.");
+	    model.addAttribute("msg", "비밀번호가 일치하지 않습니다.");
 	    model.addAttribute("qno", qno);
 	    model.addAttribute("mode", mode);
 	    
