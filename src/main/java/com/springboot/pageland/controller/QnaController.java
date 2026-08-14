@@ -66,6 +66,7 @@ public class QnaController {
 	@RequestMapping("/guest/qnaView")
 	public String qnaView(HttpServletRequest request, Model model) {
 		int qno = Integer.parseInt(request.getParameter("qno"));
+		dao.qnaHit(qno);
 		model.addAttribute("view", dao.qnaView(qno));
 		
 		return "guest/qnaView";
@@ -101,6 +102,7 @@ public class QnaController {
 	            dao.qnaDelete(qno);
 	            return "redirect:/guest/qnaList";
 	        } else if ("view".equals(mode)) {
+	        	dao.qnaHit(qno);
 	        	model.addAttribute("view", dto);
 	        	return "guest/qnaView";
 	        }

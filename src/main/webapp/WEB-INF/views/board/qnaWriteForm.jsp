@@ -52,7 +52,7 @@ function check() {
 	}
 	
 	if(!expQpasswd.test(qpasswd.value)) {
-			alert("비밀번호는 영문 대,소문자와 숫자, 특수기호(!@#$%^&*?)의 조합 4~15자만 가능합니다");
+			alert("비밀번호는 영문 대,소문자와 숫자, 특수기호(!@#$%^&*?)의 조합과\n 4~15자만 가능합니다");
 			qpasswd.value="";
 			qpasswd.focus();
 			return false;
@@ -71,7 +71,7 @@ function check() {
 		비밀글 설정 : 공개글 <input type="radio" name="qsecret" value="공개글">
 					비밀글 <input type="radio" name="qsecret" value="비밀글" checked><br>
 		<input type="submit" value="등록" onclick="return check()">
-		<input type="reset" value="초기화" onclick="history.back()">
+		<input type="reset" value="취소" onclick="history.back()">
 	</form>
 </body>
 </html>

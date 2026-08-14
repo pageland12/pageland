@@ -23,4 +23,5 @@ public class RatingDTO {
 	private String bimg;
 	private String bname;
 	private int bprice;
+	private int cnt;
 }
