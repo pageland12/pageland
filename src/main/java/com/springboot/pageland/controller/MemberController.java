@@ -33,7 +33,7 @@ public class MemberController {
 	
 	@RequestMapping("/main")
 	public String main() {
-		return "guest/main";
+		return "redirect:/";
 	}
 	
 	@RequestMapping("/guest/writeForm")
