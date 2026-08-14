@@ -14,4 +14,5 @@ public interface IAdminBoardDAO {
 	public int abWrite(AdminBoardDTO dto);
 	public int abUpdate(AdminBoardDTO dto);
 	public int abDelete(int adno);
+	public int abHit(int abno);
 }

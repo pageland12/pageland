@@ -32,4 +32,10 @@
 		delete from qna
 		 where qno = #{qno}
 	</delete>
+	
+	<update id="qnaHit">
+		update qna
+		 set qhit = qhit + 1
+		 where qno = #{qno}
+	</update>
 </mapper>

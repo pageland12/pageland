@@ -41,4 +41,10 @@
 		delete from admin_board
 		 where abno = #{abno}
 	</delete>
+	
+	<update id="abHit">
+		update admin_board
+		 set abhit = abhit + 1
+		 where abno = #{abno}
+	</update>
 </mapper>

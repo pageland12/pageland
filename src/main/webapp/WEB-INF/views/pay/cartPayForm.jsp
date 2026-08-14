@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
@@ -30,6 +31,11 @@
             const buyerTel = '${buyerTel}';
             const buyerName = '${buyerName}';
             const payment = 'KAKAO_PAY';
+            const cnoList = [
+                <c:forEach var="cno" items="${cnoList}" varStatus="st">
+                    ${cno}<c:if test="${!st.last}">,</c:if>
+                </c:forEach>
+            ];
             
             // 주문 고유 번호 (고유값 생성)
             const paymentId = "ORD-" + new Date().getTime();
@@ -62,21 +68,18 @@
 
                 // 결제 성공
                 console.log("결제 성공! paymentId:", response.paymentId);
-                fetch('/pay/paySuccess', {
+                fetch('/pay/cartPaySuccess', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
                     },
                     body: JSON.stringify({
-                        paymentId: response.paymentId,      // 포트원 결제 고유 번호
-                        bno: Number('${cdto.bno}') || 0,    // 도서 번호
-                        pno: Number('${cdto.pno}') || 0,    // 이용권 번호
-                        ctype: '${cdto.ctype}',             // 상품 타입 (book/pass)
-                        cstock: Number('${cdto.cstock}'),   // 수량/기간
-                        totalAmount: Number('${totalAmount}'),           // 실제로 결제한 금액
-                        payment: payment,			// 결제 수단
+                        paymentId: response.paymentId,      	// 포트원 결제 고유 번호
+                        cnoList: cnoList,						// 결제한 장바구니 목록
+                        totalAmount: Number('${totalAmount}'),	// 실제로 결제한 금액
+                        payment: payment,						// 결제 수단
                         fee: Number('${fee}'),					// 배송비
-                        buyerEmail: buyerEmail		// 결제 이메일
+                        buyerEmail: buyerEmail					// 결제 이메일
                     })
                 })
                 .then(res => res.json())

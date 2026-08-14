@@ -17,7 +17,7 @@
 
         <div>
             <a href="/main">홈페이지로 가기</a>
-            <a href="#">주문 목록으로 가기</a>
+            <a href="/member/orderList">주문 목록으로 가기</a>
         </div>
     </div>
 </body>

@@ -1,12 +1,15 @@
 package com.springboot.pageland.controller;
 
 import java.io.File;
-import java.io.IOException;
 import java.security.Principal;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
@@ -27,6 +30,19 @@ public class RatingController {
 	@Autowired
 	private IMemberDAO mDao;
 	
+	@RequestMapping("/member/myOrderBookList")
+	public String myOrderBookList(@AuthenticationPrincipal User user, Model model) {
+		if (user == null) {
+			return "redirect:/loginForm";
+		}
+		
+		int mno = mDao.findByEmail(user.getUsername()).getMno();
+		List<RatingDTO> orderList = dao.ratingCheck(mno);
+		
+		model.addAttribute("orderList", orderList);
+		return "member/myOrderBookList";
+	}
+	
 	@RequestMapping("/guest/ratingList")
 	public String ratingList(Model model) {
 		model.addAttribute("list", dao.ratingList());
@@ -35,21 +51,13 @@ public class RatingController {
 	}
 	
 	@RequestMapping("/board/ratingWriteForm")
-	public String ratingWriteForm(HttpServletRequest request, Model model, RatingDTO dto) {
-		int odno = Integer.parseInt(request.getParameter("odno"));
-		int bno = Integer.parseInt(request.getParameter("bno"));
-		String bname = request.getParameter("bname");
-		String bimg = request.getParameter("bimg");
-		int bprice = Integer.parseInt(request.getParameter("bprice"));
+	public String ratingWriteForm(@ModelAttribute("rating") RatingDTO dto, @AuthenticationPrincipal User user) {
+		if (user == null) {
+			return "redirect:/loginForm";
+		}
 		
-		dto.setOdno(odno);
-		dto.setBno(bno);
-		dto.setBname(bname);
-		dto.setBimg(bimg);
-		dto.setBprice(bprice);
-		
-		model.addAttribute("rating", dto);
-		
+		int mno = mDao.findByEmail(user.getUsername()).getMno();
+		dto.setMno(mno);
 		
 		return "board/ratingWriteForm";
 	}
@@ -76,9 +84,8 @@ public class RatingController {
 	@RequestMapping("/guest/ratingView")
 	public String ratingView(HttpServletRequest request, Model model) {
 		int rno = Integer.parseInt(request.getParameter("rno"));
+		dao.ratingHit(rno);
 		model.addAttribute("view", dao.ratingView(rno));
-		
-		dao.ratingView(rno);
 		
 		return "guest/ratingView";
 	}

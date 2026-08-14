@@ -71,6 +71,7 @@ public class AdminBoardController {
 	@RequestMapping("/guest/abView")
 	public String abView(HttpServletRequest request, Model model) {
 		int abno = Integer.parseInt(request.getParameter("abno"));
+		dao.abHit(abno);
 		model.addAttribute("view", dao.abView(abno));
 		
 		return "guest/abView";

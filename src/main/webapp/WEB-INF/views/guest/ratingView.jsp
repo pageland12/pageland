@@ -14,9 +14,9 @@
 	<table border=1>
 		<tr>
 			<th>구매도서정보</th>
-			<td><c:if test="${not empty list.bimg}">
-					<img src="/images/${list.bimg}">
-				</c:if>
+			<td><c:if test="${not empty view.bimg}">
+					<img src="${view.bimg}" width="200" height="200">
+				</c:if> <br>
 				${view.bname}<br>
 				${view.bprice}
 			</td>
@@ -54,7 +54,7 @@
 			<th>첨부파일</th>
 			<td>
 				<c:if test="${not empty view.rfiles}">
-					<img src="/images/${view.rfiles}">
+					<img src="/images/${view.rfiles}" width="200" height="200">
 				</c:if>
 			</td>
 		</tr>

@@ -23,7 +23,7 @@
 			<td>
 				<a href="/guest/ratingView?rno=${list.rno}">
 					<c:if test="${not empty list.rfiles}">
-						<img src="/images/${list.rfiles}">
+						<img src="/images/${list.rfiles}" width="100" height="100">
 					</c:if>
 					<c:if test="${empty list.rfiles}">
 						[NO IMAGE]
