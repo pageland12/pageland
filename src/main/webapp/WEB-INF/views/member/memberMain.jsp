@@ -26,7 +26,7 @@
         </a>
         
         <a href="/member/myOrderBookList">
-            <div>대여 도서 조회</div>s
+            <div>대여 도서 조회</div>
         </a>
         
         <a href="/member/myBookList">

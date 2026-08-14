@@ -3,6 +3,16 @@
 	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.springboot.pageland.dao.IMemberBooksDAO">
+	<select id="myBookList" parameterType="int" resultType="com.springboot.pageland.dto.MemberBooksDTO">
+	    SELECT 
+	     B.BNO,B.BNAME,B.BIMG,MB.OLNO,MB.MBSTART,MB.MBEND
+	      FROM MEMBER_BOOKS MB
+	     LEFT JOIN BOOK B ON MB.BNO = B.BNO
+	     WHERE MB.MNO = #{mno}
+	       AND MB.MBSTATUS = '대여중'
+	     ORDER BY MB.OLNO DESC
+	</select>
+	
 	<insert id="memberBooksInsert">
 		INSERT INTO MEMBER_BOOKS(MBNO,MBSTART,MBEND,MBRETURN,MBEXTENSION,MBLATEDATE,MBLATEFEE,MBSTATUS,MNO,OLNO,BNO,MPNO)
 		 VALUES(MB_SEQ.NEXTVAL,#{mbstart},#{mbend},null,0,0,0,'대여중',#{mno},#{olno},#{bno},#{mpno, jdbcType=INTEGER})
