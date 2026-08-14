@@ -8,6 +8,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.springboot.pageland.dao.IBookDAO;
 import com.springboot.pageland.dao.IMemberDAO;
 import com.springboot.pageland.dto.MemberDTO;
 
@@ -19,10 +20,14 @@ public class MemberController {
 	private IMemberDAO mdao;
 	
 	@Autowired
+	private IBookDAO bdao;
+	
+	@Autowired
 	private PasswordEncoder passwordEncoder;
 	
 	@RequestMapping("/")
-	public String root() {
+	public String root(Model model) {
+		model.addAttribute("best", bdao.bestList());
 		return "guest/main";
 	}
 	
@@ -168,4 +173,54 @@ public class MemberController {
 	    return "admin/memberView";
 	}
 	
+	// 관리자 비밀번호 확인폼 (수정/탈퇴 공용)
+	@RequestMapping("/admin/passwordCheckForm")
+	public String adminPasswordCheckForm(Authentication authentication,HttpServletRequest request,Model model) {
+		String mode = request.getParameter("mode");
+		String mno = request.getParameter("mno");
+		model.addAttribute("mode", mode);
+		model.addAttribute("mno",mno);
+		return "admin/passwordCheckForm";
+	}
+	
+	// 관리자 비밀번호 확인 처리 (수정/탈퇴 공용)
+	@RequestMapping("/admin/passwordCheck")
+	public String adminPasswordCheck(Authentication authentication,HttpServletRequest request,Model model) {
+		String mode = request.getParameter("mode"); // update, delete
+		String mpasswd = request.getParameter("mpasswd");
+		int mno = Integer.parseInt(request.getParameter("mno"));
+		
+		String memail = authentication.getName();
+		MemberDTO mdto = mdao.findByEmail(memail);
+		
+		if(mdto != null && passwordEncoder.matches(mpasswd, mdto.getMpasswd())) {
+			if("update".equals(mode)) {      // 비밀번호 확인 시 회원수정
+				MemberDTO targetmno = mdao.memberView(mno);
+				model.addAttribute("update",targetmno);
+				return "admin/adminUpdateForm";
+			}
+			else if("delete".equals(mode)) { // 비밀번호 확인 시 회원탈퇴
+				mdao.adminDelete(mno);
+				return "redirect:/admin/memberList";
+			}
+		}
+		
+		model.addAttribute("msg","비밀번호가 틀렸습니다.");
+		model.addAttribute("mode", mode);
+		model.addAttribute("mno", mno); // 실패 후 재시도를 위해 mno 유지
+		return "admin/passwordCheckForm";
+	}
+	
+	// 관리자가 회원 정보 수정
+	@RequestMapping("/admin/adminUpdateForm")
+	public String adminUpdateForm(@RequestParam("mno") int mno, Model model) {
+		model.addAttribute("update", mdao.memberView(mno));
+		return "admin/adminUpdateForm";
+	}
+	
+	@RequestMapping("/admin/adminUpdate")
+	public String adminUpdate(MemberDTO mdto) {		
+		mdao.adminUpdate(mdto);
+		return "redirect:/admin/memberView?mno=" + mdto.getMno();
+	}
 }

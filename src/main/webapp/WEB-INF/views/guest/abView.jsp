@@ -55,9 +55,7 @@
 				<sec:authorize access="hasRole('ADMIN')">
 					<a href="/admin/abUpdateForm?abno=${view.abno}">수정</a> / 
 					<a href="/admin/abDelete?abno=${view.abno}">삭제</a>
-				</sec:authorize>
-				 
-				
+				</sec:authorize>				 				
 			</td>
 		</tr>
 	</table>

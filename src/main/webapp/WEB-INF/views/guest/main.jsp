@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+<%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -12,18 +13,16 @@
 	<h2>페이지랜드</h2>
 		<p>반갑습니다. 환상의 나라 페이지랜드입니다. ^_^~*</p>
 		<p>
-			<a href="/guest/">BEST | </a>
 			<a href="/guest/allBookList">전체도서 | </a>
-			<a href="/guest/">연령별 | </a>
+			<a href="/guest/allBookAgeList">연령별 | </a>
 			<a href="/guest/">구독 서비스 | </a>
-			<a href="/guest/">분야별 | </a>
-			<a href="/guest/">출판사별 | </a>
+			<a href="/guest/allBookGenreList">분야별 | </a>
+			<a href="/guest/allBookPublisherList">출판사별 | </a>
 			<select onchange="if(this.value) location.href=this.value;">
 			    <option value="">-- 고객센터 --</option>
-			    <option value="/guest/noticeList">공지사항</option>
-			    <option value="/guest/eventList">이벤트</option>
-			    <option value="/guest/qnaList">Q&A</option>
-			    <option value="/guest/ratingList">후기</option>
+			    <option value="/board/noticeList">공지사항</option>
+			    <option value="/board/eventList">이벤트</option>
+			    <option value="/board/qnaList">Q&A</option>
 			</select>
 
 		</p>
@@ -43,6 +42,16 @@
 	<sec:authorize access="hasRole('ADMIN')">
 		<a href="/logout">로그아웃</a><br>
 		<a href="/admin/adminMain">관리자페이지</a>
-	</sec:authorize>		
+	</sec:authorize>
+	
+	<table>
+		<c:forEach var="best" items="${best}">
+		    <tr onclick="location.href='/guest/bookDetail?bno=${best.bno}'" style="cursor:pointer;">
+		    	<td><img src="${best.bimg}" width="100" height="100"></td>
+		    	<td>${best.bname}</td>
+		    	<td>${best.bprice}원</td>
+		    </tr>
+		</c:forEach>
+	</table>	
 </body>
 </html>

@@ -1,0 +1,253 @@
+CREATE TABLE MEMBER(
+    mno         NUMBER(6),
+    memail      VARCHAR2(50) NOT NULL,
+    mpasswd     VARCHAR2(200) NOT NULL,
+    mname       VARCHAR2(30) NOT NULL,
+    maddr       VARCHAR2(200) NOT NULL,
+    mtel        VARCHAR2(15) NOT NULL,
+    maccount    VARCHAR2(200) NOT NULL,
+    mgrade      VARCHAR2(20) DEFAULT '일반회원',
+    mdate       DATE DEFAULT SYSDATE,
+    mpoint      NUMBER(6) DEFAULT 0,
+    
+    CONSTRAINT PK_MEMBER PRIMARY KEY(mno)
+);
+
+select *
+ from book;
+
+delete from member;
+
+drop sequence member_seq;
+CREATE SEQUENCE MEMBER_SEQ
+ START WITH 1
+ INCREMENT BY 1;
+
+UPDATE MEMBER
+ SET mgrade='ADMIN'
+ WHERE MNO = 1;
+
+INSERT INTO order_detail (odno, odstock, odprice, olno, bno)
+VALUES (1, 1, 20000, 2, 100002);
+
+ALTER TABLE PASS
+  ADD pimg VARCHAR2(400) NOT NULL;
+
+CREATE TABLE BOOK(
+    bno         NUMBER(6),
+    bname       VARCHAR2(50) NOT NULL,
+    bprice      number(6) NOT NULL,
+    bage        VARCHAR2(20) NOT NULL,
+    bgenre      VARCHAR2(20) NOT NULL,
+    bpublisher  VARCHAR2(20) NOT NULL,
+    bimg        VARCHAR2(400) NOT NULL,
+    binfo       VARCHAR2(1000) NOT NULL,
+    bstock      NUMBER(5) NOT NULL,
+    blike       NUMBER(4) DEFAULT 0,
+    
+    CONSTRAINT PK_BOOK PRIMARY KEY(bno)
+);
+
+CREATE TABLE PASS(
+    pno         NUMBER(6),
+    pname       VARCHAR2(30) NOT NULL,
+    pprice      NUMBER(6) NOT NULL,
+    ptype       VARCHAR2(15) NOT NULL,
+    pperiod     NUMBER(3),
+    pcount      NUMBER(3),
+    pinfo       VARCHAR2(400) NOT NULL,
+    
+    CONSTRAINT PK_PASS PRIMARY KEY(pno)
+);
+
+CREATE TABLE QNA(
+    qno         NUMBER(6),
+    qtitle      VARCHAR2(50) NOT NULL,
+    qcontent    VARCHAR2(300) NOT NULL,
+    qfiles      VARCHAR2(1000),
+    qpasswd     VARCHAR2(200) NOT NULL,
+    qsecret     VARCHAR2(10) DEFAULT '비밀글',
+    qdate       DATE DEFAULT SYSDATE,
+    qhit        NUMBER(10) DEFAULT 0,
+    mno         NUMBER(6),
+    
+    CONSTRAINT PK_QNA PRIMARY KEY(qno),
+    CONSTRAINT FK_QNA_MEMBER 
+     FOREIGN KEY(mno) REFERENCES MEMBER(mno) ON DELETE CASCADE
+);
+
+CREATE TABLE ADMIN_BOARD(
+    abno        NUMBER(6),
+    abtitle     VARCHAR2(50) NOT NULL,
+    abcontent   VARCHAR2(300),
+    abfiles     VARCHAR2(1000),
+    abdate      DATE DEFAULT SYSDATE,
+    abhit       NUMBER(10) DEFAULT 0,
+    abcategory  VARCHAR2(15) NOT NULL,
+    mno         NUMBER(6),
+    
+    CONSTRAINT PK_AB PRIMARY KEY(abno),
+    CONSTRAINT FK_AB_MEMBER 
+     FOREIGN KEY(mno) REFERENCES MEMBER(mno) ON DELETE CASCADE
+);
+
+CREATE TABLE ORDER_LIST(
+    olno         NUMBER(6),
+    olprice      NUMBER(7) NOT NULL,
+    olfee        NUMBER(4),
+    olsale       NUMBER(7) DEFAULT 0,
+    oltotal      NUMBER(7) NOT NULL,
+    olpayment    VARCHAR2(50) NOT NULL,
+    mno         NUMBER(6),
+    
+    CONSTRAINT PK_OL PRIMARY KEY(olno),
+    CONSTRAINT FK_OL_MEMBER 
+        FOREIGN KEY(mno) REFERENCES member(mno) ON DELETE CASCADE
+);
+
+CREATE TABLE RATING(
+rno         NUMBER(6),
+rrate       NUMBER(2,1) NOT NULL,
+rtitle      VARCHAR2(50) NOT NULL,
+rcontent    VARCHAR2(300),
+rfiles      VARCHAR2(1000),
+rdate       DATE DEFAULT SYSDATE,
+rhit        NUMBER(10) DEFAULT 0,
+mno         NUMBER(6),
+bno         NUMBER(6),
+odno        NUMBER(6),
+
+CONSTRAINT PK_RATING PRIMARY KEY(rno),
+CONSTRAINT FK_RATING_MEMBER
+FOREIGN KEY(mno) REFERENCES MEMBER(mno) ON DELETE CASCADE,
+CONSTRAINT FK_RATING_BOOK
+FOREIGN KEY(bno) REFERENCES BOOK(bno) ON DELETE CASCADE,
+CONSTRAINT FK_RATING_OD
+FOREIGN KEY(odno) REFERENCES ORDER_DETAIL(odno) ON DELETE CASCADE
+);
+
+CREATE TABLE CART(
+    cno         NUMBER(6),
+    ctype       VARCHAR2(10) NOT NULL,
+    cstock      NUMBER(2) NOT NULL,
+    mno         NUMBER(6),
+    bno         NUMBER(6),
+    pno         NUMBER(6),
+    
+    CONSTRAINT PK_CART PRIMARY KEY(cno),
+    CONSTRAINT FK_CART_MEMBER 
+        FOREIGN KEY(mno) REFERENCES MEMBER(mno) ON DELETE CASCADE,
+    CONSTRAINT FK_CART_BOOK 
+        FOREIGN KEY(bno) REFERENCES BOOK(bno) ON DELETE CASCADE,
+    CONSTRAINT FK_CART_PASS 
+        FOREIGN KEY(pno) REFERENCES PASS(pno) ON DELETE CASCADE
+);
+
+CREATE TABLE MEMBER_PASSES(
+    mpno        NUMBER(6),
+    mpcount     NUMBER(3),
+    mpstart     DATE DEFAULT SYSDATE,
+    mpend       DATE,
+    mpstatus    VARCHAR2(15) DEFAULT '사용중',
+    mno         NUMBER(6),
+    olno        NUMBER(6),
+    pno         NUMBER(6),
+    
+    CONSTRAINT PK_MP PRIMARY KEY(mpno),
+    CONSTRAINT FK_MP_MEMBER 
+        FOREIGN KEY(mno) REFERENCES MEMBER(mno) ON DELETE CASCADE,
+    CONSTRAINT FK_MP_OL 
+        FOREIGN KEY(olno) REFERENCES ORDER_LIST(olno) ON DELETE CASCADE,
+    CONSTRAINT FK_MP_PASS 
+        FOREIGN KEY(pno) REFERENCES PASS(pno) ON DELETE CASCADE
+);
+
+CREATE TABLE ORDER_DETAIL(
+    odno        NUMBER(6),
+    odstock     NUMBER(2) NOT NULL,
+    odprice     NUMBER(7) NOT NULL,
+    odsale      NUMBER(7) DEFAULT 0,
+    olno        NUMBER(6),
+    bno         NUMBER(6),
+    pno         NUMBER(6),
+    mpno        NUMBER(6),
+    
+    CONSTRAINT PK_OD PRIMARY KEY(odno),
+    CONSTRAINT FK_OD_OL
+        FOREIGN KEY(olno) REFERENCES ORDER_LIST(olno) ON DELETE CASCADE,
+    CONSTRAINT FK_OD_BOOK 
+        FOREIGN KEY(bno) REFERENCES BOOK(bno) ON DELETE CASCADE,
+    CONSTRAINT FK_OD_PASS 
+        FOREIGN KEY(pno) REFERENCES PASS(pno) ON DELETE CASCADE,
+    CONSTRAINT FK_OD_MP
+        FOREIGN KEY(mpno) REFERENCES MEMBER_PASSES(mpno) ON DELETE CASCADE    
+);
+
+CREATE TABLE MEMBER_BOOKS(
+    mbno            NUMBER(6),
+    mbstart         DATE NOT NULL,
+    mbend           DATE NOT NULL,
+    mbreturn        DATE,
+    mbextension     NUMBER(2) DEFAULT 0,
+    mblatedate      NUMBER(3) DEFAULT 0,
+    mblatefee       NUMBER(6) DEFAULT 0,
+    mbstatus        VARCHAR2(10) DEFAULT '대여중',
+    mno             NUMBER(6),
+    olno            NUMBER(6),
+    bno             NUMBER(6),
+    mpno            NUMBER(6),
+    
+    CONSTRAINT PK_MB PRIMARY KEY(mbno),
+    CONSTRAINT FK_MB_MEMBER 
+        FOREIGN KEY(mno) REFERENCES MEMBER(mno) ON DELETE CASCADE,
+    CONSTRAINT FK_MB_OL
+        FOREIGN KEY(olno) REFERENCES ORDER_LIST(olno) ON DELETE CASCADE,
+    CONSTRAINT FK_MB_BOOK 
+        FOREIGN KEY(bno) REFERENCES BOOK(bno) ON DELETE CASCADE,
+    CONSTRAINT FK_MB_MP 
+        FOREIGN KEY(mpno) REFERENCES MEMBER_PASSES(mpno) ON DELETE CASCADE
+);
+
+CREATE SEQUENCE MEMBER_SEQ
+ START WITH 1
+ INCREMENT BY 1;
+ 
+CREATE SEQUENCE QNA_SEQ
+ START WITH 10001
+ INCREMENT BY 1;
+
+CREATE SEQUENCE AB_SEQ
+ START WITH 20001
+ INCREMENT BY 1;
+
+CREATE SEQUENCE RATING_SEQ
+ START WITH 30001
+ INCREMENT BY 1;
+
+CREATE SEQUENCE BOOK_SEQ
+ START WITH 100001
+ INCREMENT BY 1;
+ 
+CREATE SEQUENCE CART_SEQ
+ START WITH 200001
+ INCREMENT BY 1;
+
+CREATE SEQUENCE OL_SEQ
+ START WITH 300001
+ INCREMENT BY 1;
+
+CREATE SEQUENCE OD_SEQ
+ START WITH 400001
+ INCREMENT BY 1;
+
+CREATE SEQUENCE MP_SEQ
+ START WITH 500001
+ INCREMENT BY 1;
+
+CREATE SEQUENCE MB_SEQ
+ START WITH 600001
+ INCREMENT BY 1;
+
+
+
+

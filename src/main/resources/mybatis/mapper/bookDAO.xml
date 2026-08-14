@@ -33,4 +33,16 @@
 		DELETE FROM BOOK
 		 WHERE BNO=#{bno}
 	</delete>
+	
+	<select id="bestList" resultType="com.springboot.pageland.dto.BookDTO">
+	SELECT *
+	  FROM (
+	  		SELECT * 
+	  		  FROM BOOK 
+	  		 ORDER BY BLIKE DESC, BNO DESC
+	  	   )
+	<![CDATA[
+	 WHERE ROWNUM <= 16
+	]]>
+</select>
 </mapper>

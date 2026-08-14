@@ -22,4 +22,7 @@ public interface IBookDAO {
 		
 		// 도서 삭제
 		public int bookDelete(int bno);
+
+		// best 도서 목록 (상위 16개)
+		public List<BookDTO> bestList();
 }

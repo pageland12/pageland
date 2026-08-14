@@ -17,8 +17,8 @@
 		</tr>
 		<c:forEach var="list" items="${list}">
 			<tr>
-				<td><a href="/admin/memberView?mno=${list.mno}">${list.mno}</a></td>
-				<td>${list.memail}</td>
+				<td>${list.mno}</td>
+				<td><a href="/admin/memberView?mno=${list.mno}">${list.memail}</a></td>
 				<td>${list.mname}</td>
 				<td>${list.mtel}</td>
 			</tr>
