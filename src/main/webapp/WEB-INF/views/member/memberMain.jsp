@@ -25,15 +25,15 @@
             <div>주문 조회</div>
         </a>
         
-        <a href="/member/myBookOrderList">
-            <div>대여 도서 조회</div>
+        <a href="/member/myOrderBookList">
+            <div>대여 도서 조회</div>s
         </a>
         
         <a href="/member/myBookList">
             <div>대여중인 도서 조회</div>
         </a>
         
-        <a href="/member/myPassList">
+        <a href="/member/myPassList?mno=${passList.mno}">
             <div>구독권 조회</div>
         </a>
         

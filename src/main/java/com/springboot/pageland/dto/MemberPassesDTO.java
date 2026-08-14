@@ -14,4 +14,8 @@ public class MemberPassesDTO {
 	private	int			mno;
 	private	String		olno;
 	private	int			pno;
+	private String		pname;
+	private String		pimg;
+	private String		ptype;
+	private int			daysLeft;
 }
