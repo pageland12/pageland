@@ -28,10 +28,6 @@ public class BookController {
 		return "guest/bookDetail";
 	}
 	
-	@RequestMapping("/member/myBookList")
-	public String myBookList(Model model) {
-		
-	}
 	
 	@RequestMapping("/admin/bookWriteForm")
 	public String bookWriteForm() {

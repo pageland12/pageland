@@ -4,8 +4,28 @@
 	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.springboot.pageland.dao.IMemberPassesDAO">
 	<insert id="memberPassesInsert">
-		INSERT INTO MEMBER_PASSES(MPNO,MPCOUNT,MPSTART,MPEND,MPSTATUS,MNO,OLNO,PNO)
-		 VALUES(MP_SEQ.NEXTVAL,#{mpcount, jdbcType=INTEGER},SYSDATE,#{mpend, jdbcType=DATE},'사용중',#{mno},#{olno},#{pno})
-	</insert>
+      INSERT INTO MEMBER_PASSES(MPNO,MPCOUNT,MPSTART,MPEND,MPSTATUS,MNO,OLNO,PNO)
+       VALUES(MP_SEQ.NEXTVAL,#{mpcount, jdbcType=INTEGER},SYSDATE,#{mpend, jdbcType=DATE},'사용중',#{mno},#{olno},#{pno})
+   	</insert>
+
+	<select id="mbCheck" resultType="com.springboot.pageland.dto.MemberPassesDTO">
+        SELECT 
+            mp.mpno,
+            mp.mpcount,          
+            mp.mpstart,
+            mp.mpend,                           
+            mp.mpstatus,
+            mp.mno,
+            mp.pno,
+            p.pname,                          
+            p.ptype,                      
+            p.pimg,                          
+            TRUNC(mp.mpend) - TRUNC(SYSDATE) AS daysLeft
+	    FROM MEMBER_PASSES mp
+	    JOIN PASS p ON mp.pno = p.pno
+	    WHERE mp.olno = #{olno}
+         AND mp.mpstatus = '사용중'
+        ORDER BY mp.mpno DESC
+    </select>
 	
 </mapper>

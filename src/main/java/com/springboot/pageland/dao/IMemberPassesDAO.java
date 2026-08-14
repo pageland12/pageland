@@ -1,11 +1,15 @@
 package com.springboot.pageland.dao;
 
+import java.util.List;
+
 import org.apache.ibatis.annotations.Mapper;
 
 import com.springboot.pageland.dto.MemberPassesDTO;
+import com.springboot.pageland.dto.RatingDTO;
 
 @Mapper
 public interface IMemberPassesDAO {
-	// 구매한 구독권 등록
 	public int memberPassesInsert(MemberPassesDTO dto);
+	public List<MemberPassesDTO> mbList();
+	public List<MemberPassesDTO> mbCheck(String olno);
 }
