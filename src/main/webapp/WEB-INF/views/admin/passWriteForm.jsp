@@ -49,7 +49,7 @@
 	    
 	    <div>
 		    <input type="submit" value="등록하기">
-		    <a href="/admin/main">관리자페이지로 이동</a>
+		    <a href="/admin/adminMain">관리자페이지로 이동</a>
 		</div>
 	</form>
 </body>

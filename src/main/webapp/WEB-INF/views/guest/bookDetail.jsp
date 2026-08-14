@@ -47,7 +47,7 @@
 		
 		<div>
 		    <input type="submit" value="장바구니 담기">
-		    <a href="#">바로 구매</a>
+		    <input type="submit" formaction="/pay/payForm" value="바로 구매">
 		</div>
 	</form>
 	

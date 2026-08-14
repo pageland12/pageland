@@ -26,26 +26,26 @@ public class AdminBoardController {
 	@Autowired
 	private IMemberDAO mDao;
 	
-	@RequestMapping("/board/noticeList")
+	@RequestMapping("/guest/noticeList")
 	public String noticeList(Model model) {
 		model.addAttribute("notice", dao.noticeList());
 		
-		return "board/noticeList";
+		return "guest/noticeList";
 	}
 	
-	@RequestMapping("/board/eventList")
+	@RequestMapping("/guest/eventList")
 	public String eventList(Model model) {
 		model.addAttribute("event", dao.eventList());
 		
-		return "board/eventList";
+		return "guest/eventList";
 	}
 	
-	@RequestMapping("/board/abWriteForm")
+	@RequestMapping("/admin/abWriteForm")
 	public String abWriteForm() {
-		return "board/abWriteForm";
+		return "admin/abWriteForm";
 	}
 	
-	@RequestMapping("/board/abWrite")
+	@RequestMapping("/admin/abWrite")
 	public String abWrite(@RequestParam(value = "abupload", required = false) MultipartFile abupload, Principal principal, AdminBoardDTO dto) throws Exception {
 		String memail = principal.getName();
 		
@@ -61,32 +61,42 @@ public class AdminBoardController {
 			
 		dao.abWrite(dto);
 		
-		return "redirect:/";
+		if (dto != null && dto.getAbcategory().equals("NOTICE")) {
+	        return "redirect:/guest/noticeList";
+	    } 
+		
+		return "redirect:/guest/eventList";
 	}
 	
-	@RequestMapping("/board/abView")
+	@RequestMapping("/guest/abView")
 	public String abView(HttpServletRequest request, Model model) {
 		int abno = Integer.parseInt(request.getParameter("abno"));
 		model.addAttribute("view", dao.abView(abno));
 		
-		return "board/abView";
+		return "guest/abView";
 	}
 	
-	@RequestMapping("/board/abDelete")
+	@RequestMapping("/admin/abDelete")
 	public String abDelete(@RequestParam("abno") int abno) {
+		AdminBoardDTO dto = dao.abView(abno);
+		
 		dao.abDelete(abno);
 		
-		return "redirect:/";
+		if (dto != null && dto.getAbcategory().equals("NOTICE")) {
+	        return "redirect:/guest/noticeList";
+	    } 
+		
+		return "redirect:/guest/eventList";
 	}
 	
-	@RequestMapping("/board/abUpdateForm")
+	@RequestMapping("/admin/abUpdateForm")
 	public String abUpdateForm(@RequestParam("abno") int abno, Model model) {
 		model.addAttribute("update", dao.abView(abno));
 		
-		return "board/abUpdateForm";
+		return "admin/abUpdateForm";
 	}
 	
-	@RequestMapping("/board/abUpdate")
+	@RequestMapping("/admin/abUpdate")
 	public String abUpdate(@RequestParam(value = "abupload", required = false) MultipartFile abupload, AdminBoardDTO dto) throws IOException {
 		if (abupload != null && !abupload.isEmpty()) {
 	        String abfiles = abupload.getOriginalFilename();
@@ -96,6 +106,10 @@ public class AdminBoardController {
 		
 		dao.abUpdate(dto);
 		
-		return "redirect:/";
+		if (dto != null && dto.getAbcategory().equals("NOTICE")) {
+	        return "redirect:/guest/noticeList";
+	    } 
+		
+		return "redirect:/guest/eventList";
 	}
 }

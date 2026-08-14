@@ -33,4 +33,25 @@
 		DELETE FROM BOOK
 		 WHERE BNO=#{bno}
 	</delete>
+	
+	<select id="bookListByCategory" resultType="com.springboot.pageland.dto.BookDTO">
+	    SELECT * FROM book 
+	    WHERE bage LIKE '%' || #{category} || '%'
+	    ORDER BY bno DESC
+	</select>
+	
+	<!-- 분야별(bgenre) 필터링 쿼리 -->
+	<select id="bookListByGenre" resultType="com.springboot.pageland.dto.BookDTO">
+	    SELECT * FROM book 
+	    WHERE bgenre LIKE '%' || #{genre} || '%'
+	    ORDER BY bno DESC
+	</select>
+	
+	<!-- 출판사별(bpublisher) 필터링 쿼리 -->
+	<select id="bookListByPublisher" resultType="com.springboot.pageland.dto.BookDTO">
+	    SELECT * FROM book 
+	    WHERE bpublisher LIKE '%' || #{publisher} || '%'
+	    ORDER BY bno DESC
+	</select>
+	
 </mapper>

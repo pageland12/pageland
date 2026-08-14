@@ -11,7 +11,7 @@ public interface IMemberDAO {
 		// 회원 목록 (관리자)
 		public List<MemberDTO> memberList();
 		
-		// 로그인용 조회
+		// 이메일로 회원 찾기
 		public MemberDTO findByEmail(String memail); 
 		
 		//회원정보상세보기, 수정폼

@@ -38,10 +38,6 @@
 	                    <option value="전래/명작">전래/명작</option>
 	                    <option value="수학/영어">수학/영어</option>
 	                    <option value="자연/과학">자연/과학</option>
-	                    <option value="역사/위인">역사/위인</option>
-	                    <option value="사회/문화">사회/문화</option>
-	                    <option value="예능/백과">예능/백과</option>
-	                    <option value="논술/문학">논술/문학</option>
 	                </select>
 	            </td>
 	        </tr>
@@ -67,7 +63,7 @@
 	    
 	    <div>
 		    <input type="submit" value="등록하기">
-		    <a href="/admin/main">관리자페이지로 이동</a>
+		    <a href="/admin/adminMain">관리자페이지로 이동</a>
 		</div>
 	</form>
 </body>
