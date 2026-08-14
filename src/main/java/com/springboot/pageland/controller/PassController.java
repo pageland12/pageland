@@ -43,6 +43,6 @@ public class PassController {
 		
 		pdao.passInsert(pdto);
 		
-		return "redirect:/admin/main";
+		return "redirect:/admin/adminMain";
 	}
 }

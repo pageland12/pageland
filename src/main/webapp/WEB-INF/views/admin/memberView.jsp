@@ -49,8 +49,8 @@
 			<td>${view.mpoint}</td>
 		</tr>
 	</table>
-	<a href="">수정</a>
-	<a href="">탈퇴</a>
-	<a href="">목록으로 돌아가기</a>
+	<a href="/admin/passwordCheckForm?mode=update&mno=${view.mno}">회원수정</a>
+	<a href="/admin/passwordCheckForm?mode=delete&mno=${view.mno}">탈퇴</a>
+	<a href="/admin/memberList">목록으로 돌아가기</a>
 </body>
 </html>

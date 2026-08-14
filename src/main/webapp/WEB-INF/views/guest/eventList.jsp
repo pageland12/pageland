@@ -2,6 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <%@ taglib prefix="fmt" uri="jakarta.tags.fmt" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -25,6 +26,13 @@
 			<td>${event.abhit}</td>
 		</tr>
 	</c:forEach>
+	<sec:authorize access="hasRole('ADMIN')">
+		<tr>
+			<td colspan="4">	
+				<a href="/admin/abWriteForm">이벤트 작성</a>					
+			</td>
+		</tr>
+	</sec:authorize>
 	</table>
 </body>
 </html>

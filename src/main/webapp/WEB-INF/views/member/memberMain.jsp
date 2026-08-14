@@ -33,7 +33,7 @@
             <div>대여중인 도서 조회</div>
         </a>
         
-        <a href="/member/myPassList">
+        <a href="/member/myPassList?mno=${passList.mno}">
             <div>구독권 조회</div>
         </a>
         
