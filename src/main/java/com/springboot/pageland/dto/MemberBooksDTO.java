@@ -18,5 +18,7 @@ public class MemberBooksDTO {
 	private	String		olno;
 	private	int			bno;
 	private	int			bprice;
+	private String		bname;
+	private String		bimg;
 	private	Integer		mpno;
 }

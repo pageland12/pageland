@@ -25,7 +25,7 @@
             <div>주문 조회</div>
         </a>
         
-        <a href="/member/myBookOrderList">
+        <a href="/member/myOrderBookList">
             <div>대여 도서 조회</div>
         </a>
         
