@@ -11,8 +11,11 @@ public interface ICartDAO {
 	// 장바구니 목록 (전체 장바구니)
 	public List<CartDTO> cartList();
 	
+	// 장바구니 목록 (결제용)
+	public List<CartDTO> cartPayList(List<Integer> cnoList);
+	
 	// 장바구니 목록 (회원용)
-	public List<CartDTO> mcartList();
+	public List<CartDTO> mcartList(int mno);
 	
 	// 장바구니 등록
 	public int cartInsert(CartDTO dto);

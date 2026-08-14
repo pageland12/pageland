@@ -15,7 +15,7 @@
 			<a href="/guest/">BEST | </a>
 			<a href="/guest/allBookList">전체도서 | </a>
 			<a href="/guest/">연령별 | </a>
-			<a href="/guest/">구독 서비스 | </a>
+			<a href="/guest/allPassList">구독 서비스 | </a>
 			<a href="/guest/">분야별 | </a>
 			<a href="/guest/">출판사별 | </a>
 			<select onchange="if(this.value) location.href=this.value;">
@@ -36,8 +36,8 @@
 	<sec:authorize access="hasRole('NORMAL')">
 		<a href="/logout">로그아웃 | </a>
 		<a href="/member/memberMain">마이페이지 | </a>
-		<a href="/member/">주문조회 | </a>
-		<a href="/member/">장바구니</a>
+		<a href="/member/orderList">주문조회 | </a>
+		<a href="/cart/cartList">장바구니</a>
 	</sec:authorize>
 	<!-- 관리자 -->
 	<sec:authorize access="hasRole('ADMIN')">
