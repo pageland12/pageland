@@ -153,6 +153,8 @@ public class OrderController {
 	    	mbdto.setBno(bno);
 	    	mbdto.setMpno(null); // 나중에 구독권까지 적용하면 바꿀것
 	    	
+	    	bdao.bookStockDecrease(bno);
+	    	
 	    	mbdao.memberBooksInsert(mbdto);
 	    } else {
 	    	oddto.setPno(pno);
@@ -285,6 +287,8 @@ public class OrderController {
 		    	mbdto.setBno(cdto.getBno());
 		    	mbdto.setMpno(null); // 나중에 구독권까지 적용하면 바꿀것
 		    	
+		    	bdao.bookStockDecrease(cdto.getBno());
+		    	
 		    	mbdao.memberBooksInsert(mbdto);
 		    } else if ("pass".equals(cdto.getCtype())) {
 		    	oddto.setPno(cdto.getPno());
@@ -314,6 +318,85 @@ public class OrderController {
 		    oddao.orderDetailInsert(oddto);
 		    cdao.cartDelete(cdto.getCno());
 	    }
+	    
+		result.put("success", true);
+	    return result;
+	}
+	
+	// 도서 대여 연장 결제
+	@RequestMapping("/pay/extensionPayForm")
+	public String extensionPayForm(CartDTO cdto, Model model,
+				@AuthenticationPrincipal User user,
+				@RequestParam("mbno") int mbno) {
+		int totalAmount;
+		String prodName;
+		String buyerEmail = user.getUsername();
+		
+		System.out.println(cdto.getCtype());
+		
+		prodName = bdao.bookDetail(cdto.getBno()).getBname();
+		int pprice = bdao.bookDetail(cdto.getBno()).getBprice();
+		totalAmount = cdto.getCstock() * pprice;
+		
+		model.addAttribute("totalAmount", totalAmount);
+		model.addAttribute("prodName", prodName);
+		model.addAttribute("cdto", cdto);
+		model.addAttribute("buyerEmail", buyerEmail);
+		model.addAttribute("buyerTel", mdao.findByEmail(buyerEmail).getMtel());
+		model.addAttribute("buyerName", mdao.findByEmail(buyerEmail).getMname());
+		model.addAttribute("mbno", mbno);
+		
+		return "pay/extensionPayForm";
+	}
+	
+	@RequestMapping("/pay/extensionPaySuccess")
+	@ResponseBody
+	public Map<String, Object> extensionPaySuccess(@RequestBody Map<String, Object> reqData,
+            									   @AuthenticationPrincipal User user) {
+		// JS에서 보낸 JSON 데이터를 reqData.get()으로 꺼내서 사용
+	    String paymentId = (String) reqData.get("paymentId");
+	    String ctype = (String) reqData.get("ctype");
+	    int bno = ((Number) reqData.get("bno")).intValue();
+	    int cstock = ((Number) reqData.get("cstock")).intValue();
+	    int totalAmount = ((Number) reqData.get("totalAmount")).intValue();
+	    int fee = 0;
+	    Integer sale = null;	// 구독권까지 적용하는 단계에서는 반드시 바꿀 것
+	    int prodAmount = totalAmount - fee;
+	    String payment = (String) reqData.get("payment");
+	    String buyerEmail = (String) reqData.get("buyerEmail");
+	    int mbno = ((Number) reqData.get("mbno")).intValue();
+	    
+	    Map<String, Object> result = new HashMap<>();
+	    
+	    // 주문 목록 등록
+	    OrderListDTO oldto = new OrderListDTO();
+	    oldto.setOlno(paymentId);
+	    oldto.setOlprice(prodAmount);
+	    oldto.setOlfee(fee);
+	    oldto.setOlsale(0);
+	    // oldto.setOltotal(totalAmount - sale);
+	    oldto.setOltotal(totalAmount);
+	    oldto.setOlpayment(payment);
+	    oldto.setMno(mdao.findByEmail(buyerEmail).getMno());
+	    
+	    oldao.orderListInsert(oldto);
+	    
+	    // 주문 상세 등록
+	    OrderDetailDTO oddto = new OrderDetailDTO();
+	    oddto.setOdstock(cstock);
+	    oddto.setOdprice(prodAmount);
+	    oddto.setOdsale(0);
+	    oddto.setOlno(paymentId);
+	    
+	    oddto.setBno(bno);
+    	
+    	// 회원 대여 도서 업데이트(연장)
+	    int extendDays = cstock * 15;
+    	mbdao.memberBookExtend(mbno, extendDays);
+	    
+	    oddto.setMpno(null);
+	    
+	    oddao.orderDetailInsert(oddto);
 	    
 		result.put("success", true);
 	    return result;

@@ -35,16 +35,17 @@
 	</delete>
 	
 	<select id="bestList" resultType="com.springboot.pageland.dto.BookDTO">
-	SELECT *
-	  FROM (
+		SELECT *
+		  FROM (
 	  		SELECT * 
 	  		  FROM BOOK 
 	  		 ORDER BY BLIKE DESC, BNO DESC
 	  	   )
-	<![CDATA[
-	 WHERE ROWNUM <= 16
-	]]>
-</select>
+		<![CDATA[
+		 WHERE ROWNUM <= 16
+		]]>
+	</select>
+	
 	<select id="bookListByCategory" resultType="com.springboot.pageland.dto.BookDTO">
 	    SELECT * FROM book 
 	    WHERE bage LIKE '%' || #{category} || '%'
@@ -64,5 +65,17 @@
 	    WHERE bpublisher LIKE '%' || #{publisher} || '%'
 	    ORDER BY bno DESC
 	</select>
+	
+	<update id="bookStockDecrease">
+		UPDATE BOOK
+		   SET BSTOCK=BSTOCK-1
+		 WHERE BNO=#{bno}
+	</update>
+	
+	<update id="bookStockIncrease">
+		UPDATE BOOK
+		   SET BSTOCK=BSTOCK+1
+		 WHERE BNO=#{bno}
+	</update>
 	
 </mapper>

@@ -21,4 +21,5 @@ public class MemberBooksDTO {
 	private String		bname;
 	private String		bimg;
 	private	Integer		mpno;
+	private	Integer		daysLeft;
 }
