@@ -18,13 +18,13 @@
 	<c:forEach var="pass" items="${passList}">
 		<div>
 			<c:if test="${not empty pass.pimg}">
-				<img src="${pass.pimg}" alt="이용권 이미지">
+				<img src="${pass.pimg}" alt="이용권 이미지" width="100" height="100">
 			</c:if>
 			
 			<div>
 				<h3>${pass.pname}</h3>
 				
-				<c:if test="${pass.ptype eq '횟수권'}">
+				<c:if test="${pass.ptype eq 'N회권'}">
 					<p>구분: 횟수 차감형</p>
 					<p>남은 횟수: ${pass.mpcount}회</p>
 				</c:if>

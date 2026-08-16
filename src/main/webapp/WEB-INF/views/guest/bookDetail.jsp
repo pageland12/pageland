@@ -48,6 +48,7 @@
 		<div>
 		    <input type="submit" value="장바구니 담기">
 		    <input type="submit" formaction="/pay/payForm" value="바로 구매">
+		    <button type="button" onclick="history.back();">뒤로가기</button> <%-- 나중에 뺼 것 --%>
 		</div>
 	</form>
 	

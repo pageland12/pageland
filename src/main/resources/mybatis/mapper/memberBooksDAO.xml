@@ -5,7 +5,7 @@
 <mapper namespace="com.springboot.pageland.dao.IMemberBooksDAO">
 	<select id="myBookList" parameterType="int" resultType="com.springboot.pageland.dto.MemberBooksDTO">
 	    SELECT 
-	     B.BNO,B.BNAME,B.BIMG,MB.OLNO,MB.MBSTART,MB.MBEND
+	     B.BNO,B.BNAME,B.BIMG,MB.MBNO,MB.OLNO,MB.MBSTART,MB.MBEND,TRUNC(MB.MBEND) - TRUNC(SYSDATE) AS DAYSLEFT
 	      FROM MEMBER_BOOKS MB
 	     LEFT JOIN BOOK B ON MB.BNO = B.BNO
 	     WHERE MB.MNO = #{mno}
@@ -13,9 +13,23 @@
 	     ORDER BY MB.OLNO DESC
 	</select>
 	
+	
 	<insert id="memberBooksInsert">
 		INSERT INTO MEMBER_BOOKS(MBNO,MBSTART,MBEND,MBRETURN,MBEXTENSION,MBLATEDATE,MBLATEFEE,MBSTATUS,MNO,OLNO,BNO,MPNO)
 		 VALUES(MB_SEQ.NEXTVAL,#{mbstart},#{mbend},null,0,0,0,'대여중',#{mno},#{olno},#{bno},#{mpno, jdbcType=INTEGER})
 	</insert>
 	
+	<update id="memberBooksReturn">
+		UPDATE MEMBER_BOOKS
+		   SET MBSTATUS='반납완료'
+		 WHERE MNO=#{mno}
+		   AND BNO=#{bno}
+	</update>
+	
+	<update id="memberBookExtend">
+		UPDATE MEMBER_BOOKS
+		   SET MBEND = MBEND + #{extendDays},
+		       MBEXTENSION = MBEXTENSION + 1
+		 WHERE MBNO=#{mbno}
+	</update>
 </mapper>
