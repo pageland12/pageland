@@ -36,9 +36,9 @@ public class PassController {
 	@RequestMapping("/admin/passWrite")
 	public String passWrite(PassDTO pdto) {
 		if (pdto.getPtype() == "정기권") {
-			pdto.setPcount("-");
+			pdto.setPcount(null);
 		} else if (pdto.getPtype() == "N회권") {
-			pdto.setPperiod("-");
+			pdto.setPperiod(null);
 		}
 		
 		pdao.passInsert(pdto);

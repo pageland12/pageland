@@ -32,7 +32,7 @@
 		<a href="/guest/writeForm">회원가입</a>
 	</sec:authorize>
 	<!-- 회원 -->
-	<sec:authorize access="hasRole('NORMAL')">
+	<sec:authorize access="hasAnyRole('NORMAL', 'SUBSCRIBER')">
 		<a href="/logout">로그아웃 | </a>
 		<a href="/member/memberMain">마이페이지 | </a>
 		<a href="/member/orderList">주문조회 | </a>

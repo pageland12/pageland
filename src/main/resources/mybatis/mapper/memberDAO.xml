@@ -48,4 +48,10 @@
 		DELETE FROM MEMBER
 		 WHERE MNO=#{mno}
 	</delete>
+	
+	<update id="memberGradeUpdate">
+		UPDATE MEMBER
+		   SET MGRADE=#{mgrade}
+		 WHERE MNO=#{mno}
+	</update>
 </mapper>
