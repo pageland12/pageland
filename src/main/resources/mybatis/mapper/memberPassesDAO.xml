@@ -27,5 +27,42 @@
          AND mp.mpstatus = '사용중'
         ORDER BY mp.mpno DESC
     </select>
+    
+    <select id="activeSubcriberPassesCount" resultType="int">
+    	SELECT COUNT(*)
+    	  FROM MEMBER_PASSES
+    	 WHERE MNO=#{mno}
+    	   AND MPSTATUS='사용중'
+    	   AND MPEND IS NOT NULL
+    	   AND MPEND &gt;= TRUNC(SYSDATE)
+    </select>
+    
+    <select id="findActiveSubscriberPass" resultType="com.springboot.pageland.dto.MemberPassesDTO">
+    	SELECT *
+    	  FROM (
+    	  	SELECT *
+    	  	  FROM MEMBER_PASSES
+    	  	 WHERE MNO=#{mno}
+    	  	   AND MPSTATUS='사용중'
+    	   	   AND MPEND IS NOT NULL
+    	   	   AND MPEND &gt;= TRUNC(SYSDATE)
+    	   	 ORDER BY MPEND DESC
+    	  )
+    	 WHERE ROWNUM=1
+    </select>
 	
+	
+	<update id="expiredSubscriberPassesUpdate">
+		UPDATE MEMBER_PASSES
+		   SET MPSTATUS='만료'
+		 WHERE MNO=#{mno}
+		   AND MPSTATUS='사용중'
+		   AND MPEND &lt;= TRUNC(SYSDATE)
+	</update>
+	
+	<update id="subscriberPassExtend">
+		UPDATE MEMBER_PASSES
+		   SET MPEND=#{mpend}
+		 WHERE MPNO=#{mpno}
+	</update>
 </mapper>
