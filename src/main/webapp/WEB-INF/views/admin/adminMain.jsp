@@ -25,7 +25,7 @@
             <div>신규 구독권 등록</div>
         </a>
         
-        <a href="/book/passList">
+        <a href="/admin/passList">
             <div>등록 구독권 관리</div>
         </a>
         
