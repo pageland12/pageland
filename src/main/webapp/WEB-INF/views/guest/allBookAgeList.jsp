@@ -67,6 +67,32 @@
 		    </tr>
 		</c:forEach>
 	</table>
-
+	
+	<!-- 페이지 번호 이동 영역 -->
+	<div style="text-align: center; margin-top: 20px;">
+	    
+	    <%-- 이전 버튼 --%>
+	    <c:if test="${startPage > 1}">
+	        <a href="/guest/allBookAgeList?category=${selectedCategory}&pageNum=${startPage - 1}" style="margin-right: 5px; text-decoration: none; color: black;">[이전]</a>
+	    </c:if>
+	
+	    <%-- 페이지 번호 --%>
+	    <c:forEach begin="${startPage}" end="${endPage}" var="num">
+	        <c:choose>
+	            <c:when test="${pageNum == num}">
+	                <span style="font-weight: bold; color: red; margin: 0 5px; font-size: 16px;">${num}</span>
+	            </c:when>
+	            <c:otherwise>
+	                <a href="/guest/allBookAgeList?category=${selectedCategory}&pageNum=${num}" style="margin: 0 5px; text-decoration: none; color: black;">${num}</a>
+	            </c:otherwise>
+	        </c:choose>
+	    </c:forEach>
+	
+	    <%-- 다음 버튼 --%>
+	    <c:if test="${endPage < totalPages}">
+	        <a href="/guest/allBookAgeList?category=${selectedCategory}&pageNum=${endPage + 1}" style="margin-left: 5px; text-decoration: none; color: black;">[다음]</a>
+	    </c:if>
+	
+	</div>
 </body>
 </html>

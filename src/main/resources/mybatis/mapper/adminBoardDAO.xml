@@ -47,4 +47,67 @@
 		 set abhit = abhit + 1
 		 where abno = #{abno}
 	</update>
+	
+	<!-- 페이징된 이벤트 목록 조회 -->
+    <select id="eventListPaging" resultType="com.springboot.pageland.dto.AdminBoardDTO">
+    SELECT *
+      FROM (
+        SELECT INNER_LIST.*, ROWNUM AS RNUM
+          FROM (
+            SELECT A.ABNO, 
+                   A.ABTITLE, 
+                   A.ABCONTENT, 
+                   A.ABFILES, 
+                   A.ABDATE, 
+                   A.ABHIT, 
+                   A.ABCATEGORY, 
+                   A.MNO,
+                   (SELECT MNAME FROM MEMBER WHERE MNO = A.MNO) AS MNAME
+              FROM ADMIN_BOARD A
+              LEFT JOIN MEMBER M ON A.MNO = M.MNO
+                 WHERE TRIM(A.ABCATEGORY) = 'EVENT'
+             ORDER BY A.ABNO DESC
+          ) INNER_LIST
+      )
+     WHERE RNUM BETWEEN #{startRow} AND #{endRow}
+</select>
+
+    <!-- 전체 이벤트 개수 조회 -->
+    <select id="getTotalCount" resultType="int">
+        SELECT COUNT(*) 
+          FROM ADMIN_BOARD
+         WHERE ABCATEGORY = 'EVENT'
+    </select>
+    
+    <!-- 공지사항 페이징 목록 조회 -->
+    <select id="noticeListPaging" resultType="com.springboot.pageland.dto.AdminBoardDTO">
+        SELECT *
+          FROM (
+            SELECT INNER_LIST.*, ROWNUM AS RNUM
+              FROM (
+                SELECT A.ABNO, 
+                       A.ABTITLE, 
+                       A.ABCONTENT, 
+                       A.ABFILES, 
+                       A.ABDATE, 
+                       A.ABHIT, 
+                       A.ABCATEGORY, 
+                       A.MNO, 
+                       M.MNAME
+                  FROM ADMIN_BOARD A
+                  LEFT JOIN MEMBER M ON A.MNO = M.MNO
+                 WHERE TRIM(A.ABCATEGORY) = 'NOTICE'
+                 ORDER BY A.ABNO DESC
+              ) INNER_LIST
+          )
+         WHERE RNUM BETWEEN #{startRow} AND #{endRow}
+    </select>
+
+    <!-- 전체 공지사항 개수 조회 -->
+    <select id="getNoticeTotalCount" resultType="int">
+        SELECT COUNT(*) 
+          FROM ADMIN_BOARD
+         WHERE TRIM(ABCATEGORY) = 'NOTICE'
+    </select>
+    
 </mapper>

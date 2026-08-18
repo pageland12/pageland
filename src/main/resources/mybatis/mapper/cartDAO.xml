@@ -3,6 +3,33 @@
 	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.springboot.pageland.dao.ICartDAO">
+
+	<!-- 1. 페이징 처리된 회원 장바구니 목록 조회 -->
+	<select id="mcartListPaging" resultType="com.springboot.pageland.dto.CartDTO">
+		SELECT *
+		  FROM (
+			SELECT INNER_LIST.*, ROWNUM AS RNUM
+			  FROM (
+				SELECT 
+				    c.cno, c.ctype, c.cstock, c.mno, c.bno, b.bname, b.bprice, b.bimg,
+				    c.pno,  p.pname, p.pprice, p.pimg, p.ptype
+				  FROM cart c
+				 LEFT JOIN book b ON c.bno = b.bno
+				 LEFT JOIN pass p ON c.pno = p.pno
+				 WHERE c.mno = #{mno}
+				 ORDER BY c.cno DESC
+			  ) INNER_LIST
+		  )
+		WHERE RNUM BETWEEN #{startRow} AND #{endRow}
+	</select>
+
+	<!-- 2. 회원별 장바구니 총 개수 조회 -->
+	<select id="getTotalCountByMno" resultType="int">
+		SELECT COUNT(*)
+		  FROM cart
+		 WHERE mno = #{mno}
+	</select>
+
 	<select id="mcartList" parameterType="int" resultType="com.springboot.pageland.dto.CartDTO">
 	    SELECT 
 	        c.cno, c.ctype, c.cstock, c.mno, c.bno, b.bname, b.bprice, b.bimg,
@@ -27,7 +54,6 @@
 		 </foreach>
 	     ORDER BY c.cno DESC
 	</select>
-	
 	
 	<insert id="cartInsert">
 		INSERT INTO CART(CNO,CTYPE,CSTOCK,MNO,BNO,PNO)

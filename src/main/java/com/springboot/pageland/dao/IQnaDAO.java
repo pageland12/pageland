@@ -3,6 +3,7 @@ package com.springboot.pageland.dao;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import com.springboot.pageland.dto.QnaDTO;
 
@@ -14,4 +15,9 @@ public interface IQnaDAO {
 	public int qnaUpdate(QnaDTO dto); 	// qna 수정
 	public int qnaDelete(int qno); 		// qna 삭제
 	public int qnaHit(int qno);			// qna 조회수 증가
+	
+	// --- 페이징 추가 ---
+    public List<QnaDTO> qnaListPaging(@Param("startRow") int startRow, @Param("endRow") int endRow);
+    public int getTotalCount();
+	
 }

@@ -1,5 +1,7 @@
 package com.springboot.pageland.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.User;
@@ -48,17 +50,39 @@ public class CartController {
 		}
 	}
 	
+	// --- 페이징이 추가된 장바구니 목록 ---
 	@RequestMapping("/cart/cartList")
-	public String cartList(Model model,
-						@AuthenticationPrincipal User user) {
+	public String cartList(@RequestParam(value = "pageNum", defaultValue = "1") int pageNum,
+						   Model model,
+						   @AuthenticationPrincipal User user) {
+		if (user == null) {
+			return "redirect:/loginForm";
+		}
+		
 		String memberEmail = user.getUsername();
 		int mno = mdao.findByEmail(memberEmail).getMno();
 		
-		CartDTO cdto = new CartDTO();
+		int amount = 16; // 한 페이지당 16개 출력
+		int startRow = (pageNum - 1) * amount + 1;
+		int endRow = pageNum * amount;
 		
-		cdto.setMno(mno);
+		List<CartDTO> carts = cdao.mcartListPaging(mno, startRow, endRow);
+		int total = cdao.getTotalCountByMno(mno);
+		int totalPages = (int) Math.ceil((double) total / amount);
 		
-		model.addAttribute("carts", cdao.mcartList(mno));
+		// 5개 단위 페이지 번호 구하기
+		int navSize = 5;
+		int startPage = ((pageNum - 1) / navSize) * navSize + 1;
+		int endPage = startPage + navSize - 1;
+		if (endPage > totalPages) {
+			endPage = totalPages;
+		}
+		
+		model.addAttribute("carts", carts);
+		model.addAttribute("pageNum", pageNum);
+		model.addAttribute("startPage", startPage);
+		model.addAttribute("endPage", endPage);
+		model.addAttribute("totalPages", totalPages);
 		
 		return "cart/cartList";
 	}
