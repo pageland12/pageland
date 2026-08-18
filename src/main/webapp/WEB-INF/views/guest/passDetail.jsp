@@ -33,7 +33,7 @@
 				<tr>
 					<td>기간</td>
 					<td>
-		                <select name="cstock">
+		                <select name="cstock" required>
 		                    <option value="">선택</option>
 		                    <option value="1">6개월</option>
 		                    <option value="2">1년</option>
@@ -60,9 +60,20 @@
 		<div>
 		    <input type="submit" value="장바구니 담기">
 		    <input type="submit" formaction="/pay/payForm" value="바로 구매">
+		    <button type="button" onclick="location.href='/guest/allPassList'">구독권 목록</button>
 		</div>
 	</form>
 	
-	
+	<c:if test="${not empty msg}">
+	    <script>
+        alert("${msg}");
+        // 장바구니 담기 성공 시 장바구니 이동 여부 확인
+        <c:if test="${msg eq '장바구니에 담겼습니다.'}">
+            if (confirm("장바구니로 이동하시겠습니까?")) {
+                location.href = "/cart/cartList";
+            }
+        </c:if>
+    </script>
+	</c:if>
 </body>
 </html>

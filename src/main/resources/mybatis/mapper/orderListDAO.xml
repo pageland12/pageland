@@ -7,7 +7,7 @@
 		SELECT *
 		  FROM ORDER_LIST
 		 WHERE MNO=#{mno}
-		 ORDER BY OLNO DESC
+		 ORDER BY OLDATE DESC
 	</select>
 	
 	

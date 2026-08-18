@@ -1,7 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>주문 / 결제</title>
@@ -9,10 +8,10 @@
     <script src="https://cdn.portone.io/v2/browser-sdk.js"></script>
 </head>
 <body>
-    <h2>대여 연장 주문 / 결제 페이지</h2>
+    <h2>연체료 결제 페이지</h2>
     
     <div>
-        <p>연장 상품: ${prodName}</p>
+        <p>연체 상품: ${prodName}</p>
         <p>결제 금액: ${totalAmount}원</p>
         <p>결제 이메일: ${buyerEmail}</p>
     </div>
@@ -61,7 +60,7 @@
 
                 // 결제 성공
                 console.log("결제 성공! paymentId:", response.paymentId);
-                fetch('/pay/extensionPaySuccess', {
+                fetch('/pay/lateFeePaySuccess', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
@@ -69,9 +68,7 @@
                     body: JSON.stringify({
                         paymentId: response.paymentId,      // 포트원 결제 고유 번호
                         bno: Number('${cdto.bno}') || 0,    // 도서 번호
-                        pno: Number('${cdto.pno}') || 0,    // 이용권 번호
-                        ctype: '${cdto.ctype}',             // 상품 타입 (book/pass)
-                        cstock: Number('${cdto.cstock}'),   // 수량/기간
+                        ctype: '${cdto.ctype}',             // 상품 타입 (book)
                         totalAmount: Number('${totalAmount}'),           // 실제로 결제한 금액
                         payment: payment,			// 결제 수단
                         mbno: Number('${mbno}'),
@@ -82,7 +79,7 @@
                 .then(data => {
                 	if (data.success) {
                         // 결제 및 DB 저장 성공 시 완료 페이지로 이동 (paymentId 전달)
-                        location.href = "/pay/payResult?paymentId=" + response.paymentId;
+                        location.href = "/pay/lateFeePayResult?paymentId=" + response.paymentId;
                     } else {
                         alert("주문 처리 중 오류 발생: " + data.message);
                     }

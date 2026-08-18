@@ -7,6 +7,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import com.springboot.pageland.dao.IMemberBooksDAO;
 import com.springboot.pageland.dao.IMemberDAO;
 import com.springboot.pageland.dao.IMemberPassesDAO;
 import com.springboot.pageland.dto.MemberDTO;
@@ -19,6 +20,9 @@ public class CustomUserDetailsService implements UserDetailsService {
     
     @Autowired
     private IMemberPassesDAO mpdao;
+    
+    @Autowired
+    private IMemberBooksDAO mbdao;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -29,12 +33,14 @@ public class CustomUserDetailsService implements UserDetailsService {
         if (dto == null) {
             throw new UsernameNotFoundException("존재하지 않는 사용자입니다: " + username);
         }
+        int mno = dto.getMno();
         
-        // 3. 만료일이 지난 정기권 만료 처리
+        // 3. 만료일이 지난 정기권 만료 처리 및 유효한 정기권 보유 개수 확인
         mpdao.expiredSubscriberPassesUpdate(dto.getMno());
+        int activePassCount = mpdao.activeSubcriberPassesCount(mno);
         
-        // 4. 현재 유효한 정기권 보유 개수 확인
-        int activePassCount = mpdao.activeSubcriberPassesCount(dto.getMno());
+        // 4. 대여 도서 연체 상태, 일수, 연체료 최신화
+        mbdao.overdueStatusUpdate(mno);
         
         // 5-1. DB 권한(mgrade)이 "ROLE_USER" 형태일 때 Safe하게 적용해 가져오기
         String currentGrade = dto.getMgrade();

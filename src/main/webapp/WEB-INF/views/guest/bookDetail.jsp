@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -35,7 +36,7 @@
 			<tr>
 				<td>기간</td>
 				<td>
-	                <select name="cstock">
+	                <select name="cstock" required>
 	                    <option value="">선택</option>
 	                    <option value="1">15일</option>
 	                    <option value="2">30일</option>
@@ -48,10 +49,19 @@
 		<div>
 		    <input type="submit" value="장바구니 담기">
 		    <input type="submit" formaction="/pay/payForm" value="바로 구매">
-		    <button type="button" onclick="history.back();">뒤로가기</button> <%-- 나중에 뺼 것 --%>
+		    <button type="button" onclick="location.href='/guest/allBookList'">도서 목록</button>
 		</div>
 	</form>
 	
-	
+	<c:if test="${not empty msg}">
+	    <script>
+        alert("${msg}");
+        <c:if test="${msg eq '장바구니에 담겼습니다.'}">
+            if (confirm("장바구니로 이동하시겠습니까?")) {
+                location.href = "/cart/cartList";
+            }
+        </c:if>
+    </script>
+	</c:if>
 </body>
 </html>
