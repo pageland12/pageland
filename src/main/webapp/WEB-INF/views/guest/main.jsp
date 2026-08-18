@@ -23,6 +23,7 @@
 			    <option value="/guest/noticeList">공지사항</option>
 			    <option value="/guest/eventList">이벤트</option>
 			    <option value="/guest/qnaList">Q&A</option>
+			    <option value="/guest/ratingList">후기</option>
 			</select>
 
 		</p>
@@ -52,6 +53,16 @@
 		    	<td>${best.bprice}원</td>
 		    </tr>
 		</c:forEach>
-	</table>	
+	</table>
+	
+	<c:if test="${not empty sessionScope.overdueCount and sessionScope.overdueCount > 0}">
+	    <script>
+	        const overdueCount = "${sessionScope.overdueCount}";
+	        const overdueFee = "${sessionScope.overdueFee}";
+	        alert("⚠️ 현재 연체 중인 도서가 " + overdueCount + "권 있습니다.\n(총 연체료: " + overdueFee + "원)\n마이페이지에서 확인 및 반납을 진행해 주세요.");
+	    </script>
+	    <c:remove var="overdueCount" scope="session" />
+	    <c:remove var="overdueFee" scope="session" />
+	</c:if>
 </body>
 </html>

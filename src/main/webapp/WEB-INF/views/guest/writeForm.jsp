@@ -6,25 +6,17 @@
 <meta charset="UTF-8">
 <title>회원가입</title>
 </head>
-<script language="javascript">
-	function goPopup(){	
-		var pop = window.open("/guest/jusoPopup","pop","width=570,height=420, scrollbars=yes, resizable=yes"); 		    
-	}
-
-	function jusoCallBack(maddr1,maddr2,mzipno){
-		document.member.maddr1.value = maddr1;
-		document.member.maddr2.value = maddr2;
-		document.member.mzipno.value = mzipno;		
-		
-	}
-</script>
+<script src="/js/memberWrite.js" language="javascript"></script>
 <body>
 	<form name="member" method="post" action="/guest/write">
 		<h2>회원가입</h2>
 		<table>
 			<tr>
 				<td>이메일</td>
-				<td><input type="text" name="memail"></td>
+				<td>
+					<input type="text" name="memail" readonly placeholder="중복 검사를 진행해주세요.">
+					<input type="button" value="중복 검사" onclick="goEmailCheck()">
+				</td>
 			</tr>
 			<tr>
 				<td>비밀번호</td>
@@ -78,10 +70,10 @@
 			</tr>
 			<tr>
 				<td>계좌번호</td>
-				<td><input type="text" name="maccount3"></td>
+				<td><input type="text" name="maccount3" placeholder="숫자 및 하이픈(-) 포함 9 ~ 18자리"></td>
 			</tr>
 		</table>
-		<input type="submit" value="회원가입">
+		<input type="submit" value="회원가입" onclick="return check()">
 		<input type="button" value="취소" onclick="history.back()">
 	</form>
 </body>

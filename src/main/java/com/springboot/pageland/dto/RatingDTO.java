@@ -20,8 +20,8 @@ public class RatingDTO {
 	private int bno;
 	private int odno;
 	private String mname;
+	private String memail;
 	private String bimg;
 	private String bname;
-	private int bprice;
 	private int cnt;
 }

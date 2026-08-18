@@ -41,6 +41,23 @@ public class MemberController {
 		return "guest/writeForm";
 	}
 	
+	@RequestMapping("/guest/emailPopup")
+	public String emailPopup() {
+		return "guest/emailPopup";
+	}
+	
+	@RequestMapping("/guest/emailCheck")
+	public String idCheck(Model model, @RequestParam("memail") String memail) {
+		// isDuplicated는 중복이라면 true, 중복이 아니라면 false
+		boolean isDuplicated = (mdao.findByEmail(memail) != null);
+		
+		model.addAttribute("memail", memail);
+		model.addAttribute("isDuplicated", isDuplicated);
+		model.addAttribute("checked", true);
+		
+		return "guest/emailPopup";
+	}
+	
 	@RequestMapping("/guest/write")
 	public String write(MemberDTO mdto,
 						@RequestParam("maddr1") String maddr1,

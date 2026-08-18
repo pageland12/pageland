@@ -5,12 +5,45 @@
 <mapper namespace="com.springboot.pageland.dao.IMemberBooksDAO">
 	<select id="myBookList" parameterType="int" resultType="com.springboot.pageland.dto.MemberBooksDTO">
 	    SELECT 
-	     B.BNO,B.BNAME,B.BIMG,MB.MBNO,MB.OLNO,MB.MBSTART,MB.MBEND,TRUNC(MB.MBEND) - TRUNC(SYSDATE) AS DAYSLEFT
+	     B.BNO,B.BNAME,B.BIMG,MB.MBNO,MB.OLNO,MB.MBSTART,MB.MBEND,MB.MBSTATUS,
+	     MB.MBLATEDATE,MB.MBLATEFEE,TRUNC(MB.MBEND) - TRUNC(SYSDATE) AS DAYSLEFT
 	      FROM MEMBER_BOOKS MB
 	     LEFT JOIN BOOK B ON MB.BNO = B.BNO
 	     WHERE MB.MNO = #{mno}
-	       AND MB.MBSTATUS = '대여중'
+	       AND MB.MBSTATUS IN ('대여중','연체')
 	     ORDER BY MB.OLNO DESC
+	</select>
+	
+	<select id="overdueBooksCount" resultType="int">
+		SELECT COUNT(*)
+		  FROM MEMBER_BOOKS
+		 WHERE MNO=#{mno}
+		   AND (
+		   	   MBSTATUS='연체'
+		   	   OR (MBSTATUS='대여중' AND MBEND &lt; TRUNC(SYSDATE))
+		   )
+	</select>
+	
+	<select id="memberLateFeeTotal" resultType="int">
+		SELECT NVL(SUM((TRUNC(SYSDATE)-TRUNC(MBEND))*2500),0)
+	      FROM MEMBER_BOOKS
+	     WHERE MNO=#{mno}
+	       AND (
+	          MBSTATUS='연체'
+	          OR (MBSTATUS ='대여중' AND MBEND &lt; TRUNC(SYSDATE))
+	       )
+	</select>
+	
+	<select id="memberBooksDetail" resultType="com.springboot.pageland.dto.MemberBooksDTO">
+	    SELECT *
+	      FROM (
+	      	SELECT *
+	          FROM MEMBER_BOOKS
+	         WHERE MNO=#{mno}
+	           AND BNO=#{bno}
+	           AND MBSTATUS IN ('대여중','배송중','연체')
+	      )
+	     WHERE ROWNUM=1
 	</select>
 	
 	
@@ -21,9 +54,11 @@
 	
 	<update id="memberBooksReturn">
 		UPDATE MEMBER_BOOKS
-		   SET MBSTATUS='반납완료'
+		   SET MBSTATUS='반납완료',MBRETURN=SYSDATE
 		 WHERE MNO=#{mno}
 		   AND BNO=#{bno}
+		   AND MBNO=#{mbno}
+		   AND MBSTATUS IN ('연체','대여중')
 	</update>
 	
 	<update id="memberBookExtend">
@@ -31,5 +66,15 @@
 		   SET MBEND = MBEND + #{extendDays},
 		       MBEXTENSION = MBEXTENSION + 1
 		 WHERE MBNO=#{mbno}
+	</update>
+	
+	<update id="overdueStatusUpdate">
+		UPDATE MEMBER_BOOKS
+		   SET MBSTATUS='연체',
+		       MBLATEDATE=TRUNC(SYSDATE)-TRUNC(MBEND),
+		       MBLATEFEE=(TRUNC(SYSDATE)-TRUNC(MBEND))*2500
+		 WHERE MNO=#{mno}
+		   AND MBSTATUS IN ('대여중','연체')
+		   AND MBEND &lt; TRUNC(SYSDATE)
 	</update>
 </mapper>

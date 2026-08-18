@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.springboot.pageland.auth.WebSecurityConfig;
 import com.springboot.pageland.dao.IBookDAO;
@@ -93,11 +94,30 @@ public class OrderController {
 	// 바로 결제
 	@RequestMapping("/pay/payForm")
 	public String payForm(CartDTO cdto, Model model,
-				@AuthenticationPrincipal User user) {
+						  @AuthenticationPrincipal User user,
+						  RedirectAttributes rttr) {
 		int totalAmount;
 		String prodName;
 		int fee = 0;
 		String buyerEmail = user.getUsername();
+		int mno = mdao.findByEmail(buyerEmail).getMno();
+		
+		if ("book".equalsIgnoreCase(cdto.getCtype()) || (cdto.getBno() != null && cdto.getBno() > 0)) {
+			// 현재 연체 중인 도서가 있으면 바로 결제 X
+			if (mbdao.overdueBooksCount(mno) > 0) {
+				rttr.addFlashAttribute("msg", "현재 연체 중인 도서가 있습니다. 연체료 정산 및 반납 후 이용해 주세요.");
+				return "redirect:/guest/bookDetail?bno=" + cdto.getBno();
+			}
+			
+			// 이미 대여 중인 도서는 바로 결제 X
+			MemberBooksDTO rentCheck = new MemberBooksDTO();
+			rentCheck.setMno(mno);
+			rentCheck.setBno(cdto.getBno());
+			if (mbdao.memberBooksDetail(rentCheck) != null) {
+				rttr.addFlashAttribute("msg", "이미 대여 중이거나 대여 진행 중인 도서입니다.");
+				return "redirect:/guest/bookDetail?bno=" + cdto.getBno();
+			}
+		}
 		
 		// 현재 회원이 정기권 구독자인지 확인
 	    boolean isSubscriber = user.getAuthorities().stream()
@@ -106,7 +126,8 @@ public class OrderController {
 	    int originalPrice = 0;
 	    int sale = 0;
 		
-		if(cdto.getCtype().equals("book")) {
+		if(cdto.getCtype().equalsIgnoreCase("book")) {
+			
 			prodName = bdao.bookDetail(cdto.getBno()).getBname();
 			int pprice = bdao.bookDetail(cdto.getBno()).getBprice();
 			originalPrice = cdto.getCstock() * pprice;
@@ -203,6 +224,14 @@ public class OrderController {
 	    	bdao.bookStockDecrease(bno);
 	    	
 	    	mbdao.memberBooksInsert(mbdto);
+	    	
+	    	// 바로 결제 이후 장바구니에 담겨져 있는 목록 삭제
+	    	if ("book".equalsIgnoreCase(ctype) && bno > 0) {
+	    		CartDTO cartCheck = new CartDTO();
+	    		cartCheck.setMno(oldto.getMno());
+	    		cartCheck.setBno(bno);
+	    		cdao.cartBookDelete(cartCheck);
+	    	}
 	    } else {
 	    	oddto.setPno(pno);
 	    	PassDTO pass = pdao.passDetail(pno);
@@ -210,14 +239,21 @@ public class OrderController {
 	    	// 회원 구독권 목록 등록
 	    	MemberPassesDTO mpdto = new MemberPassesDTO();
 	    	if ("N회권".equals(pdao.passDetail(pno).getPtype())) {
-	    		mpdto.setMpcount(cstock * pass.getPcount());
-	    		mpdto.setMpend(null);
-	    		
-	    		mpdto.setMno(oldto.getMno());
-		    	mpdto.setOlno(oldto.getOlno());
-		    	mpdto.setPno(pno);
-		    	
-		    	mpdao.memberPassesInsert(mpdto);
+	    		MemberPassesDTO activePass = mpdao.findActiveNPass(oldto.getMno());
+	    		int addCounts = cstock * pass.getPcount();
+	    		if (activePass != null) {
+	    			activePass.setMpcount(activePass.getMpcount() + addCounts);
+	    			mpdao.nPassIncrease(activePass);
+	    		} else {
+	    			mpdto.setMpcount(addCounts);
+		    		mpdto.setMpend(null);
+		    		
+		    		mpdto.setMno(oldto.getMno());
+			    	mpdto.setOlno(oldto.getOlno());
+			    	mpdto.setPno(pno);
+			    	
+			    	mpdao.memberPassesInsert(mpdto);
+	    		}
 	    	} else if ("정기권".equals(pdao.passDetail(pno).getPtype())) {
 	    		MemberPassesDTO activePass = mpdao.findActiveSubscriberPass(oldto.getMno());
 	    		long addDays = pass.getPperiod() * cstock;
@@ -321,6 +357,11 @@ public class OrderController {
     	bdao.bookStockDecrease(bno);
     	
     	mbdao.memberBooksInsert(mbdto);
+    	
+    	CartDTO cartCheck = new CartDTO();
+		cartCheck.setMno(oldto.getMno());
+		cartCheck.setBno(bno);
+		cdao.cartBookDelete(cartCheck);
 	    
 		result.put("success", true);
 		result.put("paymentId", paymentId);
@@ -492,16 +533,25 @@ public class OrderController {
 		    	// 회원 구독권 목록 등록
 			    MemberPassesDTO mpdto = new MemberPassesDTO();
 		    	if ("N회권".equals(pdao.passDetail(pno).getPtype())) {
-		    		mpdto.setMpcount(cdto.getCstock() * pass.getPcount());
-		    		mpdto.setMpend(null);
-		    		
-		    		mpdto.setMno(oldto.getMno());
-			    	mpdto.setOlno(oldto.getOlno());
-			    	mpdto.setPno(pno);
-			    	
-			    	mpdao.memberPassesInsert(mpdto);
+		    		int addCounts = pass.getPcount() * cdto.getCstock();
+		    		MemberPassesDTO activeNPass = mpdao.findActiveNPass(mno);
+		    		// 만약 활성화된 N회권이 있으면 회수 추가
+		    		if (activeNPass != null) {
+		    			activeNPass.setMpcount(activeNPass.getMpcount() + addCounts);
+		    			mpdao.nPassIncrease(activeNPass);
+		    		} else {
+		    			mpdto.setMpcount(addCounts);
+			    		mpdto.setMpend(null);
+			    		
+			    		mpdto.setMno(oldto.getMno());
+				    	mpdto.setOlno(oldto.getOlno());
+				    	mpdto.setPno(pno);
+				    	
+				    	mpdao.memberPassesInsert(mpdto);
+		    		}
 		    	} else if ("정기권".equals(pdao.passDetail(pno).getPtype())) {
 		    		long addDays = pass.getPperiod() * cdto.getCstock();
+		    		// 만약 활성화된 정기권이 있으면 연장
 		    		if (activePass != null) {
 		    			activePass.setMpend(activePass.getMpend().plusDays(addDays));
 		    			mpdao.subscriberPassExtend(activePass);
@@ -684,6 +734,8 @@ public class OrderController {
 	    oddto.setOlno(paymentId);
 	    
 	    oddto.setBno(bno);
+	    
+	    oddao.orderDetailInsert(oddto);
     	
     	// 회원 대여 도서 업데이트(연장)
 	    int extendDays = cstock * 15;
@@ -703,6 +755,114 @@ public class OrderController {
 		model.addAttribute("paymentId", paymentId);
 		
 		return "pay/paySuccess";
+	}
+	
+	// 정기권 구독자 전용 도서 대여 연장
+	@RequestMapping("/pay/extendBookFree")
+	public String extendBookFree(@RequestParam("mbno") int mbno,
+								 @RequestParam("cstock") int cstock,
+	                             @AuthenticationPrincipal User user,
+	                             RedirectAttributes rttr) {
+		MemberDTO mdto = mdao.findByEmail(user.getUsername());
+		
+		if (!"SUBSCRIBER".equalsIgnoreCase(mdto.getMgrade())) {
+	        rttr.addFlashAttribute("msg", "정기 구독 회원만 무료 연장이 가능합니다.");
+	        return "redirect:/member/myBookList";
+	    }
+		
+		int extendDays = cstock * 15;
+    	mbdao.memberBookExtend(mbno, extendDays);
+	    
+    	rttr.addFlashAttribute("msg", "도서 대여 기간이 " + extendDays + "일 무료 연장되었습니다.");
+		return "redirect:/member/myBookList";
+	}
+	
+	// 반납시 연체로 납부
+	@RequestMapping("/pay/lateFeePayForm")
+	public String lateFeePayForm(CartDTO cdto, Model model,
+								 @AuthenticationPrincipal User user,
+								 @RequestParam("mbno") int mbno,
+								 @RequestParam("mblatefee") int mblatefee) {
+		String prodName = bdao.bookDetail(cdto.getBno()).getBname() + " (연체료)";
+		String buyerEmail = user.getUsername();
+		MemberDTO mdto = mdao.findByEmail(buyerEmail);
+		
+		model.addAttribute("totalAmount", mblatefee);
+		model.addAttribute("prodName", prodName);
+		model.addAttribute("cdto", cdto);
+		model.addAttribute("buyerEmail", buyerEmail);
+		model.addAttribute("buyerTel", mdto.getMtel());
+		model.addAttribute("buyerName", mdto.getMname());
+		model.addAttribute("mbno", mbno);
+		
+		return "pay/lateFeePayForm";
+	}
+	
+	@Transactional
+	@RequestMapping("/pay/lateFeePaySuccess")
+	@ResponseBody
+	public Map<String, Object> lateFeePaySuccess(@RequestBody Map<String, Object> reqData,
+            									 @AuthenticationPrincipal User user) {
+		// JS에서 보낸 JSON 데이터를 reqData.get()으로 꺼내서 사용
+	    String paymentId = (String) reqData.get("paymentId");
+	    String ctype = "book";
+	    int bno = ((Number) reqData.get("bno")).intValue();
+	    int cstock = 0;
+	    int totalAmount = ((Number) reqData.get("totalAmount")).intValue();
+	    int fee = 0;
+	    Integer sale = null;
+	    int prodAmount = totalAmount - fee;
+	    String payment = (String) reqData.get("payment");
+	    String buyerEmail = (String) reqData.get("buyerEmail");
+	    int mbno = ((Number) reqData.get("mbno")).intValue();
+	    
+	    Map<String, Object> result = new HashMap<>();
+	    
+	    // 주문 목록 등록
+	    OrderListDTO oldto = new OrderListDTO();
+	    oldto.setOlno(paymentId);
+	    oldto.setOlprice(prodAmount);
+	    oldto.setOlfee(fee);
+	    oldto.setOlsale(0);
+	    oldto.setOltotal(totalAmount);
+	    oldto.setOlpayment(payment);
+	    oldto.setMno(mdao.findByEmail(buyerEmail).getMno());
+	    
+	    oldao.orderListInsert(oldto);
+	    
+	    // 주문 상세 등록
+	    OrderDetailDTO oddto = new OrderDetailDTO();
+	    oddto.setOdstock(cstock);
+	    oddto.setOdprice(prodAmount);
+	    oddto.setOdsale(0);
+	    oddto.setOlno(paymentId);
+	    
+	    oddto.setBno(bno);
+	    
+	    oddao.orderDetailInsert(oddto);
+    	
+    	// 도서 반납
+	    int mno = mdao.findByEmail(buyerEmail).getMno();
+		
+	    MemberBooksDTO mbdto = new MemberBooksDTO();
+	    mbdto.setMno(mno);
+	    mbdto.setBno(bno);
+	    mbdto.setMbno(mbno);
+	    
+		
+		mbdao.memberBooksReturn(mbdto);
+		bdao.bookStockIncrease(mbdto.getBno());
+	    
+		result.put("success", true);
+	    return result;
+	}
+	
+	@RequestMapping("/pay/lateFeePayResult")
+	public String lateFeePayResult(@RequestParam("paymentId") String paymentId, 
+								   Model model) {
+	model.addAttribute("paymentId", paymentId);
+	
+	return "pay/lateFeePaySuccess";
 	}
 	
 	@RequestMapping("/member/orderList")
