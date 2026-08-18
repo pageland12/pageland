@@ -36,6 +36,11 @@ public interface IBookDAO {
 	    // 출판사별(bpublisher) 도서 목록 조회
 	    public List<BookDTO> bookListByPublisher(@Param("publisher") String publisher);
 	    
+	    // 전체 도서 페이징 목록
+	    public List<BookDTO> bookListPaging(@Param("startRow") int startRow, @Param("endRow") int endRow);
+	    
+	    // 전체 책 개수
+	    public int getTotalCount();
 	    // 도서 재고량 차감 (대여시)
 	    public int bookStockDecrease(int bno);
 	    

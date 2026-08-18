@@ -1,5 +1,6 @@
 package com.springboot.pageland.auth;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -11,6 +12,9 @@ import jakarta.servlet.DispatcherType;
 
 @Configuration
 public class WebSecurityConfig {
+	@Autowired
+	CustomAuthSuccessHandler customAuthSuccessHandler;
+	
 	@Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
@@ -33,7 +37,8 @@ public class WebSecurityConfig {
 		http.formLogin((formLogin) -> formLogin
 			.loginPage("/loginForm")
 			.loginProcessingUrl("/j_spring_security_check")
-			.defaultSuccessUrl("/main", true)
+			.successHandler(customAuthSuccessHandler)
+			// .defaultSuccessUrl("/main", true)
 			.failureUrl("/loginError")
 			.usernameParameter("memail")
 			.passwordParameter("mpasswd")

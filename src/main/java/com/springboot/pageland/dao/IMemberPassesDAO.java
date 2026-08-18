@@ -26,4 +26,10 @@ public interface IMemberPassesDAO {
 	
 	// 정기권 만료일 연장
 	public int subscriberPassExtend(MemberPassesDTO dto);
+	
+	// 활성화된 N회권 중 하나의 mpno 찾기
+	public MemberPassesDTO findActiveNPass(int mno);
+	
+	// N회권 횟수 추가
+	public int nPassIncrease(MemberPassesDTO dto);
 }

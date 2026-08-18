@@ -28,15 +28,28 @@
 	     ORDER BY c.cno DESC
 	</select>
 	
+	<select id="cartDetail" resultType="com.springboot.pageland.dto.CartDTO">
+		SELECT *
+		  FROM CART
+		 WHERE MNO=#{mno}
+		   AND BNO=#{bno}
+	</select>
+	
 	
 	<insert id="cartInsert">
 		INSERT INTO CART(CNO,CTYPE,CSTOCK,MNO,BNO,PNO)
 		 VALUES(CART_SEQ.NEXTVAL,#{ctype},#{cstock},#{mno},#{bno, jdbcType=INTEGER},#{pno, jdbcType=INTEGER})
 	</insert>
 	
-	<insert id="cartDelete">
+	<delete id="cartDelete">
 		DELETE FROM CART
 		 WHERE CNO=#{cno}
-	</insert>
+	</delete>
+	
+	<delete id="cartBookDelete">
+		DELETE FROM CART
+		 WHERE MNO=#{mno}
+		   AND BNO=#{bno}
+	</delete>
 	
 </mapper>
