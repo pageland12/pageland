@@ -24,7 +24,7 @@
 	
 	<update id="bookUpdate">
 		UPDATE BOOK
-		   SET BNAME=#{bname},BPRICE=#{bprice},BAGE=#{bage},BGENRE=#{bauthor},BPUBLISHER=#{bpublisher},
+		   SET BNAME=#{bname},BPRICE=#{bprice},BAGE=#{bage},BGENRE=#{bgenre},BPUBLISHER=#{bpublisher},
 		   		   	   BIMG=#{bimg},BSTOCK=#{bstock},BLIKE=#{blike}
 		 WHERE BNO=#{bno}
 	</update>
@@ -66,6 +66,25 @@
 	    ORDER BY bno DESC
 	</select>
 	
+	<!-- 전체 도서 페이징 목록 -->
+	<select id="bookListPaging" resultType="com.springboot.pageland.dto.BookDTO">
+		SELECT *
+	  	  FROM (
+	  	  	SELECT INNER_LIST.*, ROWNUM AS RNUM
+	  		  FROM (
+	  		  	SELECT * 
+	  		  		FROM BOOK 
+	  		  		ORDER BY BNO DESC
+	  		  ) INNER_LIST
+	      )
+	      	WHERE RNUM BETWEEN #{startRow} AND #{endRow}
+	</select>
+
+	<!-- 전체 도서 개수 조회 (페이지 번호 계산용) -->
+	<select id="getTotalCount" resultType="int">
+		SELECT COUNT(*) FROM BOOK
+	</select>
+
 	<update id="bookStockDecrease">
 		UPDATE BOOK
 		   SET BSTOCK=BSTOCK-1
