@@ -5,11 +5,11 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>내 구독권 / 이용권 정보</title>
+<title>내 구독권 / N회권 정보</title>
 </head>
 <body>
 
-	<h2>주문 이용권 정보 (주문번호: ${param.olno})</h2>
+	<h2>내 구독권 / N회권 정보</h2>
 
 	<c:if test="${empty passList}">
 		<p>해당 주문에 대한 사용 중인 이용권 정보가 없습니다.</p>
@@ -18,18 +18,18 @@
 	<c:forEach var="pass" items="${passList}">
 		<div>
 			<c:if test="${not empty pass.pimg}">
-				<img src="${pass.pimg}" alt="이용권 이미지">
+				<img src="${pass.pimg}" alt="이용권 이미지" width="100" height="100">
 			</c:if>
 			
 			<div>
 				<h3>${pass.pname}</h3>
 				
-				<c:if test="${pass.ptype eq '횟수권'}">
+				<c:if test="${pass.ptype eq 'N회권'}">
 					<p>구분: 횟수 차감형</p>
 					<p>남은 횟수: ${pass.mpcount}회</p>
 				</c:if>
 
-				<c:if test="${pass.ptype eq '기간권'}">
+				<c:if test="${pass.ptype eq '정기권'}">
 					<p>구분: 정기 구독형</p>
 					<p>
 						남은 기간: 
@@ -40,9 +40,9 @@
 						</c:choose>
 					</p>
 					<p>
-						이용 기간: 
-						<fmt:formatDate value="${pass.mpstart}" pattern="yyyy.MM.dd"/> ~ 
-						<fmt:formatDate value="${pass.mpend}" pattern="yyyy.MM.dd"/>
+						<p>
+						    이용 기간: ${pass.mpstart} ~ ${pass.mpend}
+						</p>
 					</p>
 				</c:if>
 				

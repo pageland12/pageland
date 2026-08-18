@@ -9,64 +9,28 @@
     <script src="https://cdn.portone.io/v2/browser-sdk.js"></script>
 </head>
 <body>
-    <h2>주문 / 결제 페이지</h2>
+    <h2>대여 연장 주문 / 결제 페이지</h2>
     
     <div>
-        <p>주문 상품: ${prodName} 외 ${prodCount}건</p>
-        <p>배송비: ${fee}원</p>
+        <p>연장 상품: ${prodName}</p>
         <p>결제 금액: ${totalAmount}원</p>
         <p>결제 이메일: ${buyerEmail}</p>
     </div>
 
     <!-- 결제하기 버튼 -->
-    <button type="button" onclick="requestPayment()">
-        ${totalAmount == 0 ? '정기권으로 대여하기 (0원)' : '결제하기'}
-    </button>
+    <button type="button" onclick="requestPayment()">결제하기</button>
 
     <script th:inline="javascript">
         async function requestPayment() {
             const orderName = '${prodName}';
-            const totalAmount = Number('${totalAmount}') || 0;
+            // const totalAmount = Number('${totalAmount}') || 0;
+            const totalAmount = 1;
             const buyerEmail = '${buyerEmail}';
             const buyerTel = '${buyerTel}';
             const buyerName = '${buyerName}';
-            
-            if (totalAmount === 0) {
-                if (!confirm("정기권 혜택으로 0원 대여를 진행하시겠습니까?")) {
-                    return;
-                }
-
-                fetch('/pay/subscriberRent', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        bno: Number('${cdto.bno}') || 0,
-                        cstock: Number('${cdto.cstock}') || 1,
-                        buyerEmail: buyerEmail
-                    })
-                })
-                .then(res => res.json())
-                .then(data => {
-                    if (data.success) {
-                        alert("정기권 대여가 완료되었습니다!");
-                        // 완료 페이지로 이동
-                        location.href = "/pay/payResult?paymentId=" + data.paymentId;
-                    } else {
-                        alert(data.message || "대여 처리 중 오류가 발생했습니다.");
-                    }
-                })
-                .catch(err => {
-                    console.error("정기권 대여 통신 에러:", err);
-                    alert("서버와 통신 중 오류가 발생했습니다.");
-                });
-
-                return; // 0원 결제 완료 후 함수 종료 (포트원 실행 안 함)
-            }
-            
-            // 결제 방식, 주문 고유 번호 (고유값 생성)
             const payment = 'KAKAO_PAY';
+            
+            // 주문 고유 번호 (고유값 생성)
             const paymentId = "ORD-" + new Date().getTime();
 
             try {
@@ -97,7 +61,7 @@
 
                 // 결제 성공
                 console.log("결제 성공! paymentId:", response.paymentId);
-                fetch('/pay/paySuccess', {
+                fetch('/pay/extensionPaySuccess', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
@@ -110,7 +74,7 @@
                         cstock: Number('${cdto.cstock}'),   // 수량/기간
                         totalAmount: Number('${totalAmount}'),           // 실제로 결제한 금액
                         payment: payment,			// 결제 수단
-                        fee: Number('${fee}'),					// 배송비
+                        mbno: Number('${mbno}'),					// 배송비
                         buyerEmail: buyerEmail		// 결제 이메일
                     })
                 })

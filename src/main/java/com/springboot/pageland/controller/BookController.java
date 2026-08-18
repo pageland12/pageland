@@ -14,6 +14,7 @@ import com.springboot.pageland.dao.IBookDAO;
 import com.springboot.pageland.dao.IMemberBooksDAO;
 import com.springboot.pageland.dao.IMemberDAO;
 import com.springboot.pageland.dto.BookDTO;
+import com.springboot.pageland.dto.MemberBooksDTO;
 
 @Controller
 public class BookController {
@@ -71,6 +72,18 @@ public class BookController {
 		model.addAttribute("books", mbdao.myBookList(mno));
 		
 		return "member/myBookList";
+	}
+	
+	@RequestMapping("/member/returnBook")
+	public String returnBook(MemberBooksDTO mbdto,
+							@AuthenticationPrincipal User user) {
+		int mno = mdao.findByEmail(user.getUsername()).getMno();
+		mbdto.setMno(mno);
+		
+		mbdao.memberBooksReturn(mbdto);
+		bdao.bookStockIncrease(mbdto.getBno());
+		
+		return "redirect:/member/myBookList";
 	}
 	
 	@RequestMapping("/admin/bookWriteForm")

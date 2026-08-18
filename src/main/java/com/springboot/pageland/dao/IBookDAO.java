@@ -41,4 +41,10 @@ public interface IBookDAO {
 	    
 	    // 전체 책 개수
 	    public int getTotalCount();
+	    // 도서 재고량 차감 (대여시)
+	    public int bookStockDecrease(int bno);
+	    
+	    // 도서 재고량 증감 (반납시)
+	    public int bookStockIncrease(int bno);
+	    
 }

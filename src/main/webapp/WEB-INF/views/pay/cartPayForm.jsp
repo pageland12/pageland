@@ -15,29 +15,64 @@
     <div>
         <p>주문 상품: ${prodName} 외 ${prodCount}건</p>
         <p>배송비: ${fee}원</p>
+        <p>할인액: ${sale}원</p>
         <p>결제 금액: ${totalAmount}원</p>
         <p>결제 이메일: ${buyerEmail}</p>
     </div>
 
     <!-- 결제하기 버튼 -->
-    <button type="button" onclick="requestPayment()">결제하기</button>
+    <button type="button" onclick="requestPayment()">
+        ${totalAmount == 0 ? '정기권으로 대여하기 (0원)' : '결제하기'}
+    </button>
 
     <script th:inline="javascript">
         async function requestPayment() {
             const orderName = '${prodName}';
-            // const totalAmount = Number('${totalAmount}') || 0;
-            const totalAmount = 1;
+            const totalAmount = Number('${totalAmount}') || 0; // 테스트 시 100만원이 넘지 않게 하기
             const buyerEmail = '${buyerEmail}';
             const buyerTel = '${buyerTel}';
             const buyerName = '${buyerName}';
-            const payment = 'KAKAO_PAY';
             const cnoList = [
                 <c:forEach var="cno" items="${cnoList}" varStatus="st">
                     ${cno}<c:if test="${!st.last}">,</c:if>
                 </c:forEach>
             ];
             
-            // 주문 고유 번호 (고유값 생성)
+            if (totalAmount === 0) {
+                if (!confirm("정기권 혜택으로 0원 대여를 진행하시겠습니까?")) {
+                    return;
+                }
+
+                fetch('/pay/subscriberCartRent', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        cnoList: cnoList,
+                        buyerEmail: buyerEmail
+                    })
+                })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.success) {
+                        alert("정기권 일괄 대여가 완료되었습니다!");
+                        // 결제 완료 페이지로 이동
+                        location.href = "/pay/payResult?paymentId=" + data.paymentId;
+                    } else {
+                        alert(data.message || "대여 처리 중 오류가 발생했습니다.");
+                    }
+                })
+                .catch(err => {
+                    console.error("정기권 대여 통신 에러:", err);
+                    alert("서버와 통신 중 오류가 발생했습니다.");
+                });
+
+                return; // 0원 결제 완료 이후 함수 종료
+            }
+            
+            // 결제 방식, 주문 고유 번호 (고유값 생성)
+            const payment = 'KAKAO_PAY';
             const paymentId = "ORD-" + new Date().getTime();
 
             try {
