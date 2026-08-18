@@ -97,4 +97,36 @@ public class RatingController {
 		return "redirect:/guest/ratingList";
 	}
 	
+	@RequestMapping("/board/ratingUpdateForm")
+	public String ratingUpdateForm(@RequestParam("rno") int rno, Principal principal, Model model) {
+		if (principal == null) {
+			return "redirect:/loginForm";
+		}
+		
+		RatingDTO dto = dao.ratingView(rno);
+		String memail = principal.getName();
+		
+		model.addAttribute("update", dto);
+		return "board/ratingUpdateForm";
+	}
+	
+	@RequestMapping("/board/ratingUpdate")
+	public String ratingUpdate(@RequestParam(value = "rupload", required = false) MultipartFile rupload, Principal principal, RatingDTO dto) throws Exception {
+		String memail = principal.getName();
+		
+		MemberDTO mDto = mDao.findByEmail(memail);
+		
+		dto.setMno(mDto.getMno());
+		
+		if (rupload != null && !rupload.isEmpty()) {
+	        String rfiles = rupload.getOriginalFilename();
+	        rupload.transferTo(new File("C:\\pageland\\src\\main\\resources\\static\\images\\" + rfiles));
+	        dto.setRfiles(rfiles);
+	    }
+		
+		dao.ratingUpdate(dto);
+		
+		return "redirect:/guest/ratingList";
+	}
+	
 }

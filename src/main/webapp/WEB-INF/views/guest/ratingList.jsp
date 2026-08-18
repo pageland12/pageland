@@ -36,11 +36,6 @@
 			<td>${list.rhit}</td>
 		</tr>
 	</c:forEach>
-		<tr>
-			<td colspan="5">
-				<a href="/board/ratingWriteForm">후기 작성</a>
-			</td>
-		</tr>
 	</table>
 </body>
 </html>
