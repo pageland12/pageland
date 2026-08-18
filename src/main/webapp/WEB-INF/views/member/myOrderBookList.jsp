@@ -13,34 +13,37 @@
 			<th>주문상세번호</th>
 			<th>도서 이미지</th>
 			<th>도서명</th>
-			<th>가격</th>
-			<th>작성</th>
+			<th>후기 작성</th>
 		</tr>
 	<c:forEach var="orderList" items="${orderList}">
     <tr>
         <td>${orderList.odno}</td>
         <td>
             <c:if test="${not empty orderList.bimg}">
-                <img src="${orderList.bimg}" width="50">
+                <img src="${orderList.bimg}" width="100" height="100">
             </c:if>
         </td>
-        <td>${orderList.bname}</td>
-        <td>${orderList.bprice}원</td>
+        <td width="600">${orderList.bname}</td>
         <td>
         	<c:if test="${orderList.cnt > 0}">
                 작성 완료
             </c:if>
             <c:if test="${orderList.cnt == 0}">
-	            <button type="button" onclick="goRatingWrite('${orderList.odno}', '${orderList.bno}', '${orderList.bname}', '${orderList.bimg}', '${orderList.bprice}')">
+	            <button type="button" onclick="goRatingWrite('${orderList.odno}', '${orderList.bno}', '${orderList.bname}', '${orderList.bimg}')">
 	                후기 작성
 	            </button>
 	        </c:if>
         </td>
     </tr>
 	</c:forEach>
+	<tr>
+		<td colspan="4">
+			<a href="/member/orderList">주문 목록</a>
+		</td>
+	</tr>
 
 	<script>
-	function goRatingWrite(odno, bno, bname, bimg, bprice) {
+	function goRatingWrite(odno, bno, bname, bimg) {
 	    // 특수문자가 들어간 문자열을 안전하게 URL 인코딩
 	    const encodedBname = encodeURIComponent(bname);
 	    const encodedBimg = encodeURIComponent(bimg);
@@ -49,7 +52,6 @@
 	                  + "&bno=" + bno 
 	                  + "&bname=" + encodedBname 
 	                  + "&bimg=" + encodedBimg 
-	                  + "&bprice=" + bprice;
 	}
 	</script>
 	</table>

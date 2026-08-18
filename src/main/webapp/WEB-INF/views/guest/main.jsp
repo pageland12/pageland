@@ -23,6 +23,7 @@
 			    <option value="/guest/noticeList">공지사항</option>
 			    <option value="/guest/eventList">이벤트</option>
 			    <option value="/guest/qnaList">Q&A</option>
+			    <option value="/guest/ratingList">후기</option>
 			</select>
 
 		</p>

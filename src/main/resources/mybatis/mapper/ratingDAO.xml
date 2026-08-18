@@ -32,7 +32,6 @@
 	        od.bno,
 	        b.bname,
 	        b.bimg,
-	        b.bprice,
 	        (SELECT COUNT(*) 
            	FROM rating 
           	WHERE odno = od.odno 
@@ -66,6 +65,16 @@
 		insert into rating(rno, rrate, rtitle, rcontent, rfiles, rdate, rhit, mno, bno, odno)
      	 values(RATING_SEQ.NEXTVAL, #{rrate}, #{rtitle}, #{rcontent}, #{rfiles, jdbcType=VARCHAR}, SYSDATE, 0, #{mno}, #{bno}, #{odno})
 	</insert>
+	
+	<update id="ratingUpdate">
+		update rating
+		   set rrate = #{rrate},
+		       rtitle = #{rtitle},
+		       rcontent = #{rcontent},
+		       rfiles = #{rfiles, jdbcType=VARCHAR}
+		 where rno = #{rno}
+		   and mno = #{mno}
+	</update>
 	
 	<delete id="ratingDelete">
 		delete from rating
