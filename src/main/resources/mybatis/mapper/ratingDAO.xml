@@ -3,6 +3,27 @@
 	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.springboot.pageland.dao.IRatingDAO">
+
+	<!-- 1. 페이징 처리된 후기 목록 조회 -->
+	<select id="ratingListPaging" resultType="com.springboot.pageland.dto.RatingDTO">
+		SELECT *
+		  FROM (
+			SELECT INNER_LIST.*, ROWNUM AS RNUM
+			  FROM (
+				SELECT R.*, M.MNAME
+				  FROM RATING R
+				  LEFT JOIN MEMBER M ON R.MNO = M.MNO
+				 ORDER BY R.RNO DESC
+			  ) INNER_LIST
+		  )
+		 WHERE RNUM BETWEEN #{startRow} AND #{endRow}
+	</select>
+
+	<!-- 2. 전체 후기 개수 조회 -->
+	<select id="getTotalCount" resultType="int">
+		SELECT COUNT(*) FROM RATING
+	</select>
+
 	<select id="ratingCheck" resultType="com.springboot.pageland.dto.RatingDTO">
 		SELECT 
 	        m.mno,
@@ -11,7 +32,6 @@
 	        od.bno,
 	        b.bname,
 	        b.bimg,
-	        b.bprice,
 	        (SELECT COUNT(*) 
            	FROM rating 
           	WHERE odno = od.odno 
@@ -29,14 +49,14 @@
 	<select id="ratingList" resultType="com.springboot.pageland.dto.RatingDTO">
 		select r.*, m.mname
     	 from rating r
-    	 join member m on r.mno = m.mno
+    	 left join member m on r.mno = m.mno
     	 order by r.rno desc
 	</select>
 	
 	<select id="ratingView" resultType="com.springboot.pageland.dto.RatingDTO">
 		select r.*, m.mname, m.memail, b.bname, b.bimg, b.bprice
      	 from rating r
-     	 join member m on r.mno = m.mno
+     	 left join member m on r.mno = m.mno
      	 left join book b on r.bno = b.bno
      	 where r.rno = #{rno}
 	</select>
@@ -45,6 +65,16 @@
 		insert into rating(rno, rrate, rtitle, rcontent, rfiles, rdate, rhit, mno, bno, odno)
      	 values(RATING_SEQ.NEXTVAL, #{rrate}, #{rtitle}, #{rcontent}, #{rfiles, jdbcType=VARCHAR}, SYSDATE, 0, #{mno}, #{bno}, #{odno})
 	</insert>
+	
+	<update id="ratingUpdate">
+		update rating
+		   set rrate = #{rrate},
+		       rtitle = #{rtitle},
+		       rcontent = #{rcontent},
+		       rfiles = #{rfiles, jdbcType=VARCHAR}
+		 where rno = #{rno}
+		   and mno = #{mno}
+	</update>
 	
 	<delete id="ratingDelete">
 		delete from rating
@@ -56,4 +86,5 @@
 		 set rhit = rhit + 1
 		 where rno = #{rno}
 	</update>
+
 </mapper>

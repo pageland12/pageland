@@ -10,6 +10,9 @@
 <title>후기 상세보기</title>
 </head>
 <body>
+	<sec:authorize access="isAuthenticated()">
+        <sec:authentication property="principal.username" var="memail" />
+    </sec:authorize>
 	<h3>후기 상세보기</h3>
 	<table border=1>
 		<tr>
@@ -17,8 +20,7 @@
 			<td><c:if test="${not empty view.bimg}">
 					<img src="${view.bimg}" width="200" height="200">
 				</c:if> <br>
-				${view.bname}<br>
-				${view.bprice}
+				${view.bname}
 			</td>
 		</tr>
 		<tr>
@@ -73,6 +75,10 @@
 		<tr>
 			<td colspan="2">
 				<a href="/guest/ratingList">목록</a>
+				<c:if test="${not empty memail and memail == view.memail}">
+					<a href="/board/ratingUpdateForm?rno=${view.rno}">수정</a>
+					<a href="/board/ratingDelete?rno=${view.rno}">삭제</a>
+				</c:if>
     			<sec:authorize access="hasRole('ADMIN')">
 					<a href="/board/ratingDelete?rno=${view.rno}">삭제</a>
 				</sec:authorize>

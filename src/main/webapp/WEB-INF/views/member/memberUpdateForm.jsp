@@ -12,18 +12,7 @@
 <meta charset="UTF-8">
 <title>회원가입</title>
 </head>
-<script language="javascript">
-	function goPopup(){	
-		var pop = window.open("/guest/jusoPopup","pop","width=570,height=420, scrollbars=yes, resizable=yes"); 		    
-	}
-
-	function jusoCallBack(maddr1,maddr2,mzipno){
-		document.memberUpdate.maddr1.value = maddr1;
-		document.memberUpdate.maddr2.value = maddr2;
-		document.memberUpdate.mzipno.value = mzipno;		
-		
-	}
-</script>
+<script src="/js/memberUpdate.js" language="javascript"></script>
 <body>
 	<form name="memberUpdate" method="post" action="/member/memberUpdate">
 		<input type="hidden" name="mno" value="${update.mno}">
@@ -80,7 +69,7 @@
 				<td><input type="text" name="maccount3" value="${maccountArray[2]}"></td>
 			</tr>
 		</table>
-		<input type="submit" value="수정">
+		<input type="submit" value="수정" onclick="return check()">
 	</form>
 </body>
 </html>

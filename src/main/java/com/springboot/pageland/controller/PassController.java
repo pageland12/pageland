@@ -1,5 +1,7 @@
 package com.springboot.pageland.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,13 +15,6 @@ import com.springboot.pageland.dto.PassDTO;
 public class PassController {
 	@Autowired
 	private IPassDAO pdao;
-	
-	@RequestMapping("/guest/allPassList")
-	public String passList(Model model) {
-		model.addAttribute("passes", pdao.passList());
-		
-		return "guest/allPassList";
-	}
 	
 	@RequestMapping("/guest/passDetail")
 	public String passDetail(Model model, @RequestParam("pno") int pno) {
@@ -44,5 +39,34 @@ public class PassController {
 		pdao.passInsert(pdto);
 		
 		return "redirect:/admin/adminMain";
+	}
+	
+	@RequestMapping("/guest/allPassList")
+	public String allPassList(@RequestParam(value = "pageNum", defaultValue = "1") int pageNum, Model model) {
+	    int amount = 16; // 한 페이지당 16개 출력
+	    
+	    int startRow = (pageNum - 1) * amount + 1;
+	    int endRow = pageNum * amount;
+	    
+	    List<PassDTO> passes = pdao.passListPaging(startRow, endRow);
+	    int total = pdao.getTotalCount();
+	    int totalPages = (int) Math.ceil((double) total / amount);
+	    
+	    // --- 화면 하단 페이지 번호 개수 (최대 5개) ---
+	    int navSize = 5;
+	    int startPage = ((pageNum - 1) / navSize) * navSize + 1;
+	    int endPage = startPage + navSize - 1;
+	    
+	    if (endPage > totalPages) {
+	        endPage = totalPages;
+	    }
+	    
+	    model.addAttribute("passes", passes);
+	    model.addAttribute("pageNum", pageNum);
+	    model.addAttribute("startPage", startPage);
+	    model.addAttribute("endPage", endPage);
+	    model.addAttribute("totalPages", totalPages);
+	    
+	    return "guest/allPassList";
 	}
 }

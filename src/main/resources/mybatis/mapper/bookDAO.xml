@@ -97,4 +97,61 @@
 		 WHERE BNO=#{bno}
 	</update>
 	
+	<!-- 연령별 목록 페이징 -->
+	<select id="bookAgeListPaging" resultType="com.springboot.pageland.dto.BookDTO">
+	    SELECT *
+	      FROM (
+	        SELECT INNER_LIST.*, ROWNUM AS RNUM
+	          FROM (
+	            SELECT * FROM BOOK 
+	             WHERE BAGE = #{bage} 
+	             ORDER BY BNO DESC
+	          ) INNER_LIST
+	      )
+	     WHERE RNUM BETWEEN #{startRow} AND #{endRow}
+	</select>
+	
+	<!-- 연령별 도서 개수 -->
+	<select id="getTotalCountByAge" resultType="int">
+	    SELECT COUNT(*) FROM BOOK WHERE BAGE = #{bage}
+	</select>
+	
+	<!-- 장르별 목록 페이징 -->
+	<select id="bookGenreListPaging" resultType="com.springboot.pageland.dto.BookDTO">
+	    SELECT *
+	      FROM (
+	        SELECT INNER_LIST.*, ROWNUM AS RNUM
+	          FROM (
+	            SELECT * FROM BOOK 
+	             WHERE BGENRE = #{bgenre}
+	             ORDER BY BNO DESC
+	          ) INNER_LIST
+	      )
+	     WHERE RNUM BETWEEN #{startRow} AND #{endRow}
+	</select>
+	
+	<!-- 장르별 도서 개수 -->
+	<select id="getTotalCountByGenre" resultType="int">
+	    SELECT COUNT(*) FROM BOOK WHERE BGENRE = #{bgenre}
+	</select>
+	
+	<!-- 출판사별 목록 페이징 -->
+	<select id="bookPublisherListPaging" resultType="com.springboot.pageland.dto.BookDTO">
+	    SELECT *
+	      FROM (
+	        SELECT INNER_LIST.*, ROWNUM AS RNUM
+	          FROM (
+	            SELECT * FROM BOOK 
+	             WHERE PUBLISHER = #{publisher}
+	             ORDER BY BNO DESC
+	          ) INNER_LIST
+	      )
+	     WHERE RNUM BETWEEN #{startRow} AND #{endRow}
+	</select>
+	
+	<!-- 출판사별 도서 개수 -->
+	<select id="getTotalCountByPublisher" resultType="int">
+	    SELECT COUNT(*) FROM BOOK WHERE PUBLISHER = #{publisher}
+	</select>
+	
 </mapper>

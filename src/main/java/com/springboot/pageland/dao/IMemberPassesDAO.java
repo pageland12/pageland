@@ -1,11 +1,9 @@
 package com.springboot.pageland.dao;
 
 import java.util.List;
-
 import org.apache.ibatis.annotations.Mapper;
-
+import org.apache.ibatis.annotations.Param;
 import com.springboot.pageland.dto.MemberPassesDTO;
-import com.springboot.pageland.dto.RatingDTO;
 
 @Mapper
 public interface IMemberPassesDAO {
@@ -18,10 +16,10 @@ public interface IMemberPassesDAO {
 	// 만료된 정기권 업데이트
 	public int expiredSubscriberPassesUpdate(int mno);
 	
-	// 활성화된 정기권 개수 새기
+	// 활성화된 정기권 개수 세기
 	public int activeSubcriberPassesCount(int mno);
 	
-	// 활성화된 정기권 중 하나의 mpno 찾기
+	// 활성화된 정기권 중 하나 찾기
 	public MemberPassesDTO findActiveSubscriberPass(int mno);
 	
 	// 정기권 만료일 연장
@@ -32,4 +30,8 @@ public interface IMemberPassesDAO {
 	
 	// N회권 횟수 추가
 	public int nPassIncrease(MemberPassesDTO dto);
+
+	// --- 페이징 처리용 메서드 추가 ---
+	public List<MemberPassesDTO> mbCheckPaging(@Param("mno") int mno, @Param("startRow") int startRow, @Param("endRow") int endRow);
+	public int getTotalCountByMno(int mno);
 }

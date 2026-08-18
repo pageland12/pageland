@@ -1,9 +1,8 @@
 package com.springboot.pageland.dao;
 
 import java.util.List;
-
 import org.apache.ibatis.annotations.Mapper;
-
+import org.apache.ibatis.annotations.Param;
 import com.springboot.pageland.dto.CartDTO;
 
 @Mapper
@@ -31,4 +30,8 @@ public interface ICartDAO {
 	
 	// 장바구니 도서 삭제
 	public int cartBookDelete(CartDTO dto);
+
+	// --- 페이징 처리 전용 메서드 추가 ---
+	public List<CartDTO> mcartListPaging(@Param("mno") int mno, @Param("startRow") int startRow, @Param("endRow") int endRow);
+	public int getTotalCountByMno(int mno);
 }
