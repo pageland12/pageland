@@ -98,75 +98,6 @@ public class BookController {
 		return "redirect:/admin/adminMain";
 	}
 	
-	@RequestMapping("/guest/allBookAgeList")
-	public String bookAgeList(
-	        @RequestParam(value = "category", required = false, defaultValue = "전체") String category, 
-	        Model model) {
-	    
-	    List<BookDTO> list;
-	    
-	    // '전체' 버튼을 눌렀거나 파라미터가 없을 때
-	    if (category.equals("전체") || category.trim().isEmpty()) {
-	        list = bdao.bookList();
-	        model.addAttribute("currentCategory", "연령별 전체 도서");
-	    } else {
-	        // [0-3세], [4-7세], [초등 저학년], [초등 고학년] 버튼을 눌렀을 때 해당 연령만 필터링
-	        list = bdao.bookListByCategory(category);
-	        model.addAttribute("currentCategory", category + " 추천 도서");
-	    }
-	    
-	    model.addAttribute("books", list);
-	    model.addAttribute("selectedCategory", category); // 현재 선택된 버튼 스타일링용
-	    
-	    return "guest/allBookAgeList";
-	}
-	
-	@RequestMapping("/guest/allBookGenreList")
-	public String bookGenreList(
-	        @RequestParam(value = "genre", required = false, defaultValue = "전체") String genre, 
-	        Model model) {
-	    
-	    List<BookDTO> list;
-	    
-	    // '전체' 클릭 또는 파라미터가 비어있을 경우 전체 도서 조회
-	    if (genre.equals("전체") || genre.trim().isEmpty()) {
-	        list = bdao.bookList();
-	        model.addAttribute("currentGenre", "분야별 전체 도서");
-	    } else {
-	        // 지정한 분야(생활/창작, 수학/영어 등)로 필터링 조회
-	        list = bdao.bookListByGenre(genre);
-	        model.addAttribute("currentGenre", genre + " 추천 도서");
-	    }
-	    
-	    model.addAttribute("books", list);
-	    model.addAttribute("selectedGenre", genre); // 선택된 버튼 활성화 표시용
-	    
-	    return "guest/allBookGenreList";
-	}
-	
-	@RequestMapping("/guest/allBookPublisherList")
-	public String bookPublisherList(
-	        @RequestParam(value = "publisher", required = false, defaultValue = "전체") String publisher, 
-	        Model model) {
-	    
-	    List<BookDTO> list;
-	    
-	    // '전체' 클릭 또는 파라미터가 비어있을 경우 전체 도서 조회
-	    if (publisher.equals("전체") || publisher.trim().isEmpty()) {
-	        list = bdao.bookList();
-	        model.addAttribute("currentPublisher", "출판사별 전체 도서");
-	    } else {
-	        // 지정한 출판사(그레이트북스, 아람북스 등)로 필터링 조회
-	        list = bdao.bookListByPublisher(publisher);
-	        model.addAttribute("currentPublisher", publisher + " 추천 도서");
-	    }
-	    
-	    model.addAttribute("books", list);
-	    model.addAttribute("selectedPublisher", publisher); // 선택된 버튼 활성화 표시용
-	    
-	    return "guest/allBookPublisherList";
-	}
-	
 	// 도서 등록관리 (페이징 적용)
     @RequestMapping("/admin/bookList")
     public String bookList(@RequestParam(value = "pageNum", defaultValue = "1") int pageNum, Model model) {
@@ -224,5 +155,134 @@ public class BookController {
 	public String bookDelete(BookDTO bdto) {
 		bdao.bookDelete(bdto.getBno());
 		return "redirect:/admin/bookList";
+	}
+	
+	@RequestMapping("/guest/allBookAgeList")
+	public String bookAgeList(
+	        @RequestParam(value = "category", required = false, defaultValue = "전체") String category, 
+	        @RequestParam(value = "pageNum", defaultValue = "1") int pageNum,
+	        Model model) {
+	    
+	    int amount = 16; // 한 페이지당 16개
+	    int startRow = (pageNum - 1) * amount + 1;
+	    int endRow = pageNum * amount;
+	    
+	    List<BookDTO> list;
+	    int total = 0;
+	    
+	    // '전체' 클릭 또는 파라미터가 비어있을 경우
+	    if (category.equals("전체") || category.trim().isEmpty()) {
+	        list = bdao.bookListPaging(startRow, endRow);
+	        total = bdao.getTotalCount();
+	        model.addAttribute("currentCategory", "연령별 전체 도서");
+	    } else {
+	        // DAO에 페이징 및 개수 조회 메서드가 새로 구현되어 있어야 합니다.
+	        list = bdao.bookAgeListPaging(category, startRow, endRow);
+	        total = bdao.getTotalCountByAge(category);
+	        model.addAttribute("currentCategory", category + " 추천 도서");
+	    }
+	    
+	    int totalPages = (int) Math.ceil((double) total / amount);
+	    
+	    // 5개 단위 페이징 계산
+	    int navSize = 5;
+	    int startPage = ((pageNum - 1) / navSize) * navSize + 1;
+	    int endPage = startPage + navSize - 1;
+	    if (endPage > totalPages) {
+	        endPage = totalPages;
+	    }
+	    
+	    model.addAttribute("books", list);
+	    model.addAttribute("selectedCategory", category);
+	    model.addAttribute("pageNum", pageNum);
+	    model.addAttribute("startPage", startPage);
+	    model.addAttribute("endPage", endPage);
+	    model.addAttribute("totalPages", totalPages);
+	    
+	    return "guest/allBookAgeList";
+	}
+	
+	@RequestMapping("/guest/allBookGenreList")
+	public String bookGenreList(
+	        @RequestParam(value = "genre", required = false, defaultValue = "전체") String genre, 
+	        @RequestParam(value = "pageNum", defaultValue = "1") int pageNum,
+	        Model model) {
+	    
+	    int amount = 16;
+	    int startRow = (pageNum - 1) * amount + 1;
+	    int endRow = pageNum * amount;
+	    
+	    List<BookDTO> list;
+	    int total = 0;
+	    
+	    if (genre.equals("전체") || genre.trim().isEmpty()) {
+	        list = bdao.bookListPaging(startRow, endRow);
+	        total = bdao.getTotalCount();
+	        model.addAttribute("currentGenre", "분야별 전체 도서");
+	    } else {
+	        list = bdao.bookGenreListPaging(genre, startRow, endRow);
+	        total = bdao.getTotalCountByGenre(genre);
+	        model.addAttribute("currentGenre", genre + " 추천 도서");
+	    }
+	    
+	    int totalPages = (int) Math.ceil((double) total / amount);
+	    
+	    int navSize = 5;
+	    int startPage = ((pageNum - 1) / navSize) * navSize + 1;
+	    int endPage = startPage + navSize - 1;
+	    if (endPage > totalPages) {
+	        endPage = totalPages;
+	    }
+	    
+	    model.addAttribute("books", list);
+	    model.addAttribute("selectedGenre", genre);
+	    model.addAttribute("pageNum", pageNum);
+	    model.addAttribute("startPage", startPage);
+	    model.addAttribute("endPage", endPage);
+	    model.addAttribute("totalPages", totalPages);
+	    
+	    return "guest/allBookGenreList";
+	}
+	
+	@RequestMapping("/guest/allBookPublisherList")
+	public String bookPublisherList(
+	        @RequestParam(value = "publisher", required = false, defaultValue = "전체") String publisher, 
+	        @RequestParam(value = "pageNum", defaultValue = "1") int pageNum,
+	        Model model) {
+	    
+	    int amount = 16;
+	    int startRow = (pageNum - 1) * amount + 1;
+	    int endRow = pageNum * amount;
+	    
+	    List<BookDTO> list;
+	    int total = 0;
+	    
+	    if (publisher.equals("전체") || publisher.trim().isEmpty()) {
+	        list = bdao.bookListPaging(startRow, endRow);
+	        total = bdao.getTotalCount();
+	        model.addAttribute("currentPublisher", "출판사별 전체 도서");
+	    } else {
+	        list = bdao.bookPublisherListPaging(publisher, startRow, endRow);
+	        total = bdao.getTotalCountByPublisher(publisher);
+	        model.addAttribute("currentPublisher", publisher + " 추천 도서");
+	    }
+	    
+	    int totalPages = (int) Math.ceil((double) total / amount);
+	    
+	    int navSize = 5;
+	    int startPage = ((pageNum - 1) / navSize) * navSize + 1;
+	    int endPage = startPage + navSize - 1;
+	    if (endPage > totalPages) {
+	        endPage = totalPages;
+	    }
+	    
+	    model.addAttribute("books", list);
+	    model.addAttribute("selectedPublisher", publisher);
+	    model.addAttribute("pageNum", pageNum);
+	    model.addAttribute("startPage", startPage);
+	    model.addAttribute("endPage", endPage);
+	    model.addAttribute("totalPages", totalPages);
+	    
+	    return "guest/allBookPublisherList";
 	}
 }

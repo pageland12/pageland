@@ -9,15 +9,14 @@
 		 ORDER BY PNO DESC
 	</select>
 	
+	<!-- 구독권 상세 조회 -->
 	<select id="passDetail" resultType="com.springboot.pageland.dto.PassDTO">
-		SELECT *
-		  FROM PASS
-		 WHERE PNO=#{pno}
+		SELECT * FROM PASS WHERE PNO = #{pno}
 	</select>
 	
 	<insert id="passInsert">
 		INSERT INTO PASS(PNO,PNAME,PPRICE,PTYPE,PPERIOD,PCOUNT,PIMG,PINFO)
-		 VALUES(PASS_SEQ.NEXTVAL,#{pname},#{pprice},#{ptype},#{pperiod, jdbcType=INTEGER},#{pcount, jdbcType=INTEGER},#{pimg},#{pinfo})
+		 VALUES(PASS_SEQ.NEXTVAL,#{pname},#{pprice},#{ptype},#{pperiod},#{pcount},#{pimg},#{pinfo})
 	</insert>
 	
 	<update id="passUpdate">
@@ -31,4 +30,24 @@
 		DELETE FROM PASS
 		 WHERE PNO=#{pno}
 	</delete>
+	
+	<!-- 구독권 페이징 목록 조회 -->
+	<select id="passListPaging" resultType="com.springboot.pageland.dto.PassDTO">
+		SELECT *
+		  FROM (
+		  	SELECT INNER_LIST.*, ROWNUM AS RNUM
+		  	  FROM (
+		  	  	SELECT * 
+		  	  	  FROM PASS 
+		  	  	 ORDER BY PNO DESC
+		  	  ) INNER_LIST
+		  )
+		 WHERE RNUM BETWEEN #{startRow} AND #{endRow}
+	</select>
+
+	<!-- 전체 구독권 개수 조회 -->
+	<select id="getTotalCount" resultType="int">
+		SELECT COUNT(*) FROM PASS
+	</select>
+	
 </mapper>

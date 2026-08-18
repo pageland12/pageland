@@ -3,6 +3,7 @@ package com.springboot.pageland.controller;
 import java.io.File;
 import java.io.IOException;
 import java.security.Principal;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -27,18 +28,65 @@ public class AdminBoardController {
 	private IMemberDAO mDao;
 	
 	@RequestMapping("/guest/noticeList")
-	public String noticeList(Model model) {
-		model.addAttribute("notice", dao.noticeList());
-		
-		return "guest/noticeList";
+	public String noticeList(@RequestParam(value = "pageNum", defaultValue = "1") int pageNum, Model model) {
+	    int amount = 16; // 한 페이지당 16개 출력
+	    
+	    int startRow = (pageNum - 1) * amount + 1;
+	    int endRow = pageNum * amount;
+	    
+	    List<AdminBoardDTO> noticeList = abdao.noticeListPaging(startRow, endRow);
+	    int total = abdao.getNoticeTotalCount();
+	    int totalPages = (int) Math.ceil((double) total / amount);
+	    
+	    // --- 하단 페이지 번호 계산 (5개 단위) ---
+	    int navSize = 5;
+	    int startPage = ((pageNum - 1) / navSize) * navSize + 1;
+	    int endPage = startPage + navSize - 1;
+	    
+	    if (endPage > totalPages) {
+	        endPage = totalPages;
+	    }
+	    
+	    model.addAttribute("notice", noticeList);
+	    model.addAttribute("pageNum", pageNum);
+	    model.addAttribute("startPage", startPage);
+	    model.addAttribute("endPage", endPage);
+	    model.addAttribute("totalPages", totalPages);
+	    
+	    return "guest/noticeList";
 	}
 	
-	@RequestMapping("/guest/eventList")
-	public String eventList(Model model) {
-		model.addAttribute("event", dao.eventList());
-		
-		return "guest/eventList";
-	}
+	@Autowired
+    private IAdminBoardDAO abdao; // IAdminBoardDAO로 주입
+
+    @RequestMapping("/guest/eventList")
+    public String eventList(@RequestParam(value = "pageNum", defaultValue = "1") int pageNum, Model model) {
+        int amount = 16; // 한 페이지당 16개 출력
+        
+        int startRow = (pageNum - 1) * amount + 1;
+        int endRow = pageNum * amount;
+        
+        List<AdminBoardDTO> eventList = abdao.eventListPaging(startRow, endRow);
+        int total = abdao.getTotalCount();
+        int totalPages = (int) Math.ceil((double) total / amount);
+        
+        // --- 하단 페이지 번호 계산 (5개 단위) ---
+        int navSize = 5;
+        int startPage = ((pageNum - 1) / navSize) * navSize + 1;
+        int endPage = startPage + navSize - 1;
+        
+        if (endPage > totalPages) {
+            endPage = totalPages;
+        }
+        
+        model.addAttribute("event", eventList);
+        model.addAttribute("pageNum", pageNum);
+        model.addAttribute("startPage", startPage);
+        model.addAttribute("endPage", endPage);
+        model.addAttribute("totalPages", totalPages);
+        
+        return "guest/eventList";
+    }
 	
 	@RequestMapping("/admin/abWriteForm")
 	public String abWriteForm() {

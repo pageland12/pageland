@@ -21,7 +21,6 @@ import com.springboot.pageland.dto.RatingDTO;
 
 import jakarta.servlet.http.HttpServletRequest;
 
-
 @Controller
 public class RatingController {
 	@Autowired
@@ -43,9 +42,32 @@ public class RatingController {
 		return "member/myOrderBookList";
 	}
 	
+	// --- 페이징 적용된 후기 목록 ---
 	@RequestMapping("/guest/ratingList")
-	public String ratingList(Model model) {
-		model.addAttribute("list", dao.ratingList());
+	public String ratingList(@RequestParam(value = "pageNum", defaultValue = "1") int pageNum, Model model) {
+		int amount = 16; // 한 페이지당 16개 출력
+		
+		int startRow = (pageNum - 1) * amount + 1;
+		int endRow = pageNum * amount;
+		
+		List<RatingDTO> list = dao.ratingListPaging(startRow, endRow);
+		int total = dao.getTotalCount();
+		int totalPages = (int) Math.ceil((double) total / amount);
+		
+		// 하단 페이지 번호 계산 (5개 단위)
+		int navSize = 5;
+		int startPage = ((pageNum - 1) / navSize) * navSize + 1;
+		int endPage = startPage + navSize - 1;
+		
+		if (endPage > totalPages) {
+			endPage = totalPages;
+		}
+		
+		model.addAttribute("list", list);
+		model.addAttribute("pageNum", pageNum);
+		model.addAttribute("startPage", startPage);
+		model.addAttribute("endPage", endPage);
+		model.addAttribute("totalPages", totalPages);
 		
 		return "guest/ratingList";
 	}
@@ -71,10 +93,10 @@ public class RatingController {
 		dto.setMno(mDto.getMno());
 		
 		if (rupload != null && !rupload.isEmpty()) {
-	        String rfiles = rupload.getOriginalFilename();
-	        rupload.transferTo(new File("C:\\pageland\\src\\main\\resources\\static\\images\\" + rfiles));
-	        dto.setRfiles(rfiles);
-	    }
+			String rfiles = rupload.getOriginalFilename();
+			rupload.transferTo(new File("C:\\pageland\\src\\main\\resources\\static\\images\\" + rfiles));
+			dto.setRfiles(rfiles);
+		}
 		
 		dao.ratingWrite(dto);
 		

@@ -3,6 +3,7 @@ package com.springboot.pageland.controller;
 import java.io.File;
 import java.io.IOException;
 import java.security.Principal;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -30,12 +31,37 @@ public class QnaController {
 	@Autowired
 	private PasswordEncoder passwordEncoder;
 	
-	@RequestMapping("/guest/qnaList")
-	public String qnaList(Model model) {
-		model.addAttribute("qnaList", dao.qnaList());
-	
-		return "guest/qnaList";
-	}
+	@Autowired
+    private IQnaDAO qnadao;
+
+    @RequestMapping("/guest/qnaList")
+    public String qnaList(@RequestParam(value = "pageNum", defaultValue = "1") int pageNum, Model model) {
+        int amount = 16; // 한 페이지당 16개 출력
+        
+        int startRow = (pageNum - 1) * amount + 1;
+        int endRow = pageNum * amount;
+        
+        List<QnaDTO> qnaList = qnadao.qnaListPaging(startRow, endRow);
+        int total = qnadao.getTotalCount();
+        int totalPages = (int) Math.ceil((double) total / amount);
+        
+        // --- 하단 페이지 번호 계산 (5개 단위) ---
+        int navSize = 5;
+        int startPage = ((pageNum - 1) / navSize) * navSize + 1;
+        int endPage = startPage + navSize - 1;
+        
+        if (endPage > totalPages) {
+            endPage = totalPages;
+        }
+        
+        model.addAttribute("qnaList", qnaList);
+        model.addAttribute("pageNum", pageNum);
+        model.addAttribute("startPage", startPage);
+        model.addAttribute("endPage", endPage);
+        model.addAttribute("totalPages", totalPages);
+        
+        return "guest/qnaList";
+    }
 	
 	@RequestMapping("/board/qnaWriteForm")
 	public String qnaWriteForm() {
