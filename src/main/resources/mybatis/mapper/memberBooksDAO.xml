@@ -46,6 +46,13 @@
 	     WHERE ROWNUM=1
 	</select>
 	
+	<select id="activeRentBooksCount" resultType="int">
+	    SELECT COUNT(*)
+	      FROM MEMBER_BOOKS
+	     WHERE MNO = #{mno}
+	       AND (MBRETURN IS NULL OR MBSTATUS = '대여중')
+	</select>
+	
 	
 	<insert id="memberBooksInsert">
 		INSERT INTO MEMBER_BOOKS(MBNO,MBSTART,MBEND,MBRETURN,MBEXTENSION,MBLATEDATE,MBLATEFEE,MBSTATUS,MNO,OLNO,BNO,MPNO)

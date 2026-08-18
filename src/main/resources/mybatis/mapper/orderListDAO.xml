@@ -16,4 +16,23 @@
 		 VALUES(#{olno},#{olprice},#{olfee},#{olsale},#{oltotal},#{olpayment},SYSDATE,#{mno})
 	</insert>
 	
+	
+	<!-- 회원의 주문 목록 페이징 -->
+	<select id="memberOrderListPaging" resultType="com.springboot.pageland.dto.OrderListDTO">
+	    SELECT *
+	      FROM (
+	        SELECT INNER_LIST.*, ROWNUM AS RNUM
+	          FROM (
+	            SELECT * FROM ORDER_LIST 
+	             WHERE MNO = #{mno}
+	             ORDER BY OLDATE DESC
+	          ) INNER_LIST
+	      )
+	     WHERE RNUM BETWEEN #{startRow} AND #{endRow}
+	</select>
+	
+	<!-- 회원의 주문 개수 -->
+	<select id="getTotalOrderCountByMno" resultType="int">
+	    SELECT COUNT(*) FROM ORDER_LIST WHERE MNO = #{mno}
+	</select>
 </mapper>
