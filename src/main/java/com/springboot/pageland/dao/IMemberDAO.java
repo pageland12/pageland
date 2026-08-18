@@ -3,8 +3,11 @@ package com.springboot.pageland.dao;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
+import com.springboot.pageland.dto.BookDTO;
 import com.springboot.pageland.dto.MemberDTO;
+import com.springboot.pageland.dto.MyBoardDTO;
 
 @Mapper
 public interface IMemberDAO {
@@ -34,4 +37,13 @@ public interface IMemberDAO {
 		
 		// 회원 권한 변경(정기권 관련)
 		public int memberGradeUpdate(MemberDTO dto);
+		
+		// 회원 본인이 작성한 게시글 목록
+		public List<MyBoardDTO> myAllBoardList(int mno);
+		
+		// 전체 회원 페이징 목록
+	    public List<MemberDTO> memberListPaging(@Param("startRow") int startRow, @Param("endRow") int endRow);
+	    
+	    // 전체 회원수
+	    public int getTotalMemberCount();
 }
