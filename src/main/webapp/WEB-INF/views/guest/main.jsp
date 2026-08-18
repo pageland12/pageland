@@ -20,9 +20,9 @@
 			<a href="/guest/allBookPublisherList">출판사별 | </a>
 			<select onchange="if(this.value) location.href=this.value;">
 			    <option value="">-- 고객센터 --</option>
-			    <option value="/board/noticeList">공지사항</option>
-			    <option value="/board/eventList">이벤트</option>
-			    <option value="/board/qnaList">Q&A</option>
+			    <option value="/guest/noticeList">공지사항</option>
+			    <option value="/guest/eventList">이벤트</option>
+			    <option value="/guest/qnaList">Q&A</option>
 			</select>
 
 		</p>

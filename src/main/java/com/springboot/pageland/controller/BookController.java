@@ -27,10 +27,33 @@ public class BookController {
 	private IMemberBooksDAO mbdao;
 	
 	@RequestMapping("/guest/allBookList")
-	public String bookList(Model model) {
-		model.addAttribute("books", bdao.bookList());
-		
-		return "guest/allBookList";
+	public String allBookList(@RequestParam(value = "pageNum", defaultValue = "1") int pageNum, Model model) {
+	    int amount = 16; // 한 페이지당 16개
+	    
+	    int startRow = (pageNum - 1) * amount + 1;
+	    int endRow = pageNum * amount;
+	    
+	    List<BookDTO> books = bdao.bookListPaging(startRow, endRow);
+	    int total = bdao.getTotalCount();
+	    int totalPages = (int) Math.ceil((double) total / amount);
+	    
+	    // --- 화면에 보여줄 페이지 번호 개수 (최대 5개) ---
+	    int navSize = 5;
+	    int startPage = ((pageNum - 1) / navSize) * navSize + 1;
+	    int endPage = startPage + navSize - 1;
+	    
+	    // 실제 총 페이지 수를 넘지 않도록 조정
+	    if (endPage > totalPages) {
+	        endPage = totalPages;
+	    }
+	    
+	    model.addAttribute("books", books);
+	    model.addAttribute("pageNum", pageNum);
+	    model.addAttribute("startPage", startPage);
+	    model.addAttribute("endPage", endPage);
+	    model.addAttribute("totalPages", totalPages);
+	    
+	    return "guest/allBookList";
 	}
 	
 	@RequestMapping("/guest/bookDetail")
@@ -131,4 +154,62 @@ public class BookController {
 	    return "guest/allBookPublisherList";
 	}
 	
+	// 도서 등록관리 (페이징 적용)
+    @RequestMapping("/admin/bookList")
+    public String bookList(@RequestParam(value = "pageNum", defaultValue = "1") int pageNum, Model model) {
+        int amount = 16; // 한 페이지당 보여줄 개수
+        
+        int startRow = (pageNum - 1) * amount + 1;
+        int endRow = pageNum * amount;
+        
+        // DAO를 통해 페이징된 도서 목록과 전체 개수 가져오기
+        List<BookDTO> books = bdao.bookListPaging(startRow, endRow);
+        int total = bdao.getTotalCount();
+        int totalPages = (int) Math.ceil((double) total / amount);
+        
+        // 5개 단위 페이징 계산
+        int navSize = 5;
+        int startPage = ((pageNum - 1) / navSize) * navSize + 1;
+        int endPage = startPage + navSize - 1;
+        
+        if (endPage > totalPages) {
+            endPage = totalPages;
+        }
+        
+        // JSP로 데이터 전달
+        model.addAttribute("books", books);
+        model.addAttribute("pageNum", pageNum);
+        model.addAttribute("startPage", startPage);
+        model.addAttribute("endPage", endPage);
+        model.addAttribute("totalPages", totalPages);
+        
+        return "admin/bookList";
+    }
+	
+    // 관리자 도서 상세정보
+    @RequestMapping("/admin/bookDetail")
+	public String adminBookDetail(Model model, @RequestParam("bno") int bno) {
+		model.addAttribute("book", bdao.bookDetail(bno));		
+		return "admin/bookDetail";
+	}
+    
+	// 도서 수정
+	@RequestMapping("/admin/bookUpdateForm")
+	public String bookUpdateForm(@RequestParam("bno") int bno, Model model) {
+		model.addAttribute("update", bdao.bookDetail(bno));
+		return "admin/bookUpdateForm";
+	}
+	
+	@RequestMapping("/admin/bookUpdate")
+	public String bookUpdate(BookDTO bdto) {
+		bdao.bookUpdate(bdto);
+		return "redirect:/admin/bookDetail?bno=" + bdto.getBno();
+	}
+	
+	// 도서 삭제
+	@RequestMapping("/admin/bookDelete")
+	public String bookDelete(BookDTO bdto) {
+		bdao.bookDelete(bdto.getBno());
+		return "redirect:/admin/bookList";
+	}
 }

@@ -17,7 +17,7 @@
             <div>신규 도서 등록</div>
         </a>
         
-        <a href="/book/bookList">
+        <a href="/admin/bookList">
             <div>등록 도서 관리</div>
         </a>
         
