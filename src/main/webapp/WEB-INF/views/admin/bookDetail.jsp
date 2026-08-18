@@ -21,13 +21,13 @@
 				<td>${book.bage}</td>
 			</tr>
 			<tr>
-				<td>출판사</td>
-				<td>${book.bpublisher}</td>
-			</tr>
-			<tr>
 				<td>분야</td>
 				<td>${book.bgenre}</td>
 			</tr>
+			<tr>
+				<td>출판사</td>
+				<td>${book.bpublisher}</td>
+			</tr>			
 			<tr>
 				<td>이미지</td>
 				<td><img alt="${book.bname}" src="${book.bimg}" width="200" height="200"></td>

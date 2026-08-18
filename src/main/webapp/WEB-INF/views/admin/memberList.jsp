@@ -24,5 +24,6 @@
 			</tr>
 		</c:forEach>
 	</table>
+	<a href="/admin/adminMain">관리자페이지로 이동</a>
 </body>
 </html>

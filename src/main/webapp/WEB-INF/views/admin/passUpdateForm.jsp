@@ -4,17 +4,17 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>구독권 등록</title>
+<title>구독권 수정</title>
 </head>
 <script>
 function check() {
-	let pname = document.passWriteForm.pname;
-	let ptype = document.passWriteForm.ptype;
-	let pimg = document.passWriteForm.pimg;
-	let pinfo = document.passWriteForm.pinfo;
-	let pprice = document.passWriteForm.pprice;
-	let pperiod = document.passWriteForm.pperiod;
-	let pcount = document.passWriteForm.pcount;
+	let pname = document.passUpdateForm.pname;
+	let ptype = document.passUpdateForm.ptype;
+	let pimg = document.passUpdateForm.pimg;
+	let pinfo = document.passUpdateForm.pinfo;
+	let pprice = document.passUpdateForm.pprice;
+	let pperiod = document.passUpdateForm.pperiod;
+	let pcount = document.passUpdateForm.pcount;
 	
 	let expPname = /^[a-zA-Z0-9가-힣\s?!.,-]+$/;
 	let expPprice = /^[0-9]{1,6}$/;
@@ -51,12 +51,12 @@ function check() {
 	
 	// 상세 정보
 	if(!pinfo.value) {
-		alert("세부 정보 이미지 경로를 입력하세요.");
+		alert("상세 정보를 입력하세요.");
 		pinfo.focus();
 		return false;
 	}
 	
-	// 가격
+	// 구독권 가격
 	if(!pprice.value) {
 		alert("가격을 입력하세요.");
 		pprice.focus();
@@ -78,7 +78,7 @@ function check() {
 		return false;
 	}
 	
-	// N회권 개수
+	// 구독권 횟수(N회권)
 	if(pcount.value && !expPcount.test(pcount.value)) {
 		alert("횟수는 숫자만 최대 3자리 이내로 올바르게 입력하세요.");
 		pcount.value = "";
@@ -90,48 +90,46 @@ function check() {
 }
 </script>
 <body>
-	<form name="passWriteForm" method="post" action="/admin/passWrite">
-	    <table border=1 width=400>
-	        <tr>
-	            <td>구독권 이름</td>
-	            <td><input type="text" name="pname" placeholder="구독권을 입력하세요"></td>
-	        </tr>
-	        <tr>
+	<form name="passUpdateForm" method="post" action="/admin/passUpdate">
+	<input type="hidden" name="pno" value="${update.pno}">
+		<table border=1 width=400>
+			<tr>
+				<td>구독권 이름</td>
+				<td><input type="text" name="pname" value="${update.pname}"></td>
+			</tr>
+			<tr>
 	            <td>구독권 종류</td>
 	            <td>
 	                <select name="ptype">
 	                    <option value="">선택</option>
-	                    <option value="정기권">정기권</option>
-	                    <option value="N회권">N회권</option>
+	                    <option value="정기권" ${update.ptype == '정기권' ? 'selected' : ''}>정기권</option>
+	                    <option value="N회권" ${update.ptype == 'N회권' ? 'selected' : ''}>N회권</option>
 	                </select>
 	            </td>
 	        </tr>
-	        <tr>
-	            <td>구독권 이미지</td>
-	            <td><input type="text" name="pimg" placeholder="구독권 이미지 URL"></td>
-	        </tr>
-	        <tr>
-	            <td>상세 정보</td>	            
-	            <td><input type="text" name="pinfo" placeholder="구독권 정보 이미지 URL"></td>
-	        </tr>
-	        <tr>
-	            <td>구독권 가격</td>
-	            <td><input type="text" name="pprice" placeholder="구독권 가격"></td>
-	        </tr>
-	        <tr>
-	        	<td>구독권 기간</td>
-	            <td><input type="text" name="pperiod" placeholder="구독권 기간(정기권)"></td>
-	        </tr>
-	        <tr>
-	        	<td>구독권 횟수()</td>
-	            <td><input type="text" name="pcount" placeholder="구독권 횟수(N회권)"></td>
-	        </tr>
-	    </table>
-	    
-	    <div>
-		    <input type="submit" value="등록하기" onclick="return check()">
-		    <a href="/admin/adminMain">관리자페이지로 이동</a>
-		</div>
+			<tr>
+				<td>구독권 이미지</td>
+				<td><input type="text" name="pimg" value="${update.pimg}"></td>
+			</tr>
+			<tr>
+				<td>상세 정보</td>
+				<td><input type="text" name="pinfo" value="${update.pinfo}"></td>
+			</tr>
+			<tr>
+				<td>구독권 가격</td>
+				<td><input type="text" name="pprice" value="${update.pprice}"></td>
+			</tr>						
+			<tr>
+				<td>구독권 기간</td>
+				<td><input type="text" name="pperiod" value="${update.pperiod}"></td>
+			</tr>
+			<tr>
+				<td>구독권 횟수(N회권)</td>
+				<td><input type="text" name="pcount" value="${update.pcount}"></td>
+			</tr>			
+		</table>
+		<input type="submit" value="수정" onclick="return check()">
+		<a href="/admin/adminMain">관리자페이지로 이동</a>
 	</form>
 </body>
 </html>

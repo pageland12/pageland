@@ -21,7 +21,7 @@
 	
 	<update id="passUpdate">
 		UPDATE PASS
-		   SET PNAME=#{pname},PPRICE=#{pprice},PTYPE=#{ptype},PPERIOD=#{pperiod},BCOUNT=#{pcount},
+		   SET PNAME=#{pname},PPRICE=#{pprice},PTYPE=#{ptype},PPERIOD=#{pperiod, jdbcType=INTEGER},PCOUNT=#{pcount, jdbcType=INTEGER},
 		   		   	   PIMG=#{pimg},PINFO=#{pinfo}
 		 WHERE PNO=#{pno}
 	</update>
