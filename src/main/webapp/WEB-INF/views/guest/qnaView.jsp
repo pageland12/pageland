@@ -42,8 +42,10 @@
 		<tr>
 			<td colspan="2">
 				<a href="/guest/qnaList">목록</a> / 
-				<a href="/board/qnaPasswordCheckForm?qno=${view.qno}&mode=update">수정</a> / 
-				<a href="/board/qnaPasswordCheckForm?qno=${view.qno}&mode=delete">삭제</a>
+				<a href="${view.qsecret == '비밀글' ? '/board/qnaPasswordCheckForm?qno='.concat(view.qno).concat('&mode=update') : 
+				'/board/qnaUpdateForm?qno='.concat(view.qno)}">수정</a>	/
+				<a href="${view.qsecret == '비밀글' ? '/board/qnaPasswordCheckForm?qno='.concat(view.qno).concat('&mode=delete') : 
+				'/board/qnaDelete?qno='.concat(view.qno)}">삭제</a>
 			</td>
 		</tr>
 	</table>

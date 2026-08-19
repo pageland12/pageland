@@ -65,6 +65,67 @@
 		SELECT COUNT(*) FROM MEMBER
 	</select>
 	
+	<!-- 전체 회원 페이징 목록 -->
+	<select id="myAllBoardListPaging" resultType="com.springboot.pageland.dto.MyBoardDTO">
+		SELECT *
+	  	  FROM (
+	  	  	SELECT INNER_LIST.*, ROWNUM AS RNUM
+	  		  FROM (
+		  		  	SELECT 'QNA' AS btype,
+				           qno AS bno,
+				           qtitle AS title,
+				           qdate AS regdate,
+				           qhit AS hit,
+				           qsecret AS extraInfo
+				      FROM QNA
+				     WHERE mno = #{mno}
+				
+				    UNION ALL
+				
+				    SELECT 'REVIEW' AS btype,
+				           r.rno AS bno,
+				           r.rtitle AS title,
+				           r.rdate AS regdate,
+				           r.rhit AS hit,
+				           CONCAT(CONCAT(b.bname, ' / ★'), r.rrate) AS extraInfo
+				      FROM RATING r
+				      JOIN BOOK b ON r.bno = b.bno
+				     WHERE r.mno = #{mno}
+				
+				     ORDER BY regdate DESC
+		  		  ) INNER_LIST
+		      )
+	      	WHERE RNUM BETWEEN #{startRow} AND #{endRow}
+	</select>
+
+	<!-- 전체 회원수 조회 (페이지 번호 계산용) -->
+	<select id="getTotalBoardCountByMno" resultType="int">
+		SELECT COUNT(*) FROM (
+		  		  	SELECT 'QNA' AS btype,
+				           qno AS bno,
+				           qtitle AS title,
+				           qdate AS regdate,
+				           qhit AS hit,
+				           qsecret AS extraInfo
+				      FROM QNA
+				     WHERE mno = #{mno}
+				
+				    UNION ALL
+				
+				    SELECT 'REVIEW' AS btype,
+				           r.rno AS bno,
+				           r.rtitle AS title,
+				           r.rdate AS regdate,
+				           r.rhit AS hit,
+				           CONCAT(CONCAT(b.bname, ' / ★'), r.rrate) AS extraInfo
+				      FROM RATING r
+				      JOIN BOOK b ON r.bno = b.bno
+				     WHERE r.mno = #{mno}
+				
+				     ORDER BY regdate DESC
+		  		  ) INNER_LIST
+	</select>
+	
 	
 	<insert id="memberInsert">
 		INSERT INTO MEMBER(MNO,MEMAIL,MPASSWD,MNAME,MADDR,MTEL,MACCOUNT,MGRADE,MDATE,MPOINT)

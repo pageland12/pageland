@@ -177,12 +177,34 @@ public class MemberController {
 	}
 	
 	@RequestMapping("/member/boardList")
-	public String myBoardList(@AuthenticationPrincipal User user, Model model) {
-	    String email = user.getUsername();
-	    MemberDTO member = mdao.findByEmail(email);
+	public String myBoardList(@AuthenticationPrincipal User user, Model model,
+							  @RequestParam(value = "pageNum", defaultValue = "1") int pageNum) {
+		int mno = mdao.findByEmail(user.getUsername()).getMno();
+		
+		int amount = 10; // 한 페이지당 보여줄 개수
+        
+        int startRow = (pageNum - 1) * amount + 1;
+        int endRow = pageNum * amount;
+        
+        // DAO를 통해 페이징된 도서 목록과 전체 개수 가져오기
+        List<MyBoardDTO> board = mdao.myAllBoardListPaging(mno, startRow, endRow);
+        int total = mdao.getTotalBoardCountByMno(mno);
+        int totalPages = (int) Math.ceil((double) total / amount);
+        
+        // 5개 단위 페이징 계산
+        int navSize = 5;
+        int startPage = ((pageNum - 1) / navSize) * navSize + 1;
+        int endPage = startPage + navSize - 1;
+        
+        if (endPage > totalPages) {
+            endPage = totalPages;
+        }
 
-	    List<MyBoardDTO> list = mdao.myAllBoardList(member.getMno());
-	    model.addAttribute("boardList", list);
+	    model.addAttribute("board", board);
+        model.addAttribute("pageNum", pageNum);
+        model.addAttribute("startPage", startPage);
+        model.addAttribute("endPage", endPage);
+        model.addAttribute("totalPages", totalPages);
 
 	    return "member/myBoardList";
 	}
@@ -196,7 +218,7 @@ public class MemberController {
 	// 모든 회원관리
 	@RequestMapping("/admin/memberList")
 	public String memberList(Model model, @RequestParam(value = "pageNum", defaultValue = "1") int pageNum) {
-		int amount = 16; // 한 페이지당 보여줄 개수
+		int amount = 10; // 한 페이지당 보여줄 개수
         
         int startRow = (pageNum - 1) * amount + 1;
         int endRow = pageNum * amount;

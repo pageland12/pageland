@@ -75,14 +75,18 @@ public class QnaController {
 		MemberDTO mDto = mDao.findByEmail(memail);
 		
 		dto.setMno(mDto.getMno());
-		
-		dto.setQpasswd(passwordEncoder.encode(dto.getQpasswd()));
 				
 		if (qupload != null && !qupload.isEmpty()) {
 	        String qfiles = qupload.getOriginalFilename();
 	        qupload.transferTo(new File("C:\\pageland\\src\\main\\resources\\static\\images\\" + qfiles));
 	        dto.setQfiles(qfiles);
 	    }
+		
+		if ("공개글".equals(dto.getQsecret())) {
+			dto.setQpasswd("-");
+		}
+		
+		dto.setQpasswd(passwordEncoder.encode(dto.getQpasswd()));
 			
 		dao.qnaWrite(dto);
 		
