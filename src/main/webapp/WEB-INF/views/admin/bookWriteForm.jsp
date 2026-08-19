@@ -17,7 +17,7 @@ function check() {
 	let bprice = document.bookWriteForm.bprice;
 	let bstock = document.bookWriteForm.bstock;
 	
-	let expBname = /^[a-zA-Z0-9가-힣\s?!.,-]+$/;
+	let expBname = /^[a-zA-Z0-9가-힣\s?!.,\[\]⌛⏳~\-]+$/;
 	let expBpublisher = /^[a-zA-Z0-9가-힣\s]+$/;
 	let expBprice = /^[0-9]{1,6}$/;
 	let expBstock = /^[0-9]{1,5}$/;

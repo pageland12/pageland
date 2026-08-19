@@ -8,19 +8,8 @@
 <meta charset="UTF-8">
 <title>Pageland</title>
 <style>
-    html, body {
-        height: 100%;
-        margin: 0;
-        padding: 0;
-    }
-
-    body {
-        display: flex;
-        flex-direction: column;
-    }
-
+    /* html, body 관련 스타일은 footer.jsp에서 처리하므로 삭제했습니다. */
     .main-content {
-        flex: 1;
         width: 100%;
         max-width: 1200px;
         margin: 0 auto;

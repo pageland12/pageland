@@ -6,17 +6,18 @@
 
 	<!-- 1. 페이징 처리된 후기 목록 조회 -->
 	<select id="ratingListPaging" resultType="com.springboot.pageland.dto.RatingDTO">
-		SELECT *
-		  FROM (
-			SELECT INNER_LIST.*, ROWNUM AS RNUM
-			  FROM (
-				SELECT R.*, M.MNAME
-				  FROM RATING R
-				  LEFT JOIN MEMBER M ON R.MNO = M.MNO
-				 ORDER BY R.RNO DESC
-			  ) INNER_LIST
-		  )
-		 WHERE RNUM BETWEEN #{startRow} AND #{endRow}
+	    SELECT *
+	      FROM (
+	        SELECT INNER_LIST.*, ROWNUM AS RNUM
+	          FROM (
+	            SELECT R.*, M.MNAME, B.BNAME, B.BIMG
+	              FROM RATING R
+	              LEFT JOIN MEMBER M ON R.MNO = M.MNO
+	              LEFT JOIN BOOK B ON R.BNO = B.BNO
+	             ORDER BY R.RNO DESC
+	          ) INNER_LIST
+	      )
+	     WHERE RNUM BETWEEN #{startRow} AND #{endRow}
 	</select>
 
 	<!-- 2. 전체 후기 개수 조회 -->
@@ -47,12 +48,13 @@
 	</select>
 	
 	<select id="ratingList" resultType="com.springboot.pageland.dto.RatingDTO">
-		select r.*, m.mname
-    	 from rating r
-    	 left join member m on r.mno = m.mno
-    	 order by r.rno desc
+	    select r.*, m.mname, b.bname, b.bimg
+	     from rating r
+	     left join member m on r.mno = m.mno
+	     left join book b on r.bno = b.bno
+	     order by r.rno desc
 	</select>
-	
+		
 	<select id="ratingView" resultType="com.springboot.pageland.dto.RatingDTO">
 		select r.*, m.mname, m.memail, b.bname, b.bimg, b.bprice
      	 from rating r

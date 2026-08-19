@@ -2,117 +2,243 @@
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <%@ taglib prefix="fmt" uri="jakarta.tags.fmt" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
-<title>이벤트</title>
-<style>
-    /* 탭 버튼 스타일 */
-    .all-btn {
-        display: inline-block;
-        padding: 6px 14px;
-        margin-right: 4px;
-        background-color: #f8f9fa;
-        color: #333;
-        text-decoration: none;
-        border: 1px solid #ccc;
-        border-radius: 4px;
-    }
-    .all-btn.active {
-        background-color: #212529;
-        color: #ffffff;
-        font-weight: bold;
-        border-color: #212529;
-    }
-    /* 작성 버튼 스타일 */
-    .write-btn {
-        display: inline-block;
-        padding: 6px 12px;
-        background-color: #0d6efd;
-        color: #fff;
-        text-decoration: none;
-        border-radius: 4px;
-        font-size: 14px;
-    }
-</style>
+    <meta charset="UTF-8">
+    <title>이벤트 - 페이지랜드</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #ffffff;
+            color: #333333;
+            font-family: 'Malgun Gothic', '맑은 고딕', sans-serif;
+        }
+
+        .page-container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px 80px 20px;
+            box-sizing: border-box;
+        }
+
+        .breadcrumb {
+            font-size: 13px;
+            color: #888888;
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .breadcrumb a {
+            color: #888888;
+            text-decoration: none;
+        }
+
+        .page-title {
+            text-align: center;
+            font-size: 28px;
+            font-weight: bold;
+            color: #111111;
+            margin-bottom: 30px;
+        }
+
+        .sub-tab-menu {
+            display: flex;
+            justify-content: center;
+            gap: 25px;
+            margin-bottom: 45px;
+        }
+        .sub-tab-menu a {
+            text-decoration: none;
+            color: #888888;
+            font-size: 15px;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+        .sub-tab-menu a:hover,
+        .sub-tab-menu a.active {
+            color: #111111;
+            font-weight: bold;
+        }
+
+        .admin-btn-area {
+            display: flex;
+            justify-content: flex-end;
+            margin-bottom: 12px;
+        }
+        .btn-write {
+            background-color: #222222;
+            color: #ffffff;
+            padding: 8px 16px;
+            border-radius: 4px;
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: bold;
+        }
+
+        .event-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+        }
+        .event-table th {
+            background-color: #f7f7f7;
+            color: #111111;
+            font-weight: bold;
+            padding: 16px 10px;
+            border-top: 1px solid #e2e2e2;
+            border-bottom: 1px solid #e2e2e2;
+            text-align: center;
+        }
+        .event-table td {
+            padding: 18px 10px;
+            border-bottom: 1px solid #eeeeee;
+            color: #666666;
+            text-align: center;
+        }
+
+        .event-table tr {
+            cursor: pointer;
+            transition: background-color 0.15s ease;
+        }
+        .event-table tr:hover {
+            background-color: #fcfcfc;
+        }
+
+        .title-td {
+            text-align: left !important;
+            color: #222222 !important;
+            font-weight: 500;
+        }
+
+        .hit-badge {
+            display: inline-block;
+            background-color: #2ecc71;
+            color: #ffffff;
+            font-size: 11px;
+            font-weight: bold;
+            padding: 2px 6px;
+            border-radius: 3px;
+            margin-left: 8px;
+            vertical-align: middle;
+        }
+
+        .event-badge {
+            color: #888888;
+            font-weight: 500;
+        }
+
+        .pagination {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+            margin-top: 40px;
+        }
+        .page-link {
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            border: 1px solid #e2e2e2;
+            color: #555555;
+            text-decoration: none;
+            font-size: 13px;
+            transition: all 0.2s ease;
+        }
+        .page-link:hover {
+            border-color: #999999;
+            color: #111111;
+        }
+        .page-link.active {
+            border-color: transparent;
+            font-weight: bold;
+            color: #111111;
+        }
+    </style>
 </head>
 <body>
 
-    <!-- 상단 메인 이동 링크 -->
-    <div style="text-align: right; margin-bottom: 10px;">
-        <a href="/" style="text-decoration: none; color: #555; font-size: 14px;">🏠 메인 페이지로 이동</a>
-    </div>
+    <%@ include file="header.jsp" %>
 
-    <!-- 헤더 및 작성 버튼 영역 -->
-    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
-        <h2>🎉 이벤트</h2>
+    <div class="page-container">
+        <div class="page-title">이벤트</div>
+
+        <div class="sub-tab-menu">
+		    <a href="/guest/qnaList">Q&A</a>
+		    <a href="/guest/eventList" class="active">이벤트</a>
+		    <a href="/guest/noticeList">공지사항</a>
+		    <a href="/guest/ratingList">후기</a>
+		</div>
+
         <sec:authorize access="hasRole('ADMIN')">
-            <a href="/admin/abWriteForm" class="write-btn">✏️ 이벤트 작성</a>
-        </sec:authorize>
-    </div>
-
-    <!-- 탭 버튼 영역 -->
-    <div style="margin-bottom: 20px;">
-        <a href="/guest/eventList" class="all-btn active">전체</a>
-    </div>
-
-    <hr>
-
-    <!-- 이벤트 목록 출력 (표 형태 제거) -->
-    <div style="width: 100%; max-width: 800px; margin: 0 auto;">
-        <c:forEach var="item" items="${event}">
-            <div onclick="location.href='/guest/abView?abno=${item.abno}'" 
-                 style="display: flex; align-items: center; padding: 14px 10px; border-bottom: 1px solid #ddd; cursor: pointer; transition: background-color 0.2s;"
-                 onmouseover="this.style.backgroundColor='#f9f9f9';" 
-                 onmouseout="this.style.backgroundColor='transparent';">         
-
-                <!-- 1. 제목 및 작성자 -->
-                <div style="flex-grow: 1;">
-                    <div style="font-weight: bold; font-size: 16px; margin-bottom: 6px; color: #333;">
-                        ${item.abtitle}
-                    </div>
-                    <div style="font-size: 13px; color: #777;">
-                        <span>작성자: ${item.mname}</span>
-                    </div>
-                </div>
-                
-                <!-- 2. 작성일 및 조회수 -->
-                <div style="text-align: right; font-size: 13px; color: #888; min-width: 90px;">
-                    <div><fmt:formatDate value="${item.abdate}" pattern="yyyy-MM-dd" /></div>
-                    <div style="margin-top: 4px;">조회수 ${item.abhit}</div>
-                </div>
-
+            <div class="admin-btn-area">
+                <a href="/admin/abWriteForm" class="btn-write">✏️ 이벤트 작성</a>
             </div>
-        </c:forEach>
+        </sec:authorize>
+
+        <table class="event-table">
+            <thead>
+                <tr>
+                    <th style="width: 8%;">번호</th>
+                    <th style="width: 52%;">제목</th>
+                    <th style="width: 12%;">카테고리</th>
+                    <th style="width: 12%;">작성자</th>
+                    <th style="width: 10%;">작성일</th>
+                    <th style="width: 6%;">조회</th>
+                </tr>
+            </thead>
+            <tbody>
+			    <c:forEach var="item" items="${event}">
+			        <tr onclick="location.href='/guest/abView?abno=${item.abno}'">
+			            <td>${item.abno}</td>
+			
+			            <td class="title-td">
+			                ${item.abtitle}
+			                <c:if test="${item.abhit >= 100}">
+			                    <span class="hit-badge">HIT</span>
+			                </c:if>
+			            </td>
+			
+			            <td>이벤트</td>
+			            <td>${item.mname ne null ? item.mname : '페이지랜드'}</td>
+			            <td><fmt:formatDate value="${item.abdate}" pattern="yy.MM.dd" /></td>
+			            <td>${item.abhit}</td>
+			        </tr>
+			    </c:forEach>
+			</tbody>
+        </table>
+
+        <div class="pagination">
+            <%-- 이전 버튼 --%>
+            <c:if test="${startPage > 1}">
+                <a href="/guest/eventList?pageNum=${startPage - 1}" class="page-link">&lt;</a>
+            </c:if>
+
+            <c:forEach begin="${startPage}" end="${endPage}" var="num">
+                <c:choose>
+                    <c:when test="${pageNum == num}">
+                        <span class="page-link active">${num}</span>
+                    </c:when>
+                    <c:otherwise>
+                        <a href="/guest/eventList?pageNum=${num}" class="page-link">${num}</a>
+                    </c:otherwise>
+                </c:choose>
+            </c:forEach>
+
+            <c:if test="${endPage < totalPages}">
+                <a href="/guest/eventList?pageNum=${endPage + 1}" class="page-link">&gt;</a>
+            </c:if>
+        </div>
     </div>
-    
-    <!-- 페이지 번호 이동 영역 (최대 5개씩 표시) -->
-    <div style="text-align: center; margin-top: 25px;">
-    
-        <%-- 이전 버튼 --%>
-        <c:if test="${startPage > 1}">
-            <a href="/guest/eventList?pageNum=${startPage - 1}" style="margin-right: 5px; text-decoration: none; color: black;">[이전]</a>
-        </c:if>
 
-        <%-- 5개 단위 페이지 번호 --%>
-        <c:forEach begin="${startPage}" end="${endPage}" var="num">
-            <c:choose>
-                <c:when test="${pageNum == num}">
-                    <span style="font-weight: bold; color: red; margin: 0 5px; font-size: 16px;">${num}</span>
-                </c:when>
-                <c:otherwise>
-                    <a href="/guest/eventList?pageNum=${num}" style="margin: 0 5px; text-decoration: none; color: black;">${num}</a>
-                </c:otherwise>
-            </c:choose>
-        </c:forEach>
-
-        <%-- 다음 버튼 --%>
-        <c:if test="${endPage < totalPages}">
-            <a href="/guest/eventList?pageNum=${endPage + 1}" style="margin-left: 5px; text-decoration: none; color: black;">[다음]</a>
-        </c:if>
-
-    </div>
+    <%@ include file="footer.jsp" %>
 
 </body>
 </html>

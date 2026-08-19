@@ -51,7 +51,7 @@
         display: flex;
         align-items: center;
         
-        transform: translateX(-160px);
+        transform: translateX(-75px);
     }
 
     .logo-area img {

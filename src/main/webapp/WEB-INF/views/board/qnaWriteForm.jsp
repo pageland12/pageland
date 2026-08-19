@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -13,9 +14,9 @@
 		제목 : <input type="text" name="qtitle"><br>
 		첨부파일 : <input type="file" name="qupload"><br>
 		내용 : <textarea name="qcontent" placeholder="내용을 입력해주세요" cols="50" rows="4"></textarea><br>
+		비밀글 설정 : 공개글 <input type="radio" name="qsecret" value="공개글" onchange="togglePassword(this.value)">
+					비밀글 <input type="radio" name="qsecret" value="비밀글" checked onchange="togglePassword(this.value)"><br>
 		게시글 비밀번호 : <input type="password" name="qpasswd"><br>
-		비밀글 설정 : 공개글 <input type="radio" name="qsecret" value="공개글">
-					비밀글 <input type="radio" name="qsecret" value="비밀글" checked><br>
 		<input type="submit" value="등록" onclick="return check()">
 		<input type="reset" value="취소" onclick="history.back()">
 	</form>
