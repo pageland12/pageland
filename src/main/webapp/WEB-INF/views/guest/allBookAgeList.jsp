@@ -11,10 +11,13 @@
         margin: 0;
         padding: 0;
     }
-
+    
     body {
         display: flex;
         flex-direction: column;
+        background-color: #ffffff;
+        color: #333333;
+        font-family: 'Malgun Gothic', '맑은 고딕', sans-serif;
     }
 
     .main-content {
@@ -190,13 +193,14 @@
     }
 
     .book-title {
-        font-size: 0.95rem;
+        font-size: 0.96rem;
         font-weight: 750;
         color: #000;
         margin-bottom: 6px;
         line-height: 1.4;
         word-break: break-word;
         cursor: pointer;
+        text-shadow: 0.1px 0.1px 0px rgba(0, 0, 0, 0.4);
     }
 
     .book-title:hover {
@@ -205,7 +209,7 @@
 
     .book-price {
         font-size: 0.92rem;
-        font-weight: 500;
+        font-weight: 750;
         color: #000;
         cursor: default;
     }
