@@ -1,24 +1,185 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="fmt" uri="jakarta.tags.fmt" %>
 <!DOCTYPE html>
 <head>
     <meta charset="UTF-8">
     <title>주문 / 결제</title>
+    <style>
+	    /* 결제 컨테이너 */
+	    .pay-container {
+	        width: 100%;
+	        max-width: 580px;
+	        margin: 60px auto 80px auto;
+	        padding: 0 20px;
+	        box-sizing: border-box;
+	    }
+	
+	    /* 결제 카드 (영수증 스타일) */
+	    .pay-card {
+	        background-color: #FFFFFF;
+	        border: 1px solid #EFE0D3;
+	        border-radius: 16px;
+	        padding: 40px 35px;
+	        box-shadow: 0 8px 24px rgba(90, 74, 66, 0.06);
+	    }
+	
+	    /* 상단 타이틀 */
+	    .pay-header {
+	        text-align: center;
+	        padding-bottom: 25px;
+	        border-bottom: 2px solid #5A4A42;
+	        margin-bottom: 30px;
+	    }
+	
+	    .pay-title {
+	        font-size: 1.55rem;
+	        font-weight: 800;
+	        color: #2C221E;
+	        margin: 0;
+	        letter-spacing: -0.5px;
+	    }
+	
+	    /* 결제 상세 내역 리스트 */
+	    .pay-list {
+	        display: flex;
+	        flex-direction: column;
+	        gap: 16px;
+	        margin-bottom: 30px;
+	    }
+	
+	    .pay-row {
+	        display: flex;
+	        justify-content: space-between;
+	        align-items: center;
+	        font-size: 0.95rem;
+	        color: #555555;
+	    }
+	
+	    .pay-row .label {
+	        color: #7A6A60;
+	        font-weight: 600;
+	    }
+	
+	    .pay-row .val {
+	        color: #2C221E;
+	        font-weight: 600;
+	        text-align: right;
+	        max-width: 320px;
+	        word-break: break-word;
+	    }
+	
+	    .pay-row .val.discount {
+	        color: #D32F2F;
+	    }
+	
+	    .pay-divider {
+	        height: 1px;
+	        background-color: #EFE0D3;
+	        margin: 8px 0;
+	    }
+	
+	    /* 최종 결제 금액 행 */
+	    .pay-row.total-row {
+	        margin-top: 10px;
+	        padding-top: 15px;
+	        border-top: 2px dashed #E8D8CA;
+	        align-items: baseline;
+	    }
+	
+	    .pay-row.total-row .label {
+	        font-size: 1.15rem;
+	        font-weight: 800;
+	        color: #2C221E;
+	    }
+	
+	    .pay-row.total-row .total-amount {
+	        font-size: 1.6rem;
+	        font-weight: 800;
+	        color: #8B5E3C;
+	    }
+	
+	    /* 결제 버튼 */
+	    .btn-payment {
+	        width: 100%;
+	        height: 54px;
+	        background-color: #8B5E3C;
+	        color: #FFFFFF;
+	        border: none;
+	        border-radius: 10px;
+	        font-size: 1.1rem;
+	        font-weight: 700;
+	        cursor: pointer;
+	        transition: background-color 0.2s ease, transform 0.1s ease;
+	        display: flex;
+	        align-items: center;
+	        justify-content: center;
+	        gap: 8px;
+	    }
+	
+	    .btn-payment:hover {
+	        background-color: #6F4A2F;
+	        transform: translateY(-2px);
+	    }
+	
+	    .btn-payment:active {
+	        transform: translateY(0);
+	    }
+	
+	    /* 연체료 전용 강조 버튼 (필요 시 class 추가: btn-overdue) */
+	    .btn-overdue {
+	        background-color: #D32F2F !important;
+	    }
+	
+	    .btn-overdue:hover {
+	        background-color: #B71C1C !important;
+	    }
+	</style>
     <!-- 포트원 V2 SDK 스크립트 -->
     <script src="https://cdn.portone.io/v2/browser-sdk.js"></script>
 </head>
 <body>
-    <h2>연체료 결제 페이지</h2>
+    <%@ include file="../guest/header.jsp" %>
     
-    <div>
-        <p>연체 상품: ${prodName}</p>
-        <p>결제 금액: ${totalAmount}원</p>
-        <p>결제 이메일: ${buyerEmail}</p>
-    </div>
+    <main class="pay-container">
+        <div class="pay-card">
+            
+            <!-- 1. 타이틀 -->
+            <div class="pay-header">
+                <h2 class="pay-title">연체료 정산 및 결제</h2>
+            </div>
 
-    <!-- 결제하기 버튼 -->
-    <button type="button" onclick="requestPayment()">결제하기</button>
+            <!-- 2. 결제 내역 -->
+            <div class="pay-list">
+                <div class="pay-row">
+                    <span class="label">주문 상품</span>
+                    <span class="val">${prodName}</span>
+                </div>
 
+                <div class="pay-row">
+                    <span class="label">주문자 이메일</span>
+                    <span class="val">${buyerEmail}</span>
+                </div>
+
+                <!-- 최종 금액 행 -->
+                <div class="pay-row total-row">
+                    <span class="label">결제 금액</span>
+                    <span class="total-amount">
+                        <fmt:formatNumber value="${totalAmount}" pattern="#,###" />원
+                    </span>
+                </div>
+            </div>
+
+            <!-- 3. 결제 버튼 -->
+            <button type="button" class="btn-payment" onclick="requestPayment()">
+                <fmt:formatNumber value="${totalAmount}" pattern="#,###" />원 결제하기
+            </button>
+
+        </div>
+    </main>
+		
+	<%@ include file="../guest/footer.jsp" %>
+	
     <script th:inline="javascript">
         async function requestPayment() {
             const orderName = '${prodName}';
