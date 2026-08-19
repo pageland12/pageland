@@ -107,11 +107,11 @@ public class MemberController {
 		return "logout";
 	}	
 	
-	// 마이페이지
+	// 마이페이지: 
 	@RequestMapping("/member/memberMain")
 	public String membermain(Authentication authentication, Model model) {
 	    model.addAttribute("view", mdao.findByEmail(authentication.getName()));	    
-	    return "member/memberMain";
+	    return "redirect:/member/myBookList";
 	}
 	
 	// 비밀번호 확인폼 (수정/탈퇴 공용)

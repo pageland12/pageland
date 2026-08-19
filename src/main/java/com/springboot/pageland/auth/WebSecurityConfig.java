@@ -28,8 +28,8 @@ public class WebSecurityConfig {
 					.dispatcherTypeMatchers(DispatcherType.FORWARD).permitAll()	// 내부 포인트 요청 허용
 					.requestMatchers("/","/main", "/j_spring_security_check").permitAll()	// root(/)는 모두 허용
 					.requestMatchers("/css/**","/js/**","/images/**", "/favicon.ico").permitAll()// 정적 리소스 모두 허용
-					.requestMatchers("/guest/**","/board/**", "/cart/**", "/pay/**").permitAll()	// 모두 허용 (게스트 페이지)
-					.requestMatchers("/member/**", "/cart/**", "/pay/**").hasAnyRole("NORMAL","SUBSCRIBER","ADMIN") // USER와 ADMIN만 허용 (회원 페이지)
+					.requestMatchers("/guest/**").permitAll()	// 모두 허용 (게스트 페이지)
+					.requestMatchers("/member/**", "/cart/**", "/pay/**", "/board/**").hasAnyRole("NORMAL","SUBSCRIBER","ADMIN") // USER와 ADMIN만 허용 (회원 페이지)
 					.requestMatchers("/admin/**").hasAnyRole("ADMIN") // ADMIN만 허용 (관리자 페이지)
 					.anyRequest().authenticated() // 나머지는 모두 인증 필요
 			);
