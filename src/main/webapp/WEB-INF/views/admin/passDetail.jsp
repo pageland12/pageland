@@ -6,7 +6,7 @@
 <head>
     <meta charset="UTF-8">
     <title>등록 구독권 관리</title>
-    <link rel="stylesheet" type="text/css" href="<c:url value='/css/detailCss.css'/>">
+    <link rel="stylesheet" type="text/css" href="<c:url value='/css/adminDetailCss.css'/>">
 </head>
 <body>
     <%@ include file="../guest/header.jsp" %>
