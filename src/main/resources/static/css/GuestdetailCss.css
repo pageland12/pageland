@@ -88,13 +88,6 @@ body {
     font-weight: 600;
 }
 
-/* 가격 강조 */
-.info-value.price {
-    font-size: 22px;
-    font-weight: 800;
-    color: #111;
-}
-
 /* Select 박스 스타일 */
 .info-value select {
     min-width: 160px;
@@ -198,3 +191,42 @@ body {
         flex-direction: column;
     }
 }
+
+/* 관리자 전용 추가 스타일 (삭제 버튼 및 수정 버튼 스타일링) */
+        .btn-delete {
+        	flex: 1.5 !important;
+            background-color: #ff4d4f !important;
+            color: #fff !important;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            border-radius: 8px;
+            padding: 12px 0 !important;
+        }
+        .btn-delete:hover {
+            background-color: #d9363e !important;
+        }
+        .btn-update {
+        	flex: 1.5 !important;
+            background-color: #111 !important;
+            color: #fff !important;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            border-radius: 8px;
+            padding: 12px 0 !important;
+        }
+        .btn-update:hover {
+            background-color: #333 !important;
+        }
+        .admin-badge {
+            display: inline-block;
+            background-color: #333;
+            color: #fff;
+            font-size: 12px;
+            padding: 3px 8px;
+            border-radius: 4px;
+            margin-bottom: 8px;
+        }

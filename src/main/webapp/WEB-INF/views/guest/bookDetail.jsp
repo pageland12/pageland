@@ -6,8 +6,7 @@
 <head>
     <meta charset="UTF-8">
     <title>도서 상세</title>
-    <!-- 실제 파일명인 detailCss.css로 변경 & c:url 적용 -->
-    <link rel="stylesheet" type="text/css" href="<c:url value='/css/detailCss.css'/>">
+    <link rel="stylesheet" type="text/css" href="<c:url value='/css/GuestdetailCss.css'/>">
 </head>
 <body>
 	<%@ include file="header.jsp" %>

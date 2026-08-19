@@ -1,44 +1,74 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
-<title>등록 구독권 상세</title>
+    <meta charset="UTF-8">
+    <title>등록 구독권 관리</title>
+    <link rel="stylesheet" type="text/css" href="<c:url value='/css/detailCss.css'/>">
 </head>
 <body>
-	<table border=1 width=400>
-		<tr>
-			<td>구독권 이름</td>
-			<td>${pass.pname}</td>
-		</tr>
-		<tr>
-			<td>구독권 유형</td>
-			<td>${pass.ptype}</td>
-		</tr>
-		<tr>
-			<td>구독권 이미지</td>
-			<td><img src="${pass.pimg}" width=100 alt=구독권 이미지></td>
-		</tr>
-		<tr>
-			<td>상세 정보</td>
-			<td><img src="${pass.pinfo}" width=100 alt=구독권 상세정보></td>
-		</tr>		
-		<tr>
-			<td>구독권 기간</td>
-			<td>${pass.pperiod}</td>
-		</tr>
-		<tr>
-			<td>N회권 개수</td>
-			<td>${pass.pcount}</td>
-		</tr>
-		<tr>
-			<td>N회권 가격</td>
-			<td>${pass.pprice}</td>
-		</tr>
-	</table>
-	<a href="/admin/passUpdateForm?pno=${pass.pno}">수정</a>
-	<a href="/admin/passDelete?pno=${pass.pno}">삭제</a>
-	<a href="/admin/adminMain">관리자페이지로 이동</a>
+    <%@ include file="../guest/header.jsp" %>
+    
+    <div class="detail-container">
+        <!-- 상단 2단 레이아웃 (좌: 이미지 / 우: 상세 정보) -->
+        <div class="product-top-section">
+            
+            <!-- 좌측 대표 썸네일 -->
+            <div class="product-image-area">
+                <img alt="${pass.pname}" src="${pass.pimg}">
+            </div>
+            
+            <!-- 우측 구독권 정보 및 관리자 메뉴 -->
+            <div class="product-info-area">
+                <div>
+                    <span class="admin-badge">관리자 모드</span>
+                </div>
+                <h1 class="product-title">${pass.pname}</h1>
+                
+                <div class="info-row">
+                    <span class="info-label">구독권 유형</span>
+                    <span class="info-value">${pass.ptype}</span>
+                </div>
+
+                <div class="info-row">
+                    <span class="info-label">구독권 기간</span>
+                    <span class="info-value">${pass.pperiod}</span>
+                </div>
+
+                <div class="info-row">
+                    <span class="info-label">N회권 개수</span>
+                    <span class="info-value">${pass.pcount}개</span>
+                </div>
+                
+                <div class="info-row">
+                    <span class="info-label">가격</span>
+                    <span class="info-value price">${pass.pprice}원</span>
+                </div>
+                
+                <!-- 관리자 버튼 영역 (수정 / 삭제 / 관리자페이지) -->
+                <div class="button-group">
+                    <a href="/admin/passUpdateForm?pno=${pass.pno}" class="btn-update">수정하기</a>
+                    <a href="javascript:void(0);" onclick="deleteCheck('${pass.pno}')" class="btn-delete">삭제하기</a>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 하단 상세 설명 이미지 -->
+        <div class="product-detail-section">
+            <h2 class="detail-title">상세 정보</h2>
+            <img class="detail-content-img" alt="구독권 상세정보" src="${pass.pinfo}">
+        </div>
+    </div>
+
+    <script>
+        function deleteCheck(pno) {
+            if (confirm("정말 이 구독권을 삭제하시겠습니까?")) {
+                location.href = "/admin/passDelete?pno=" + pno;
+            }
+        }
+    </script>
+    <%@ include file="../guest/footer.jsp" %>
 </body>
 </html>
