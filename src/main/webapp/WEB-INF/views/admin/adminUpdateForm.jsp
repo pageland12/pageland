@@ -47,7 +47,7 @@
 		<tr>
 			<td>등급</td>
 			<td>
-				<select name="mgrade">
+				<select name="mgrade" required>
 					<option value="">----- 등급 선택 -----</option>
 					<option value="NORMAL" ${update.mgrade == 'NORMAL' ? 'selected' : ''}>NORMAL</option>
 					<option value="SUBSCRIBER" ${update.mgrade == 'SUBSCRIBER' ? 'selected' : ''}>SUBSCRIBER</option>

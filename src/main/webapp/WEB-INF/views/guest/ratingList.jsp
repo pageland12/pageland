@@ -58,7 +58,6 @@
     <!-- 헤더 및 작성 버튼 영역 -->
     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
         <h2>⭐ 구매 후기</h2>
-        <a href="/board/ratingWriteForm" class="write-btn">✏️ 후기 작성</a>
     </div>
 
     <!-- 탭 버튼 영역 -->

@@ -21,13 +21,13 @@
         </thead>
         <tbody>
             <c:choose>
-                <c:when test="${empty boardList}">
+                <c:when test="${empty board}">
                     <tr>
                         <td colspan="5" align="center">작성한 게시글이 없습니다.</td>
                     </tr>
                 </c:when>
                 <c:otherwise>
-                    <c:forEach var="post" items="${boardList}">
+                    <c:forEach var="post" items="${board}">
                         <tr>
                             <!-- 분류 뱃지 -->
                             <td align="center">
@@ -69,7 +69,34 @@
             </c:choose>
         </tbody>
     </table>
+	
+	<!-- 페이지 번호 이동 영역 (최대 5개씩 표시) -->
+	<div style="text-align: center; margin-top: 20px;">
+    
+	    <%-- 이전 버튼 (첫 페이지 블록이 아닐 때만 표시) --%>
+	    <c:if test="${startPage > 1}">
+	        <a href="/member/boardList?pageNum=${startPage - 1}" style="margin-right: 5px; text-decoration: none; color: black;">[이전]</a>
+	    </c:if>
+	
+	    <%-- 5개 단위 페이지 번호 출력 --%>
+	    <c:forEach begin="${startPage}" end="${endPage}" var="num">
+	        <c:choose>
+	            <c:when test="${pageNum == num}">
+	                <span style="font-weight: bold; color: red; margin: 0 5px; font-size: 16px;">${num}</span>
+	            </c:when>
+	            <c:otherwise>
+	                <a href="/member/boardList?pageNum=${num}" style="margin: 0 5px; text-decoration: none; color: black;">${num}</a>
+	            </c:otherwise>
+	        </c:choose>
+	    </c:forEach>
+	
+	    <%-- 다음 버튼 (마지막 페이지 블록이 아닐 때만 표시) --%>
+	    <c:if test="${endPage < totalPages}">
+	        <a href="/member/boardList?pageNum=${endPage + 1}" style="margin-left: 5px; text-decoration: none; color: black;">[다음]</a>
+	    </c:if>
 
+	</div>
+	
     <br>
     <button type="button" onclick="location.href='/member/memberMain'">마이페이지</button>
 </body>
