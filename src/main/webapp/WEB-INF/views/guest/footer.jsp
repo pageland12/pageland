@@ -1,6 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <style>
-    /* 1. 페이지 전체(body)가 최소한 모니터 화면 전체 높이(100vh)를 차지하도록 설정 */
     html, body {
         height: 100%;
         margin: 0;
@@ -12,37 +11,113 @@
         min-height: 100vh;
     }
 
-    /* 2. 본문 영역(header와 footer 사이의 컨테이너들)이 남는 공간을 모두 채우도록 설정 */
     header {
         flex-shrink: 0;
     }
 
-    /* header 다음, footer 바로 앞에 오는 모든 요소(본문 컨테이너)가 팽창하도록 처리 */
     header ~ *:not(footer) {
         flex: 1 0 auto;
     }
 
-    /* 3. 하단 푸터 */
     footer {
-        background-color: #FAF0E6; /* 헤더와 동일한 크림색 */
+        background-color: #FAF0E6;
         color: #7A6A60;
-        padding: 20px;
-        text-align: center;
+        padding: 35px 20px 25px 20px;
         border-top: 1px solid #EFE0D3;
-        flex-shrink: 0; /* 높이 줄어듦 방지 */
+        flex-shrink: 0;
         width: 100%;
         box-sizing: border-box;
+        font-family: 'Malgun Gothic', '맑은 고딕', sans-serif;
     }
 
     .footer-content {
-        max-width: 1200px;
+        max-width: 1100px;
         margin: 0 auto;
-        font-size: 14px;
+        font-size: 13px;
+        line-height: 1.6;
+    }
+
+    .footer-links {
+        margin-bottom: 18px;
+        padding-bottom: 15px;
+        border-bottom: 1px solid #EFE0D3;
+    }
+
+    .footer-links a {
+        color: #5A4A40;
+        text-decoration: none;
+        margin-right: 18px;
+        font-weight: 500;
+    }
+
+    .footer-links a:hover {
+        text-decoration: underline;
+    }
+
+    .footer-links a.bold-link {
+        font-weight: bold;
+        color: #2b221c;
+    }
+
+    .footer-info-wrap {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        flex-wrap: wrap;
+        gap: 20px;
+        margin-bottom: 20px;
+    }
+
+    .footer-company-info {
+        color: #8C7B70;
+    }
+
+    .footer-cs-info {
+        text-align: right;
+    }
+
+    .footer-cs-info .cs-number {
+        font-size: 18px;
+        font-weight: bold;
+        color: #4A3B32;
+        margin-bottom: 4px;
+    }
+
+    .footer-copyright {
+        color: #A09085;
+        font-size: 12px;
+        margin-top: 15px;
     }
 </style>
 
 <footer>
     <div class="footer-content">
-        <p>Copyright © Pageland. All rights reserved.</p>
+        
+        <div class="footer-links">
+            <a href="/#">페이지랜드 소개</a>
+            <a href="/#">이용약관</a>
+            <a href="/#" class="bold-link">개인정보처리방침</a>
+            <a href="/#">대여/반납 안내</a>
+            <a href="/#">고객센터</a>
+        </div>
+
+        <div class="footer-info-wrap">
+            <div class="footer-company-info">
+                <strong>(주) 페이지랜드</strong> | 대표자: KH아카데미 | 사업자등록번호: 123-45-67890<br>
+    			통신판매업신고: 2026-부산진구-0000호 | 개인정보보호책임자: KH아카데미<br>
+                주소: 부산광역시 부산진구 중앙대로 627 삼비빌딩 12층
+            </div>
+
+            <div class="footer-cs-info">
+                <div class="cs-number">🎧 1588-0000</div>
+                <div>평일 09:00 - 18:00 (주말/공휴일 휴무)</div>
+                <div>이메일: pageland12@gmail.com</div>
+            </div>
+        </div>
+
+        <div class="footer-copyright">
+            Copyright © Pageland Corp. All rights reserved.
+        </div>
+
     </div>
 </footer>

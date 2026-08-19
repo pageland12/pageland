@@ -4,7 +4,6 @@
 	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.springboot.pageland.dao.IQnaDAO">
 
-	<!-- 1. 페이징 처리된 QnA 목록 조회 -->
 	<select id="qnaListPaging" resultType="com.springboot.pageland.dto.QnaDTO">
 		SELECT *
 		  FROM (
@@ -19,34 +18,29 @@
 		 WHERE RNUM BETWEEN #{startRow} AND #{endRow}
 	</select>
 
-	<!-- 2. 전체 QnA 게시글 수 -->
 	<select id="getTotalCount" resultType="int">
 		SELECT COUNT(*) FROM QNA
 	</select>
 
-	<!-- 3. QnA 전체 목록 조회 (페이징 미적용 시) -->
 	<select id="qnaList" resultType="com.springboot.pageland.dto.QnaDTO">
-		SELECT Q.*, M.MNAME
-		  FROM QNA Q
-		  LEFT JOIN MEMBER M ON Q.MNO = M.MNO
-		 ORDER BY Q.QNO DESC
+	    SELECT Q.*, M.MNAME, M.MEMAIL
+	      FROM QNA Q
+	      LEFT JOIN MEMBER M ON Q.MNO = M.MNO
+	     ORDER BY Q.QNO DESC
 	</select>
 	
-	<!-- 4. QnA 상세 보기 -->
 	<select id="qnaView" resultType="com.springboot.pageland.dto.QnaDTO">
-		SELECT Q.*, M.MNAME
-		  FROM QNA Q
-		  LEFT JOIN MEMBER M ON Q.MNO = M.MNO
-		 WHERE Q.QNO = #{qno}
+	    SELECT Q.*, M.MNAME, M.MEMAIL
+	      FROM QNA Q
+	      LEFT JOIN MEMBER M ON Q.MNO = M.MNO
+	     WHERE Q.QNO = #{qno}
 	</select>
 	
-	<!-- 5. QnA 작성 -->
 	<insert id="qnaWrite">
 		INSERT INTO QNA(QNO, QTITLE, QCONTENT, QFILES, QPASSWD, QSECRET, QDATE, MNO)
 		VALUES(QNA_SEQ.NEXTVAL, #{qtitle}, #{qcontent}, #{qfiles, jdbcType=VARCHAR}, #{qpasswd}, #{qsecret}, SYSDATE, #{mno})
 	</insert>
 	
-	<!-- 6. QnA 수정 -->
 	<update id="qnaUpdate">
 		UPDATE QNA
 		   SET QTITLE = #{qtitle}, 
@@ -57,13 +51,11 @@
 		 WHERE QNO = #{qno}
 	</update>
 	
-	<!-- 7. QnA 삭제 -->
 	<delete id="qnaDelete">
 		DELETE FROM QNA
 		 WHERE QNO = #{qno}
 	</delete>
 	
-	<!-- 8. QnA 조회수 증가 -->
 	<update id="qnaHit">
 		UPDATE QNA
 		   SET QHIT = QHIT + 1

@@ -1,0 +1,242 @@
+@charset "UTF-8";
+
+body {
+    margin: 0;
+    padding: 0;
+    background-color: #ffffff;
+    color: #333333;
+    font-family: 'Malgun Gothic', '맑은 고딕', sans-serif;
+}
+
+.write-container {
+    width: 100%;
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 40px 20px 80px 20px;
+    box-sizing: border-box;
+}
+
+.page-title {
+    text-align: center;
+    font-size: 24px;
+    font-weight: bold;
+    color: #111111;
+    margin-bottom: 40px;
+    letter-spacing: 1px;
+}
+
+/* 쇼핑몰 스타일 테이블 레이아웃 */
+.write-table {
+    width: 100%;
+    border-collapse: collapse;
+    border-top: 1px solid #e5e5e5;
+    border-bottom: 1px solid #e5e5e5;
+}
+
+.write-table th {
+    width: 160px;
+    background-color: #f9f9f9;
+    padding: 15px 20px;
+    text-align: left;
+    font-weight: bold;
+    font-size: 13px;
+    color: #222222;
+    border-bottom: 1px solid #e5e5e5;
+    vertical-align: middle;
+}
+
+.write-table td {
+    padding: 12px 20px;
+    border-bottom: 1px solid #e5e5e5;
+    vertical-align: middle;
+}
+
+/* Input & Textarea 스타일 */
+.input-text {
+    width: 100%;
+    max-width: 500px;
+    height: 38px;
+    padding: 0 12px;
+    border: 1px solid #dcdcdc;
+    box-sizing: border-box;
+    font-size: 13px;
+    outline: none;
+    transition: border-color 0.2s;
+}
+
+.input-text:focus {
+    border-color: #222222;
+}
+
+.textarea-content {
+    width: 100%;
+    height: 300px;
+    padding: 12px;
+    border: 1px solid #dcdcdc;
+    box-sizing: border-box;
+    font-size: 13px;
+    resize: vertical;
+    outline: none;
+    font-family: inherit;
+}
+
+.textarea-content:focus {
+    border-color: #222222;
+}
+
+/* 라디오 버튼 & 첨부파일 */
+.radio-group {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    font-size: 13px;
+}
+
+.radio-group label {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+}
+
+.file-input {
+    font-size: 13px;
+}
+
+.current-file-info {
+    margin-top: 6px;
+    font-size: 12px;
+    color: #666666;
+}
+
+/* 안내 문구 */
+.notice-area {
+    margin-top: 25px;
+    font-size: 12px;
+    color: #777777;
+    line-height: 1.8;
+}
+
+.notice-area p {
+    margin: 0;
+    position: relative;
+    padding-left: 10px;
+}
+
+.notice-area p::before {
+    content: "·";
+    position: absolute;
+    left: 0;
+    font-weight: bold;
+}
+
+/* 하단 버튼 영역 */
+.btn-group {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 40px;
+}
+
+.btn {
+    display: inline-block;
+    min-width: 100px;
+    height: 42px;
+    line-height: 40px;
+    text-align: center;
+    font-size: 13px;
+    font-weight: 500;
+    text-decoration: none;
+    border-radius: 2px;
+    cursor: pointer;
+    box-sizing: border-box;
+}
+
+.btn-outline {
+    background-color: #ffffff;
+    color: #333333;
+    border: 1px solid #cccccc;
+}
+
+.btn-outline:hover {
+    background-color: #f8f8f8;
+}
+
+.btn-dark {
+    background-color: #222222;
+    color: #ffffff;
+    border: 1px solid #222222;
+}
+
+.btn-dark:hover {
+    background-color: #444444;
+}
+
+.btn-right-group {
+    display: flex;
+    gap: 8px;
+}
+
+.select-category {
+	height: 38px;
+	padding: 0 12px;
+	border: 1px solid #dcdcdc;
+	box-sizing: border-box;
+	font-size: 13px;
+	outline: none;
+	background-color: #ffffff;
+	min-width: 150px;
+}
+
+.select-category:focus {
+	border-color: #222222;
+}
+
+.select-rate {
+    font-size: 14px;
+    color: #f39c12;
+    font-weight: bold;
+    min-width: 160px;
+}
+
+.select-rate option {
+    color: #f39c12;
+    background-color: #ffffff;
+}
+
+/* 도서 정보 상단 카드 영역 */
+.book-info-card {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    background-color: #fdfdfd;
+    border: 1px solid #e5e5e5;
+    padding: 20px;
+    border-radius: 4px;
+    margin-bottom: 30px;
+}
+
+.book-img {
+    width: 100px;
+    height: 120px;
+    object-fit: cover;
+    border: 1px solid #eeeeee;
+    border-radius: 2px;
+}
+
+.book-details {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.book-title {
+    font-size: 16px;
+    font-weight: bold;
+    color: #111111;
+}
+
+.order-no {
+    font-size: 13px;
+    color: #777777;
+}
