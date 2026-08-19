@@ -109,6 +109,12 @@ public class OrderController {
 				return "redirect:/guest/bookDetail?bno=" + cdto.getBno();
 			}
 			
+			// 대여 권수 3권이면 결제 X
+	        if (mbdao.activeRentBooksCount(mno) >= 3) {
+	            rttr.addFlashAttribute("msg", "동시 대여는 최대 3권까지만 가능합니다.");
+	            return "redirect:/guest/bookDetail?bno=" + cdto.getBno();
+	        }
+			
 			// 이미 대여 중인 도서는 바로 결제 X
 			MemberBooksDTO rentCheck = new MemberBooksDTO();
 			rentCheck.setMno(mno);
@@ -867,10 +873,34 @@ public class OrderController {
 	
 	@RequestMapping("/member/orderList")
 	public String orderList(Model model,
-							@AuthenticationPrincipal User user) {
+							@AuthenticationPrincipal User user,
+							@RequestParam(value = "pageNum", defaultValue = "1") int pageNum) {
 		int mno = mdao.findByEmail(user.getUsername()).getMno();
 		
-		model.addAttribute("orders", oldao.morderList(mno));
+		int amount = 5; // 한 페이지당 5개
+	    
+	    int startRow = (pageNum - 1) * amount + 1;
+	    int endRow = pageNum * amount;
+	    
+	    List<OrderListDTO> orders = oldao.memberOrderListPaging(mno, startRow, endRow);
+	    int total = oldao.getTotalOrderCountByMno(mno);
+	    int totalPages = (int) Math.ceil((double) total / amount);
+	    
+	    // --- 화면에 보여줄 페이지 번호 개수 (최대 5개) ---
+	    int navSize = 5;
+	    int startPage = ((pageNum - 1) / navSize) * navSize + 1;
+	    int endPage = startPage + navSize - 1;
+	    
+	    // 실제 총 페이지 수를 넘지 않도록 조정
+	    if (endPage > totalPages) {
+	        endPage = totalPages;
+	    }
+		
+		model.addAttribute("orders", orders);
+	    model.addAttribute("pageNum", pageNum);
+	    model.addAttribute("startPage", startPage);
+	    model.addAttribute("endPage", endPage);
+	    model.addAttribute("totalPages", totalPages);
 		
 		return "member/orderList";
 	}

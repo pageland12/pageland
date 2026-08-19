@@ -1,7 +1,11 @@
 package com.springboot.pageland.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -10,7 +14,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.springboot.pageland.dao.IBookDAO;
 import com.springboot.pageland.dao.IMemberDAO;
+import com.springboot.pageland.dto.BookDTO;
 import com.springboot.pageland.dto.MemberDTO;
+import com.springboot.pageland.dto.MyBoardDTO;
 
 import jakarta.servlet.http.HttpServletRequest;
 
@@ -170,6 +176,17 @@ public class MemberController {
 		return "redirect:/member/memberMain";
 	}
 	
+	@RequestMapping("/member/boardList")
+	public String myBoardList(@AuthenticationPrincipal User user, Model model) {
+	    String email = user.getUsername();
+	    MemberDTO member = mdao.findByEmail(email);
+
+	    List<MyBoardDTO> list = mdao.myAllBoardList(member.getMno());
+	    model.addAttribute("boardList", list);
+
+	    return "member/myBoardList";
+	}
+	
 	// 관리자페이지
 	@RequestMapping("/admin/adminMain")
 	public String adminMain() {
@@ -178,9 +195,34 @@ public class MemberController {
 	
 	// 모든 회원관리
 	@RequestMapping("/admin/memberList")
-	public String memberList(Model model) {
-		model.addAttribute("list", mdao.memberList());
-	       return "admin/memberList";
+	public String memberList(Model model, @RequestParam(value = "pageNum", defaultValue = "1") int pageNum) {
+		int amount = 16; // 한 페이지당 보여줄 개수
+        
+        int startRow = (pageNum - 1) * amount + 1;
+        int endRow = pageNum * amount;
+        
+        // DAO를 통해 페이징된 도서 목록과 전체 개수 가져오기
+        List<MemberDTO> members = mdao.memberListPaging(startRow, endRow);
+        int total = mdao.getTotalMemberCount();
+        int totalPages = (int) Math.ceil((double) total / amount);
+        
+        // 5개 단위 페이징 계산
+        int navSize = 5;
+        int startPage = ((pageNum - 1) / navSize) * navSize + 1;
+        int endPage = startPage + navSize - 1;
+        
+        if (endPage > totalPages) {
+            endPage = totalPages;
+        }
+        
+        // JSP로 데이터 전달
+        model.addAttribute("lists", members);
+        model.addAttribute("pageNum", pageNum);
+        model.addAttribute("startPage", startPage);
+        model.addAttribute("endPage", endPage);
+        model.addAttribute("totalPages", totalPages);
+	      
+        return "admin/memberList";
 	}
 	
 	// 회원상세보기

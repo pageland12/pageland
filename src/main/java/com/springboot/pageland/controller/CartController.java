@@ -50,6 +50,14 @@ public class CartController {
 				return "guest/bookDetail";
 			}
 			
+			// 대여 도서가 3권이면 장바구니 등록 X
+			int currentRentCount = mbdao.activeRentBooksCount(mno);
+	        if (currentRentCount >= 3) {
+	            model.addAttribute("msg", "동시 대여는 최대 3권까지만 가능합니다.\\n(현재 대여 중인 도서: " + currentRentCount + "권)");
+	            model.addAttribute("book", bdao.bookDetail(cdto.getBno()));
+	            return "guest/bookDetail";
+	        }
+			
 			// 이미 대여 중인 도서는 장바구니 등록 X
 			MemberBooksDTO rentCheck = new MemberBooksDTO();
 			rentCheck.setMno(mno);

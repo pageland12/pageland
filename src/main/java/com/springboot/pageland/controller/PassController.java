@@ -30,9 +30,9 @@ public class PassController {
 	
 	@RequestMapping("/admin/passWrite")
 	public String passWrite(PassDTO pdto) {
-		if (pdto.getPtype() == "정기권") {
+		if ("정기권".equals(pdto.getPtype())) {
 			pdto.setPcount(null);
-		} else if (pdto.getPtype() == "N회권") {
+		} else if ("N회권".equals(pdto.getPtype())) {
 			pdto.setPperiod(null);
 		}
 		
