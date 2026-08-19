@@ -89,7 +89,9 @@ public class AdminBoardController {
     }
 	
 	@RequestMapping("/admin/abWriteForm")
-	public String abWriteForm() {
+	public String abWriteForm(@RequestParam(value = "category", required = false, defaultValue = "NOTICE") String category, Model model) {
+		model.addAttribute("category", category);
+		
 		return "admin/abWriteForm";
 	}
 	

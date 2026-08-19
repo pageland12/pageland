@@ -212,7 +212,7 @@
             </div>
 
             <div class="icon-menu">
-                <a href="/cart/cartList" class="icon-btn" title="장바구니">🛍️</a>
+                <a href="/cart/cartList" class="icon-btn" title="장바구니">🛒</a>
             </div>
         </div>
     </div>
