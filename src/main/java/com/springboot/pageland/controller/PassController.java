@@ -74,6 +74,8 @@ public class PassController {
 	public String passDelete(@RequestParam("pno") int pno) {
 		pdao.passDelete(pno);
 		return "redirect:/admin/passList";
+	}	
+	
 	@RequestMapping("/guest/allPassList")
 	public String allPassList(@RequestParam(value = "pageNum", defaultValue = "1") int pageNum, Model model) {
 	    int amount = 16; // 한 페이지당 16개 출력
