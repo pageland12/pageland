@@ -6,7 +6,7 @@
 	<select id="bookList" resultType="com.springboot.pageland.dto.BookDTO">
 		SELECT *
 		  FROM BOOK
-		 ORDER BY BNO DESC
+		 ORDER BY BNO ASC
 	</select>
 	
 	<select id="bookDetail" resultType="com.springboot.pageland.dto.BookDTO">
@@ -15,7 +15,6 @@
 		 WHERE BNO=#{bno}
 	</select>
 	
-
 	<insert id="bookInsert">
 		INSERT INTO BOOK(BNO,BNAME,BPRICE,BAGE,BGENRE,BPUBLISHER,BIMG,BINFO,BSTOCK,BLIKE)
 		 VALUES(BOOK_SEQ.NEXTVAL,#{bname},#{bprice},#{bage},#{bgenre},#{bpublisher},#{bimg},#{binfo},
@@ -49,21 +48,21 @@
 	<select id="bookListByCategory" resultType="com.springboot.pageland.dto.BookDTO">
 	    SELECT * FROM book 
 	    WHERE bage LIKE '%' || #{category} || '%'
-	    ORDER BY bno DESC
+	    ORDER BY bno ASC
 	</select>
 	
 	<!-- 분야별(bgenre) 필터링 쿼리 -->
 	<select id="bookListByGenre" resultType="com.springboot.pageland.dto.BookDTO">
 	    SELECT * FROM book 
 	    WHERE bgenre LIKE '%' || #{genre} || '%'
-	    ORDER BY bno DESC
+	    ORDER BY bno ASC
 	</select>
 	
 	<!-- 출판사별(bpublisher) 필터링 쿼리 -->
 	<select id="bookListByPublisher" resultType="com.springboot.pageland.dto.BookDTO">
 	    SELECT * FROM book 
 	    WHERE bpublisher LIKE '%' || #{publisher} || '%'
-	    ORDER BY bno DESC
+	    ORDER BY bno ASC
 	</select>
 	
 	<!-- 전체 도서 페이징 목록 -->
@@ -74,7 +73,7 @@
 	  		  FROM (
 	  		  	SELECT * 
 	  		  		FROM BOOK 
-	  		  		ORDER BY BNO DESC
+	  		  		ORDER BY BNO ASC
 	  		  ) INNER_LIST
 	      )
 	      	WHERE RNUM BETWEEN #{startRow} AND #{endRow}
@@ -104,35 +103,45 @@
 	        SELECT INNER_LIST.*, ROWNUM AS RNUM
 	          FROM (
 	            SELECT * FROM BOOK 
-	             WHERE BAGE = #{bage} 
-	             ORDER BY BNO DESC
+	             <if test="bage != null and bage != '전체' and bage != ''">
+	             WHERE BAGE LIKE '%' || #{bage} || '%'
+	             </if>
+	             ORDER BY BNO ASC
 	          ) INNER_LIST
 	      )
 	     WHERE RNUM BETWEEN #{startRow} AND #{endRow}
 	</select>
 	
-	<!-- 연령별 도서 개수 -->
+	<!-- 선택된 연령별 DB 도서 전체 개수 -->
 	<select id="getTotalCountByAge" resultType="int">
-	    SELECT COUNT(*) FROM BOOK WHERE BAGE = #{bage}
+	    SELECT COUNT(*) FROM BOOK 
+	    <if test="bage != null and bage != '전체' and bage != ''">
+	    WHERE BAGE LIKE '%' || #{bage} || '%'
+	    </if>
 	</select>
 	
-	<!-- 장르별 목록 페이징 -->
+	<!-- 장르별 목록 페이징 ("전체" 선택 시 전체 조회되도록 조건문 추가) -->
 	<select id="bookGenreListPaging" resultType="com.springboot.pageland.dto.BookDTO">
 	    SELECT *
 	      FROM (
 	        SELECT INNER_LIST.*, ROWNUM AS RNUM
 	          FROM (
 	            SELECT * FROM BOOK 
-	             WHERE BGENRE = #{bgenre}
-	             ORDER BY BNO DESC
+	             <if test="bgenre != null and bgenre != '전체' and bgenre != ''">
+	             WHERE BGENRE LIKE '%' || #{bgenre} || '%'
+	             </if>
+	             ORDER BY BNO ASC
 	          ) INNER_LIST
 	      )
 	     WHERE RNUM BETWEEN #{startRow} AND #{endRow}
 	</select>
 	
-	<!-- 장르별 도서 개수 -->
+	<!-- 장르별 도서 개수 ("전체" 선택 시 전체 개수 조회되도록 조건문 추가) -->
 	<select id="getTotalCountByGenre" resultType="int">
-	    SELECT COUNT(*) FROM BOOK WHERE BGENRE = #{bgenre}
+	    SELECT COUNT(*) FROM BOOK 
+	    <if test="bgenre != null and bgenre != '전체' and bgenre != ''">
+	    WHERE BGENRE LIKE '%' || #{bgenre} || '%'
+	    </if>
 	</select>
 	
 	<!-- 출판사별 목록 페이징 -->
@@ -142,8 +151,10 @@
 	        SELECT INNER_LIST.*, ROWNUM AS RNUM
 	          FROM (
 	            SELECT * FROM BOOK 
-	             WHERE BPUBLISHER = #{publisher}
-	             ORDER BY BNO DESC
+	             <if test="publisher != null and publisher != '전체' and publisher != ''">
+	             WHERE BPUBLISHER LIKE '%' || #{publisher} || '%'
+	             </if>
+	             ORDER BY BNO ASC
 	          ) INNER_LIST
 	      )
 	     WHERE RNUM BETWEEN #{startRow} AND #{endRow}
@@ -151,7 +162,9 @@
 	
 	<!-- 출판사별 도서 개수 -->
 	<select id="getTotalCountByPublisher" resultType="int">
-	    SELECT COUNT(*) FROM BOOK WHERE BPUBLISHER = #{publisher}
+	    SELECT COUNT(*) FROM BOOK 
+	    <if test="publisher != null and publisher != '전체' and publisher != ''">
+	    WHERE BPUBLISHER LIKE '%' || #{publisher} || '%'
+	    </if>
 	</select>
-	
 </mapper>

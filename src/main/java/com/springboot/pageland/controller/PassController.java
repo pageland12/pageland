@@ -97,6 +97,7 @@ public class PassController {
 	    }
 	    
 	    model.addAttribute("passes", passes);
+	    model.addAttribute("totalCount", total);
 	    model.addAttribute("pageNum", pageNum);
 	    model.addAttribute("startPage", startPage);
 	    model.addAttribute("endPage", endPage);
