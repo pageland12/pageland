@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import com.springboot.pageland.dto.MemberBooksDTO;
+import com.springboot.pageland.dto.OrderListDTO;
 
 @Mapper
 public interface IMemberBooksDAO {
@@ -35,4 +36,5 @@ public interface IMemberBooksDAO {
 	
 	// 현재 대여 중인 도서 권수 확인
 	public int activeRentBooksCount(int mno);
+	
 }

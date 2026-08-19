@@ -17,6 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.springboot.pageland.dao.IMemberDAO;
 import com.springboot.pageland.dao.IRatingDAO;
 import com.springboot.pageland.dto.MemberDTO;
+import com.springboot.pageland.dto.OrderListDTO;
 import com.springboot.pageland.dto.RatingDTO;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -30,15 +31,39 @@ public class RatingController {
 	private IMemberDAO mDao;
 	
 	@RequestMapping("/member/myOrderBookList")
-	public String myOrderBookList(@AuthenticationPrincipal User user, Model model) {
+	public String myOrderBookList(@AuthenticationPrincipal User user, Model model,
+								  @RequestParam(value = "pageNum", defaultValue = "1") int pageNum) {
+		int mno = mDao.findByEmail(user.getUsername()).getMno();
+		
+		int amount = 5; // 한 페이지당 5개
+	    
+	    int startRow = (pageNum - 1) * amount + 1;
+	    int endRow = pageNum * amount;
+	    
+	    List<RatingDTO> orderList = dao.ratingCheckPaging(mno, startRow, endRow);
+	    int total = dao.getTotalBookCountByMno(mno);
+	    int totalPages = (int) Math.ceil((double) total / amount);
+	    
+	    // --- 화면에 보여줄 페이지 번호 개수 (최대 5개) ---
+	    int navSize = 5;
+	    int startPage = ((pageNum - 1) / navSize) * navSize + 1;
+	    int endPage = startPage + navSize - 1;
+	    
+	    // 실제 총 페이지 수를 넘지 않도록 조정
+	    if (endPage > totalPages) {
+	        endPage = totalPages;
+	    }
+		
 		if (user == null) {
 			return "redirect:/loginForm";
 		}
 		
-		int mno = mDao.findByEmail(user.getUsername()).getMno();
-		List<RatingDTO> orderList = dao.ratingCheck(mno);
-		
-		model.addAttribute("orderList", orderList);
+		model.addAttribute("orderLists", orderList);
+	    model.addAttribute("pageNum", pageNum);
+	    model.addAttribute("startPage", startPage);
+	    model.addAttribute("endPage", endPage);
+	    model.addAttribute("totalPages", totalPages);
+	    
 		return "member/myOrderBookList";
 	}
 	

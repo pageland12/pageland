@@ -86,5 +86,40 @@
 		 set rhit = rhit + 1
 		 where rno = #{rno}
 	</update>
-
+	
+	
+	<!-- 회원의 주문 목록 페이징 -->
+	<select id="ratingCheckPaging" resultType="com.springboot.pageland.dto.RatingDTO">
+	    SELECT *
+	      FROM (
+	        SELECT INNER_LIST.*, ROWNUM AS RNUM
+	          FROM (
+	            SELECT 
+			        m.mno,
+			        m.mname,
+			        od.odno,
+			        od.bno,
+			        b.bname,
+			        b.bimg,
+			        (SELECT COUNT(*) 
+		           	FROM rating 
+		          	WHERE odno = od.odno 
+		            AND bno = od.bno 
+		            AND mno = m.mno) AS cnt
+			    FROM member m
+			    JOIN order_list ol ON m.mno = ol.mno
+			    JOIN order_detail od ON ol.olno = od.olno
+			    LEFT JOIN book b ON od.bno = b.bno
+			    WHERE m.mno = #{mno}
+			      AND od.bno IS NOT NULL
+			    ORDER BY od.odno DESC
+	          ) INNER_LIST
+	      )
+	     WHERE RNUM BETWEEN #{startRow} AND #{endRow}
+	</select>
+	
+	<!-- 회원의 주문 개수 -->
+	<select id="getTotalBookCountByMno" resultType="int">
+	    SELECT COUNT(*) FROM MEMBER_BOOKS WHERE MNO = #{mno}
+	</select>
 </mapper>
