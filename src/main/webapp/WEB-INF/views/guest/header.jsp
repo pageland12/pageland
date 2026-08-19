@@ -50,6 +50,8 @@
         grid-row: span 2; 
         display: flex;
         align-items: center;
+        
+        transform: translateX(-75px);
     }
 
     .logo-area img {
