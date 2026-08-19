@@ -7,109 +7,212 @@
 <meta charset="UTF-8">
 <title>전체 구독권</title>
 <style>
-    /* 버튼 탭 스타일 */
-    .all-btn {
-        display: inline-block;
-        padding: 6px 14px;
-        margin-right: 4px;
-        background-color: #f8f9fa;
-        color: #333;
-        text-decoration: none;
-        border: 1px solid #ccc;
-        border-radius: 4px;
+    /* 공통 레이아웃 */
+    html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
     }
-    /* 현재 선택된 버튼 스타일 */
-    .all-btn.active {
-        background-color: #212529;
-        color: #ffffff;
+    
+    body {
+        display: flex;
+        flex-direction: column;
+        font-family: 'Pretendard', sans-serif;
+    }
+    
+    .main-content {
+        flex: 1;
+        width: 100%;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 100px 20px 20px 20px;
+        box-sizing: border-box;
+    }
+
+    /* 헤더 및 타이틀 */
+    .header-section {
+        text-align: center;
+        margin-bottom: 35px;
+    }
+    
+    .title-area {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 25px;
+    }
+    
+    .page-title {
+        font-size: 1.6rem;
+        font-weight: 800;
+        margin: 0;
+        color: #000;
+    }
+
+    /* 4x4 구독권 그리드 스타일 */
+    .count-section {
+        font-size: 0.95rem;
+        color: #666;
+        margin-bottom: 15px;
+    }
+    
+    .count-section strong {
+        color: #000;
+        font-weight: 800;
+    }
+    
+    .book-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 24px 20px;
+        padding: 10px 0 20px 0;
+    }
+    
+    .book-card {
+        display: flex;
+        flex-direction: column;
+        cursor: pointer;
+    }
+    
+    .book-img-wrapper {
+        width: 100%;
+        aspect-ratio: 1 / 1;
+        overflow: hidden;
+        border-radius: 4px;
+        margin-bottom: 12px;
+    }
+    
+    .book-img-wrapper img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: 0.3s;
+    }
+    
+    .book-img-wrapper:hover img {
+        filter: blur(3px);
+        opacity: 0.85;
+    }
+    
+    .book-title {
+        font-size: 0.97rem;
+        font-weight: 750;
+        color: #000;
+        margin-bottom: 4px;
+        line-height: 1.4;
+    }
+
+    .pass-desc {
+        font-size: 0.85rem;
+        color: #666;
+        margin-bottom: 6px;
+    }
+    
+    .book-price {
+        font-size: 0.92rem;
+        color: #000;
+        font-weight: 700;
+    }
+
+    /* 페이징 */
+    .pagination-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 6px;
+        margin-top: 30px;
+        margin-bottom: 20px;
+    }
+    
+    .nav-btn {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        border: 1px solid #ddd;
+        background: #fff;
+        text-decoration: none;
+    }
+    
+    .pagination-container a:not(.nav-btn) {
+        text-decoration: none;
+        color: #333;
+        margin: 0 5px;
+        font-size: 0.95rem;
+    }
+    
+    .pagination-container .active {
         font-weight: bold;
-        border-color: #212529;
+        color: red !important;
+        font-size: 1.05rem;
     }
 </style>
 </head>
 <body>
+    <%@ include file="header.jsp" %>
+    
+    <main class="main-content">
+        <!-- 상단 헤더 영역 -->
+        <div class="header-section">
+            <div class="title-area">
+                <h2 class="page-title">구독권 서비스</h2>
+            </div>
+        </div>
 
-    <!-- 상단 메인 이동 링크 -->
-    <div style="text-align: right; margin-bottom: 10px;">
-        <a href="/" style="text-decoration: none; color: #555; font-size: 14px;">🏠 메인 페이지로 이동</a>
-    </div>
+        <!-- 구독권 총 개수 -->
+        <div class="count-section">
+            전체 <strong>${not empty totalCount ? totalCount : 0}개</strong>
+        </div>
 
-    <!-- 헤더 타이틀 -->
-    <h2>🎟️ 전체 구독권</h2>
-
-    <!-- 탭 버튼 영역 -->
-    <div style="margin-bottom: 20px;">
-        <a href="/guest/allPassList" class="all-btn active">전체</a>
-    </div>
-
-    <hr>
-
-    <!-- 전체 구독권 목록 출력 -->
-    <div style="width: 100%; max-width: 800px; margin: 0 auto;">
-        <c:forEach var="pass" items="${passes}">
-            <div onclick="location.href='/guest/passDetail?pno=${pass.pno}'" 
-                 style="display: flex; align-items: center; padding: 12px; border-bottom: 1px solid #ddd; cursor: pointer; transition: background-color 0.2s;"
-                 onmouseover="this.style.backgroundColor='#f9f9f9';" 
-                 onmouseout="this.style.backgroundColor='transparent';">
-                
-                <!-- 1. 이미지 -->
-                <div style="margin-right: 15px;">
-                    <img src="${pass.pimg}" width="80" height="80" style="object-fit: cover; border-radius: 4px;">
-                </div>
-                
-                <!-- 2. 구독권 이름 및 혜택 설명 -->
-                <div style="flex-grow: 1;">
-                    <div style="font-weight: bold; font-size: 16px; margin-bottom: 5px; color: #333;">
-                        ${pass.pname}
+        <!-- 구독권 목록 4x4 그리드 -->
+        <div class="book-grid">
+            <c:forEach var="pass" items="${passes}">
+                <div class="book-card" onclick="location.href='/guest/passDetail?pno=${pass.pno}'">
+                    <div class="book-img-wrapper">
+                        <img src="${pass.pimg}" alt="${pass.pname}">
                     </div>
-                    <div style="font-size: 13px; color: #666;">
-                        <span style="background-color: #e9ecef; padding: 2px 6px; border-radius: 3px; margin-right: 5px;">${pass.ptype}</span>
+                    <div class="book-title">${pass.pname}</div>
+                    <div class="pass-desc">
                         <c:choose>
                             <c:when test="${not empty pass.pperiod}">
-                                ${pass.pperiod}일 동안 무제한 이용
+                                ${pass.pperiod}일 무제한 이용
                             </c:when>
                             <c:when test="${not empty pass.pcount}">
-                                총 ${pass.pcount}회 대여 가능
+                                총 ${pass.pcount}회 대여
                             </c:when>
                         </c:choose>
                     </div>
+                    <div class="book-price"><fmt:formatNumber value="${pass.pprice}" type="number"/>원</div>
                 </div>
-                
-                <!-- 3. 가격 -->
-                <div style="font-weight: bold; font-size: 16px; color: #212529;">
-                    <fmt:formatNumber value="${pass.pprice}" type="number"/>원
-                </div>
-                
-            </div>
-        </c:forEach>
-    </div>
+            </c:forEach>
+        </div>
+        
+        <!-- 페이징 영역 -->
+        <div class="pagination-container">
+            <c:if test="${startPage > 1}">
+                <a href="/guest/allPassList?pageNum=${startPage - 1}" class="nav-btn">
+                    <svg width="14" height="14" viewBox="0 0 24 24"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>
+                </a>
+            </c:if>
+            
+            <c:forEach begin="${startPage}" end="${endPage}" var="num">
+                <a href="/guest/allPassList?pageNum=${num}" 
+                   class="${pageNum == num ? 'active' : ''}">
+                   ${num}
+                </a>
+            </c:forEach>
+            
+            <c:if test="${endPage < totalPages}">
+                <a href="/guest/allPassList?pageNum=${endPage + 1}" class="nav-btn">
+                    <svg width="14" height="14" viewBox="0 0 24 24"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>
+                </a>
+            </c:if>
+        </div>
+    </main>
     
-    <!-- 페이지 번호 이동 영역 (최대 5개씩 표시) -->
-    <div style="text-align: center; margin-top: 20px;">
-    
-        <%-- 이전 버튼 --%>
-        <c:if test="${startPage > 1}">
-            <a href="/guest/allPassList?pageNum=${startPage - 1}" style="margin-right: 5px; text-decoration: none; color: black;">[이전]</a>
-        </c:if>
-
-        <%-- 5개 단위 페이지 번호 출력 --%>
-        <c:forEach begin="${startPage}" end="${endPage}" var="num">
-            <c:choose>
-                <c:when test="${pageNum == num}">
-                    <span style="font-weight: bold; color: red; margin: 0 5px; font-size: 16px;">${num}</span>
-                </c:when>
-                <c:otherwise>
-                    <a href="/guest/allPassList?pageNum=${num}" style="margin: 0 5px; text-decoration: none; color: black;">${num}</a>
-                </c:otherwise>
-            </c:choose>
-        </c:forEach>
-
-        <%-- 다음 버튼 --%>
-        <c:if test="${endPage < totalPages}">
-            <a href="/guest/allPassList?pageNum=${endPage + 1}" style="margin-left: 5px; text-decoration: none; color: black;">[다음]</a>
-        </c:if>
-
-    </div>
-
+    <%@ include file="footer.jsp" %>
 </body>
 </html>
