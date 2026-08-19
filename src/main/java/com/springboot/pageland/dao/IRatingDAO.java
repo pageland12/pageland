@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import com.springboot.pageland.dto.MemberBooksDTO;
 import com.springboot.pageland.dto.RatingDTO;
 
 @Mapper
@@ -21,4 +22,9 @@ public interface IRatingDAO {
     public List<RatingDTO> ratingListPaging(@Param("startRow") int startRow, @Param("endRow") int endRow);
     public int getTotalCount();
 	
+    // 회원의 도서 주문 페이징 목록
+    public List<RatingDTO> ratingCheckPaging(@Param("mno") int mno, @Param("startRow") int startRow, @Param("endRow") int endRow);
+    
+    // 회원의 도서 주문 개수
+    public int getTotalBookCountByMno(int mno);
 }

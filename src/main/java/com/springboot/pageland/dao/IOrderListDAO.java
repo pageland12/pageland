@@ -19,7 +19,7 @@ public interface IOrderListDAO {
 	// 회원의 전체 주문 페이징 목록
     public List<OrderListDTO> memberOrderListPaging(@Param("mno") int mno, @Param("startRow") int startRow, @Param("endRow") int endRow);
     
-    // 회원의 전체 책 개수
+    // 회원의 전체 주문 개수
     public int getTotalOrderCountByMno(int mno);
 	
 }

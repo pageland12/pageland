@@ -84,4 +84,5 @@
 		   AND MBSTATUS IN ('대여중','연체')
 		   AND MBEND &lt; TRUNC(SYSDATE)
 	</update>
+
 </mapper>
