@@ -30,9 +30,9 @@ public class PassController {
 	
 	@RequestMapping("/admin/passWrite")
 	public String passWrite(PassDTO pdto) {
-		if (pdto.getPtype() == "정기권") {
+		if ("정기권".equals(pdto.getPtype())) {
 			pdto.setPcount(null);
-		} else if (pdto.getPtype() == "N회권") {
+		} else if ("N회권".equals(pdto.getPtype())) {
 			pdto.setPperiod(null);
 		}
 		
@@ -75,7 +75,7 @@ public class PassController {
 		pdao.passDelete(pno);
 		return "redirect:/admin/passList";
 	}	
-	
+		
 	@RequestMapping("/guest/allPassList")
 	public String allPassList(@RequestParam(value = "pageNum", defaultValue = "1") int pageNum, Model model) {
 	    int amount = 16; // 한 페이지당 16개 출력

@@ -38,6 +38,7 @@
 	</c:forEach>
 	<tr>
 		<td colspan="4">
+			<a href="/main">메인페이지</a> |
 			<a href="/member/orderList">주문 목록</a>
 		</td>
 	</tr>

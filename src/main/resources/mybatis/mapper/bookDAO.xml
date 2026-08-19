@@ -142,7 +142,7 @@
 	        SELECT INNER_LIST.*, ROWNUM AS RNUM
 	          FROM (
 	            SELECT * FROM BOOK 
-	             WHERE PUBLISHER = #{publisher}
+	             WHERE BPUBLISHER = #{publisher}
 	             ORDER BY BNO DESC
 	          ) INNER_LIST
 	      )
@@ -151,7 +151,7 @@
 	
 	<!-- 출판사별 도서 개수 -->
 	<select id="getTotalCountByPublisher" resultType="int">
-	    SELECT COUNT(*) FROM BOOK WHERE PUBLISHER = #{publisher}
+	    SELECT COUNT(*) FROM BOOK WHERE BPUBLISHER = #{publisher}
 	</select>
 	
 </mapper>
