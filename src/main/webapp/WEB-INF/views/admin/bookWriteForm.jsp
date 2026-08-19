@@ -40,7 +40,6 @@
 	        <tr>
 	            <td>출판사</td>
 	            <td><input type="text" name="bpublisher" placeholder="출판사명"></td>
-	        </tr>	         
 	        </tr>
 	        <tr>
 	            <td>책 이미지</td>
