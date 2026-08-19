@@ -16,7 +16,9 @@
     body {
         display: flex;
         flex-direction: column;
-        font-family: 'Pretendard', sans-serif;
+        background-color: #ffffff;
+        color: #333333;
+        font-family: 'Malgun Gothic', '맑은 고딕', sans-serif;
     }
     
     .main-content {
@@ -121,16 +123,21 @@
     }
     
     .book-title {
-        font-size: 0.97rem;
+        font-size: 0.96rem;
         font-weight: 750;
         color: #000;
         margin-bottom: 6px;
         line-height: 1.4;
+        word-break: break-word;
+        cursor: pointer;
+        text-shadow: 0.1px 0.1px 0px rgba(0, 0, 0, 0.4);
     }
     
     .book-price {
         font-size: 0.92rem;
+        font-weight: 750;
         color: #000;
+        cursor: default;
     }
 
     /* 페이징 */

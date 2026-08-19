@@ -7,7 +7,20 @@
 <meta charset="UTF-8">
 <title>Pageland</title>
 <style>
-    /* html, body 관련 스타일은 footer.jsp에서 처리하므로 삭제했습니다. */
+    html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+    }
+    
+    body {
+        display: flex;
+        flex-direction: column;
+        background-color: #ffffff;
+        color: #333333;
+        font-family: 'Malgun Gothic', '맑은 고딕', sans-serif;
+    }
+    
     .main-content {
         width: 100%;
         max-width: 1200px;
@@ -116,7 +129,7 @@
 
     .book-price {
         font-size: 0.92rem;
-        font-weight: 500;
+        font-weight: 750;
         color: #000;
         cursor: default; /* 가격은 기본 마우스 포인터 */
     }

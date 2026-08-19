@@ -41,11 +41,35 @@ public class PassController {
 		return "redirect:/admin/adminMain";
 	}
 	
-	// 등록 구독권 관리
+	// 등록 구독권 관리 (페이징 적용)
 	@RequestMapping("/admin/passList")
-	public String adminPassList(Model model) {
-		model.addAttribute("pass", pdao.passList());
-		return "admin/passList";
+	public String adminPassList(@RequestParam(value = "pageNum", defaultValue = "1") int pageNum, Model model) {
+	    int amount = 10; // 한 페이지당 보여줄 개수 (원하시는 숫자로 변경 가능합니다)
+	    
+	    int startRow = (pageNum - 1) * amount + 1;
+	    int endRow = pageNum * amount;
+	    
+	    List<PassDTO> passList = pdao.passListPaging(startRow, endRow);
+	    int total = pdao.getTotalCount();
+	    int totalPages = (int) Math.ceil((double) total / amount);
+	    
+	    // 하단 페이지 번호 그룹 (최대 5개)
+	    int navSize = 5;
+	    int startPage = ((pageNum - 1) / navSize) * navSize + 1;
+	    int endPage = startPage + navSize - 1;
+	    
+	    if (endPage > totalPages) {
+	        endPage = totalPages;
+	    }
+	    
+	    model.addAttribute("pass", passList); // JSP에서 ${pass}로 받고 있으므로 유지
+	    model.addAttribute("totalCount", total);
+	    model.addAttribute("pageNum", pageNum);
+	    model.addAttribute("startPage", startPage);
+	    model.addAttribute("endPage", endPage);
+	    model.addAttribute("totalPages", totalPages);
+	    
+	    return "admin/passList";
 	}
 	
 	// 등록 구독권 상세정보

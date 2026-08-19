@@ -17,7 +17,9 @@
     body {
         display: flex;
         flex-direction: column;
-        font-family: 'Pretendard', sans-serif;
+        background-color: #ffffff;
+        color: #333333;
+        font-family: 'Malgun Gothic', '맑은 고딕', sans-serif;
     }
     
     .main-content {
@@ -96,23 +98,20 @@
     }
     
     .book-title {
-        font-size: 0.97rem;
-        font-weight: 750;
+        font-size: 0.96rem;
+        font-weight: 700;
         color: #000;
-        margin-bottom: 4px;
-        line-height: 1.4;
-    }
-
-    .pass-desc {
-        font-size: 0.85rem;
-        color: #666;
         margin-bottom: 6px;
+        line-height: 1.4;
+        word-break: break-word;
+        cursor: pointer;
+        text-shadow: 0.1px 0.1px 0px rgba(0, 0, 0, 0.4);
     }
     
     .book-price {
         font-size: 0.92rem;
         color: #000;
-        font-weight: 700;
+        font-weight: 750;
     }
 
     /* 페이징 */
@@ -175,16 +174,6 @@
                         <img src="${pass.pimg}" alt="${pass.pname}">
                     </div>
                     <div class="book-title">${pass.pname}</div>
-                    <div class="pass-desc">
-                        <c:choose>
-                            <c:when test="${not empty pass.pperiod}">
-                                ${pass.pperiod}일 무제한 이용
-                            </c:when>
-                            <c:when test="${not empty pass.pcount}">
-                                총 ${pass.pcount}회 대여
-                            </c:when>
-                        </c:choose>
-                    </div>
                     <div class="book-price"><fmt:formatNumber value="${pass.pprice}" type="number"/>원</div>
                 </div>
             </c:forEach>
