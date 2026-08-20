@@ -43,7 +43,13 @@
             </thead>
             <tbody>
                 <c:forEach var="list" items="${qnaList}">
-                    <c:set var="targetUrl" value="${list.qsecret == '비밀글' ? '/board/qnaPasswordCheckForm?qno='.concat(list.qno).concat('&mode=view') : '/guest/qnaView?qno='.concat(list.qno)}" />
+                    <sec:authorize access="hasRole('ADMIN')">
+                    	<c:set var="targetUrl" value="/guest/qnaView?qno=${list.qno}" />
+                    </sec:authorize>
+                    
+                    <sec:authorize access="hasAnyRole('NORMAL', 'SUBSCRIBER')">
+                    	<c:set var="targetUrl" value="${list.qsecret == '비밀글' ? '/board/qnaPasswordCheckForm?qno='.concat(list.qno).concat('&mode=view') : '/guest/qnaView?qno='.concat(list.qno)}" />
+					</sec:authorize>
 
                     <tr onclick="location.href='${targetUrl}'">
                         <td>${list.qno}</td>

@@ -27,10 +27,6 @@
                     <td>${view.memail}</td>
                 </tr>
                 <tr>
-                    <th>비밀번호</th>
-                    <td>${view.mpasswd}</td>
-                </tr>
-                <tr>
                     <th>이름</th>
                     <td>${view.mname}</td>
                 </tr>

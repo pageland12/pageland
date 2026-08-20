@@ -16,7 +16,7 @@
 	
 	<insert id="passInsert">
 		INSERT INTO PASS(PNO,PNAME,PPRICE,PTYPE,PPERIOD,PCOUNT,PIMG,PINFO)
-		 VALUES(PASS_SEQ.NEXTVAL,#{pname},#{pprice},#{ptype},#{pperiod},#{pcount},#{pimg},#{pinfo})
+		 VALUES(PASS_SEQ.NEXTVAL,#{pname},#{pprice},#{ptype},#{pperiod, jdbcType=INTEGER},#{pcount, jdbcType=INTEGER},#{pimg},#{pinfo})
 	</insert>
 	
 	<update id="passUpdate">

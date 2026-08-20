@@ -10,6 +10,7 @@
 <head>
 <meta charset="UTF-8">
 <title>관리자 - 회원 수정</title>
+<script src="/js/adminUpdate.js"></script>
 <link rel="stylesheet" href="/css/adminSystem.css">
 </head>
 <body>
@@ -34,10 +35,6 @@
                         <td>${update.memail}</td>
                     </tr>
                     <tr>
-                        <th>비밀번호</th>
-                        <td>${update.mpasswd}</td>
-                    </tr>
-                    <tr>
                         <th>이름</th>
                         <td>${update.mname}</td>
                     </tr>
@@ -56,7 +53,7 @@
                     <tr>
                         <th>등급</th>
                         <td>
-                            <select name="mgrade" required>
+                            <select name="mgrade">
                                 <option value="">----- 등급 선택 -----</option>
                                 <option value="NORMAL" ${update.mgrade == 'NORMAL' ? 'selected' : ''}>NORMAL</option>
                                 <option value="SUBSCRIBER" ${update.mgrade == 'SUBSCRIBER' ? 'selected' : ''}>SUBSCRIBER</option>
@@ -77,7 +74,7 @@
                 
                 <!-- 하단 버튼 영역 -->
                 <div class="btn-area">
-                    <input type="submit" value="수정" class="btn btn-submit">
+                    <input type="submit" value="수정" class="btn btn-submit" onclick="return check();">
                     <button type="button" class="btn btn-cancel" onclick="history.back()">취소</button>
                 </div>
             </form>

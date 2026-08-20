@@ -5,7 +5,7 @@
 <head>
 <meta charset="UTF-8">
 <title>관리자 - 도서 수정</title>
-<script src="/js/passWrite.js"></script>
+<script src="/js/bookUpdate.js"></script>
 <link rel="stylesheet" href="/css/adminSystem.css">
 </head>
 <body>
