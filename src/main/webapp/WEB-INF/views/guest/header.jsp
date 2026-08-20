@@ -1,7 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
-
 <style>
     header {
         width: 100%;
@@ -10,7 +9,7 @@
         border-bottom: 1px solid #EFE0D3;
         font-family: 'Malgun Gothic', '맑은 고딕', sans-serif;
         position: relative;
-        z-index: 100;
+        z-index: 100; /* 드롭다운 메뉴가 다른 콘텐츠에 가리지 않도록 설정 */
     }
 
     /* 상단 배너 영역 */
@@ -104,6 +103,10 @@
     }
 
     .logo-area img.logo-hover-effect {
+        transform: scale(1.15); 
+    }
+
+    .logo-area img.logo-hover-effect {
         transform: scale(1.05);
     }
 
@@ -120,7 +123,7 @@
     /* 햄버거 아이콘 */
     .menu-icon {
         position: absolute;
-        left: 10px;
+        left: 208px;
         font-size: 28px;
         cursor: pointer;
         color: #222;
@@ -143,6 +146,12 @@
         align-items: center;
         margin: 0 auto;
         padding: 0;
+    }
+  
+    /* 6개 메뉴 리스트 */
+    .nav-menu {
+        display: flex;
+        gap: 60px;
         list-style: none;
     }
 
@@ -288,6 +297,50 @@
         color: #8B5E3C;
         font-weight: bold;
     }
+
+    /* 드롭다운 세부 메뉴 스타일 */
+    .submenu {
+        position: absolute;
+        top: 100%; /* 메인 메뉴 바로 아래에 위치 */
+        left: 50%;
+        transform: translateX(-50%); /* 가운데 정렬 */
+        background-color: #FFFFFF;
+        border: 1px solid #EFE0D3;
+        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.05);
+        list-style: none;
+        padding: 10px 0;
+        margin: 0;
+        min-width: 140px;
+        display: none; /* 평소에는 숨김 */
+        z-index: 10;
+        border-radius: 4px;
+    }
+
+    /* 메인 메뉴에 마우스를 올렸을 때 서브메뉴 표시 */
+    .nav-menu > li:hover .submenu {
+        display: block;
+    }
+
+    /* 서브메뉴 항목 스타일 */
+    .submenu li {
+        padding: 8px 20px;
+        text-align: center;
+    }
+
+    .submenu li a {
+        color: #5A4A42;
+        text-decoration: none;
+        font-size: 15px;
+        font-weight: normal;
+        display: block;
+        white-space: nowrap;
+        transition: color 0.2s ease;
+    }
+
+    .submenu li a:hover {
+        color: #8B5E3C;
+        font-weight: bold;
+    }
 </style>
 
 <header>
@@ -336,16 +389,58 @@
             </a>
         </div>
 
-        <!-- 네비게이션 바 -->
+        <!-- 네비게이션 바 (드롭다운 서브메뉴 추가) -->
         <nav class="nav-bar">
-            <span class="menu-icon" id="allMenuBtn">☰</span>
-            <ul class="nav-menu menu-grid-wrapper">
-                <li><a href="/guest/allBookList">전체 상품</a></li>
-                <li><a href="/guest/allBookAgeList">연령별</a></li>
-                <li><a href="/guest/allBookGenreList">분야별</a></li>
-                <li><a href="/guest/allBookPublisherList">출판사별</a></li>
-                <li><a href="/guest/allPassList">구독 서비스</a></li>
-                <li><a href="/guest/noticeList">고객센터</a></li>
+            <span class="menu-icon">☰</span>
+            <ul class="nav-menu">
+                <!-- 1. 전체 상품 -->
+                <li>
+                    <a href="/guest/allBookList">전체 상품</a>
+                </li>
+                <!-- 2. 연령별 -->
+                <li>
+                    <a href="/guest/allBookAgeList">연령별</a>
+                    <ul class="submenu">
+                        <li><a href="/guest/allBookAgeList?category=0-3세">0-3세</a></li>
+                        <li><a href="/guest/allBookAgeList?category=4-7세">4-7세</a></li>
+                        <li><a href="/guest/allBookAgeList?category=초등 저학년">초등 저학년</a></li>
+                        <li><a href="/guest/allBookAgeList?category=초등 고학년">초등 고학년</a></li>
+                    </ul>
+                </li>
+                <!-- 3. 분야별 -->
+                <li>
+                    <a href="/guest/allBookGenreList">분야별</a>
+                    <ul class="submenu">
+                        <li><a href="/guest/allBookGenreList?genre=생활/창작">생활/창작</a></li>
+                        <li><a href="/guest/allBookGenreList?genre=수학/영어">수학/영어</a></li>
+                        <li><a href="/guest/allBookGenreList?genre=자연/과학">자연/과학</a></li>
+                        <li><a href="/guest/allBookGenreList?genre=전래/명작">전래/명작</a></li>
+                    </ul>
+                </li>
+                <!-- 4. 출판사별 -->
+                <li>
+                    <a href="/guest/allBookPublisherList">출판사별</a>
+                    <ul class="submenu">
+                        <li><a href="/guest/allBookPublisherList?publisher=그레이트북스">그레이트북스</a></li>
+                        <li><a href="/guest/allBookPublisherList?publisher=아람북스">아람북스</a></li>
+                        <li><a href="/guest/allBookPublisherList?publisher=키즈스콜레">키즈스콜레</a></li>
+                        <li><a href="/guest/allBookPublisherList?publisher=프뢰벨">프뢰벨</a></li>
+                    </ul>
+                </li>
+                <!-- 5. 구독 서비스 -->
+                <li>
+                    <a href="/guest/allPassList">구독 서비스</a>
+                </li>
+                <!-- 6. 고객센터 (기존 select 대신 통일된 드롭다운 구조 적용 혹은 유지 가능) -->
+                <li>
+                    <a href="/guest/noticeList">고객센터</a>
+                    <ul class="submenu">
+                        <li><a href="/guest/qnaList">Q&A</a></li>                    
+                        <li><a href="/guest/eventList">이벤트</a></li>
+                        <li><a href="/guest/noticeList">공지사항</a></li>
+                        <li><a href="/guest/ratingList">후기</a></li>
+                    </ul>
+                </li>
             </ul>
         </nav>
     </div>
