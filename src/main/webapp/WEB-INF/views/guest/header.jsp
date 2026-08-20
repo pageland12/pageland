@@ -43,21 +43,20 @@
     /* 메인 헤더 컨테이너 */
     .header-container {
         width: 100%;
-        max-width: 1680px;
+        max-width: 1200px;
         margin: 0 auto;
-        padding: 15px 50px 20px 50px;
+        padding: 15px 20px 20px 20px;
         box-sizing: border-box;
-
         display: flex;
         flex-direction: column;
         align-items: center;
         position: relative;
     }
 
-    /* 최상단 유저 바 (로그인/마이페이지 등)는 오른쪽 정렬 고정 */
+    /* 최상단 유저 바 */
     .top-user-bar {
         position: absolute;
-        right: 50px;
+        right: 20px;
         top: 15px;
         display: flex;
         align-items: center;
@@ -85,7 +84,7 @@
         margin: 0 2px;
     }
 
-    /* 로고 영역 (헤더 정중앙 배치) */
+    /* 로고 영역 */
     .logo-area {
         display: flex;
         justify-content: center;
@@ -107,7 +106,11 @@
         transform: scale(1.15); 
     }
 
-    /* 네비게이션 바 영역 (화면 중앙 정렬) */
+    .logo-area img.logo-hover-effect {
+        transform: scale(1.05);
+    }
+
+    /* 네비게이션 바 영역 */
     .nav-bar {
         width: 100%;
         display: flex;
@@ -126,46 +129,173 @@
         color: #222;
         display: flex;
         align-items: center;
+        user-select: none;
+        transition: color 0.2s ease;
     }
 
+    .menu-icon:hover {
+        color: #8B5E3C;
+    }
+
+    /* 상단 네비게이션 메뉴 그리드 */
+    .menu-grid-wrapper {
+        width: 100%;
+        max-width: 960px;
+        display: grid;
+        grid-template-columns: repeat(6, 1fr);
+        align-items: center;
+        margin: 0 auto;
+        padding: 0;
+    }
+  
     /* 6개 메뉴 리스트 */
     .nav-menu {
         display: flex;
         gap: 60px;
         list-style: none;
-        margin: 0;
-        padding: 0;
-        align-items: center;
     }
 
-    /* 각 메인 메뉴 항목 (드롭다운 기준점) */
+    /* 네비게이션 드롭다운 내부 그리드 ([수정] align-items: start 로 상단 라인 고정) */
+    .dropdown-grid-wrapper {
+        width: 100%;
+        max-width: 960px;
+        display: grid;
+        grid-template-columns: repeat(6, 1fr);
+        align-items: start; /* 핵심: 모든 카테고리 제목을 맨 위로 고정 */
+        margin: 0 auto;
+        padding: 0;
+    }
+
     .nav-menu > li {
         position: relative;
         white-space: nowrap;
-        padding: 10px 0; /* 마우스 인식 영역 확보 */
+        text-align: center;
+        padding: 10px 0;
     }
 
     .nav-menu > li > a {
         color: #222222;
         text-decoration: none;
         font-weight: bold;
-        font-size: 20px;
+        font-size: 19px;
         letter-spacing: -0.5px;
+        display: inline-block;
     }
 
     .nav-menu > li > a:hover {
         color: #8B5E3C;
     }
 
-    .nav-select {
-        border: none;
-        background: transparent;
+    /* 서브메뉴 스타일 (개별 호버용) */
+    .submenu {
+        position: absolute;
+        top: 100%;
+        left: 50%;
+        transform: translateX(-50%);
+        background-color: #FFFFFF;
+        border: 1px solid #EFE0D3;
+        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.05);
+        list-style: none;
+        padding: 10px 0;
+        margin: 0;
+        min-width: 140px;
+        display: none;
+        z-index: 10;
+        border-radius: 4px;
+    }
+
+    .nav-menu > li:hover .submenu {
+        display: block;
+    }
+
+    .submenu li {
+        padding: 8px 20px;
+        text-align: center;
+    }
+
+    .submenu li a {
+        color: #5A4A42;
+        text-decoration: none;
+        font-size: 15px;
+        font-weight: normal;
+        display: block;
+        white-space: nowrap;
+        transition: color 0.2s ease;
+    }
+
+    .submenu li a:hover {
+        color: #8B5E3C;
         font-weight: bold;
-        font-size: 20px;
-        color: #222;
-        cursor: pointer;
-        outline: none;
+    }
+
+    /* 전체 메뉴 드롭다운 (All Menu Dropdown) 스타일 */
+    .all-menu-dropdown {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: 100%;
+        background-color: #FFFFFF;
+        border-bottom: 2px solid #8B5E3C;
+        box-shadow: 0 10px 15px rgba(0, 0, 0, 0.08);
+        z-index: 1000;
+        padding: 30px 0;
+    }
+
+    .all-menu-dropdown.active {
+        display: block;
+        animation: slideDown 0.25s ease-out forwards;
+    }
+
+    @keyframes slideDown {
+        from { opacity: 0; transform: translateY(-10px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    .all-menu-container {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        padding: 0 20px;
+        box-sizing: border-box;
+    }
+
+    .menu-category {
+        text-align: center;
+    }
+
+    /* [수정] h4 margin-top: 0 고정으로 높이 완벽 통일 */
+    .menu-category h4 {
+        margin: 0 0 15px 0;
+        padding-bottom: 8px;
+        font-size: 18px;
+        color: #8B5E3C;
+        border-bottom: 2px solid #FAF0E6;
+        white-space: nowrap;
+        display: inline-block;
+    }
+
+    .menu-category ul {
+        list-style: none;
         padding: 0;
+        margin: 0;
+    }
+
+    .menu-category ul li {
+        margin-bottom: 10px;
+        white-space: nowrap;
+    }
+
+    .menu-category ul li a {
+        color: #555;
+        text-decoration: none;
+        font-size: 15px;
+        transition: color 0.2s;
+    }
+
+    .menu-category ul li a:hover {
+        color: #8B5E3C;
+        font-weight: bold;
     }
 
     /* 드롭다운 세부 메뉴 스타일 */
@@ -221,7 +351,7 @@
 
     <!-- 메인 헤더 영역 -->
     <div class="header-container">
-        <!-- 유저 메뉴 (오른쪽 상단 고정) -->
+        <!-- 유저 메뉴 -->
         <div class="top-user-bar">
             <div class="user-menu">
                 <sec:authorize access="isAnonymous()">
@@ -314,10 +444,72 @@
             </ul>
         </nav>
     </div>
+
+    <!-- 전체 메뉴 드롭다운 영역 -->
+    <div class="all-menu-dropdown" id="allMenuDropdown">
+        <div class="all-menu-container">
+            <div class="dropdown-grid-wrapper">
+                <!-- 1. 전체 상품 -->
+                <div class="menu-category">
+                    <h4>전체 상품</h4>
+                </div>
+
+                <!-- 2. 연령별 -->
+                <div class="menu-category">
+                    <h4>연령별</h4>
+                    <ul>
+                        <li><a href="/guest/allBookAgeList?category=0-3세">0 - 3세</a></li>
+                        <li><a href="/guest/allBookAgeList?category=4-7세">4 - 7세</a></li>
+                        <li><a href="/guest/allBookAgeList?category=초등 저학년">초등 저학년</a></li>
+                        <li><a href="/guest/allBookAgeList?category=초등 고학년">초등 고학년</a></li>
+                    </ul>
+                </div>
+
+                <!-- 3. 분야별 -->
+                <div class="menu-category">
+                    <h4>분야별</h4>
+                    <ul>
+                        <li><a href="/guest/allBookGenreList?genre=생활/창작">생활/창작</a></li>
+                        <li><a href="/guest/allBookGenreList?genre=수학/영어">수학/영어</a></li>
+                        <li><a href="/guest/allBookGenreList?genre=자연/과학">자연/과학</a></li>
+                        <li><a href="/guest/allBookGenreList?genre=전래/명작">전래/명작</a></li>
+                    </ul>
+                </div>
+
+                <!-- 4. 출판사별 -->
+                <div class="menu-category">
+                    <h4>출판사별</h4>
+                    <ul>
+                        <li><a href="/guest/allBookPublisherList?publisher=그레이트북스">그레이트북스</a></li>
+                        <li><a href="/guest/allBookPublisherList?publisher=아람북스">아람북스</a></li>
+                        <li><a href="/guest/allBookPublisherList?publisher=키즈스콜레">키즈스콜레</a></li>
+                        <li><a href="/guest/allBookPublisherList?publisher=프뢰벨">프뢰벨</a></li>
+                    </ul>
+                </div>
+
+                <!-- 5. 구독 서비스 -->
+                <div class="menu-category">
+                    <h4>구독 서비스</h4>
+                </div>
+
+                <!-- 6. 고객센터 -->
+                <div class="menu-category">
+                    <h4>고객센터</h4>
+                    <ul>
+                        <li><a href="/guest/noticeList">공지사항</a></li>
+                        <li><a href="/guest/eventList">이벤트</a></li>
+                        <li><a href="/guest/qnaList">Q&A</a></li>
+                        <li><a href="/guest/ratingList">후기</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
 </header>
 
 <script>
     document.addEventListener("DOMContentLoaded", function() {
+        // 상단 배너
         const bannerData = [
             {
                 text: "사자니 부담되고~ 사고나니 후회될 땐, 빌려보세요!",
@@ -344,5 +536,22 @@
                 textEl.classList.remove("fade-out");
             }, 300);
         }, 3000);
+
+        // 전체 메뉴 드롭다운 토글
+        const allMenuBtn = document.getElementById("allMenuBtn");
+        const allMenuDropdown = document.getElementById("allMenuDropdown");
+
+        if (allMenuBtn && allMenuDropdown) {
+            allMenuBtn.addEventListener("click", function(e) {
+                e.stopPropagation();
+                allMenuDropdown.classList.toggle("active");
+            });
+
+            document.addEventListener("click", function(e) {
+                if (!allMenuDropdown.contains(e.target) && e.target !== allMenuBtn) {
+                    allMenuDropdown.classList.remove("active");
+                }
+            });
+        }
     });
 </script>
