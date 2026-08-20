@@ -1,0 +1,86 @@
+@charset "UTF-8";
+
+/* 공통 레이아웃 구조 */
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    background-color: #ffffff;
+    font-family: 'Malgun Gothic', '맑은 고딕', sans-serif;
+}
+
+/* 본문 영역 */
+.main-content {
+    flex: 1;
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 100px 20px 40px 20px;
+    box-sizing: border-box;
+}
+
+/* 상단 타이틀 스타일 */
+.page-title {
+    text-align: center;
+    font-size: 1.7rem;
+    font-weight: 900;
+    color: #111;
+    letter-spacing: -1px;
+    margin-bottom: 40px;
+}
+
+/* 패널 박스: 대시보드 그리드 감싸는 박스 */
+.admin-panel {
+    background-color: #f8f9fa;
+    border: 1px solid #dee2e6;
+    border-radius: 6px;
+    padding: 60px 50px;
+    width: 100%;
+    max-width: 1050px;
+    margin: 0 auto;
+    box-sizing: border-box;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
+}
+
+/* 3개씩 2줄 대칭형 그리드 시스템 */
+.admin-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 25px;
+}
+
+/* 각 링크 박스 디자인 */
+.admin-grid a {
+    text-decoration: none;
+}
+
+/* 링크 카드: 순백색 배경 */
+.admin-card {
+    background-color: #ffffff;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    height: 140px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    font-size: 1.15rem;
+    font-weight: 800;
+    color: #111111;
+    transition: all 0.2s ease-in-out;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+}
+
+/* 마우스 오버 시 반전 효과 */
+.admin-card:hover {
+    background-color: #111111;
+    color: #ffffff;
+    border-color: #111111;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}

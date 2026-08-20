@@ -1,0 +1,153 @@
+@charset "UTF-8";
+
+/* 공통 레이아웃 */
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    background-color: #ffffff;
+    color: #333333;
+    font-family: 'Malgun Gothic', '맑은 고딕', sans-serif;
+}
+
+.main-content {
+    flex: 1;
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 100px 20px 40px 20px;
+    box-sizing: border-box;
+}
+
+/* 페이지 타이틀 */
+.page-title {
+    text-align: center;
+    font-size: 1.6rem;
+    font-weight: 800;
+    color: #000;
+    margin-bottom: 35px;
+}
+
+/* 관리자 패널 박스 */
+.admin-panel {
+    background-color: #f8f9fa;
+    border: 1px solid #dee2e6;
+    border-radius: 6px;
+    padding: 45px 45px 35px 45px;
+    width: 100%;
+    max-width: 850px;
+    margin: 0 auto;
+    box-sizing: border-box;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
+}
+
+/* 폼 입력/수정 테이블 및 상세보기 테이블 공통 디자인 */
+.admin-write-table,
+.admin-view-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.95rem;
+    margin-bottom: 30px;
+    border: 1px solid #e9ecef;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.admin-write-table th,
+.admin-view-table th {
+    background-color: #f1f3f5;
+    color: #212529;
+    font-weight: 600;
+    width: 22%;
+    padding: 18px 20px;
+    border-bottom: 1px solid #e9ecef;
+    text-align: left;
+}
+
+.admin-write-table td,
+.admin-view-table td {
+    padding: 18px 20px;
+    border-bottom: 1px solid #e9ecef;
+    background-color: #ffffff;
+    color: #495057;
+}
+
+.admin-write-table tr:last-child th,
+.admin-write-table tr:last-child td,
+.admin-view-table tr:last-child th,
+.admin-view-table tr:last-child td {
+    border-bottom: none;
+}
+
+/* 입력 필드 및 셀렉트박스 디자인 */
+.admin-write-table input[type="text"],
+.admin-write-table select {
+    width: 100%;
+    padding: 11px 14px;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    box-sizing: border-box;
+    font-size: 0.95rem;
+    font-family: 'Malgun Gothic', '맑은 고딕', sans-serif;
+    outline: none;
+    background-color: #ffffff;
+    transition: border-color 0.2s;
+}
+
+.admin-write-table input[type="text"]:focus,
+.admin-write-table select:focus {
+    border-color: #212529;
+}
+
+/* 하단 버튼 영역 */
+.btn-area {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    align-items: center;
+}
+
+/* 버튼 기본 스타일 */
+.btn {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px 24px;
+    border-radius: 4px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    text-decoration: none;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+/* 다크 스타일 버튼 (등록, 수정 등) */
+.btn-submit,
+.btn-dark {
+    background-color: #212529;
+    color: #ffffff;
+    border: 1px solid #212529;
+}
+.btn-submit:hover,
+.btn-dark:hover {
+    background-color: #444444;
+    border-color: #444444;
+}
+
+/* 아웃라인 스타일 버튼 (취소, 탈퇴 등) */
+.btn-cancel,
+.btn-outline {
+    background-color: #ffffff;
+    color: #495057;
+    border: 1px solid #ced4da;
+}
+.btn-cancel:hover,
+.btn-outline:hover {
+    background-color: #f8f9fa;
+    border-color: #adb5bd;
+}

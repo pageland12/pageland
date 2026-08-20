@@ -1,4 +1,4 @@
-/* detail.css */
+/* GuestdetailCss.css */
 
 /* Reset & Base */
 * {
@@ -62,7 +62,7 @@ body {
     line-height: 1.3;
 }
 
-/* 정보 리스트 (추천수, 가격, 기간) */
+/* 정보 리스트 */
 .info-row {
     display: flex;
     align-items: center;
@@ -82,13 +82,11 @@ body {
     color: #222;
 }
 
-/* 추천수 강조 */
 .info-value.like-count {
     color: #ff4757;
     font-weight: 600;
 }
 
-/* Select 박스 스타일 */
 .info-value select {
     min-width: 160px;
     padding: 8px 12px;
@@ -100,56 +98,78 @@ body {
     cursor: pointer;
 }
 
-.info-value select:focus {
-    border-color: #333;
+.soldout-text {
+    color: #fa5252;
+    font-weight: 700;
 }
 
-/* 버튼 영역 */
+/* 버튼 영역 (8:2 비율 적용) */
 .button-group {
     display: flex;
     gap: 10px;
     margin-top: 24px;
+    width: 100%;
+    box-sizing: border-box;
 }
 
 .button-group input[type="submit"],
-.button-group button {
-    flex: 1;
+.button-group button,
+.button-group div {
     height: 52px;
     border-radius: 8px;
     font-size: 15px;
     font-weight: 600;
     cursor: pointer;
     border: 1px solid transparent;
-    transition: all 0.2s ease;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    box-sizing: border-box;
+    text-decoration: none;
 }
 
+/* 장바구니 담기 (비중 4) */
 .btn-cart {
+    flex: 4 !important;
     background-color: #fff !important;
     border: 1px solid #222 !important;
     color: #222 !important;
 }
-
 .btn-cart:hover {
     background-color: #f8f8f8 !important;
 }
 
+/* 바로 구매 (비중 4) */
 .btn-buy {
+    flex: 4 !important;
     background-color: #111 !important;
     color: #fff !important;
 }
-
 .btn-buy:hover {
     background-color: #333 !important;
 }
 
+/* 도서 목록 (비중 2 -> 장바구니/구매와 합쳐서 8:2) */
 .btn-list {
-    flex: 0.6 !important;
+    flex: 2 !important;
     background-color: #f4f4f4 !important;
     color: #555 !important;
+    border: 1px solid #ddd !important;
 }
-
 .btn-list:hover {
     background-color: #e8e8e8 !important;
+}
+
+/* 품절 상태 (비중 8로 장바구니/구매 자리 대체) */
+.btn-soldout {
+    flex: 8 !important;
+    background-color: #e9ecef !important;
+    color: #adb5bd !important;
+    border: 1px solid #dee2e6 !important;
+    cursor: not-allowed !important;
+    pointer-events: none;
+    font-size: 15px;
+    font-weight: 700;
 }
 
 /* 하단 상세 정보 영역 */
@@ -181,52 +201,15 @@ body {
         flex-direction: column;
         gap: 24px;
     }
-    
     .product-image-area {
         max-width: 100%;
         width: 100%;
     }
-    
     .button-group {
         flex-direction: column;
     }
+    .button-group input, .button-group button, .button-group div {
+        flex: none !important;
+        width: 100% !important;
+    }
 }
-
-/* 관리자 전용 추가 스타일 (삭제 버튼 및 수정 버튼 스타일링) */
-        .btn-delete {
-        	flex: 1.5 !important;
-            background-color: #ff4d4f !important;
-            color: #fff !important;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-decoration: none;
-            border-radius: 8px;
-            padding: 12px 0 !important;
-        }
-        .btn-delete:hover {
-            background-color: #d9363e !important;
-        }
-        .btn-update {
-        	flex: 1.5 !important;
-            background-color: #111 !important;
-            color: #fff !important;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-decoration: none;
-            border-radius: 8px;
-            padding: 12px 0 !important;
-        }
-        .btn-update:hover {
-            background-color: #333 !important;
-        }
-        .admin-badge {
-            display: inline-block;
-            background-color: #333;
-            color: #fff;
-            font-size: 12px;
-            padding: 3px 8px;
-            border-radius: 4px;
-            margin-bottom: 8px;
-        }
