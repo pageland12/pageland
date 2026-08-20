@@ -42,6 +42,9 @@ import com.springboot.pageland.dto.OrderDetailDTO;
 import com.springboot.pageland.dto.OrderListDTO;
 import com.springboot.pageland.dto.PassDTO;
 
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
+
 @Controller
 public class OrderController {
 
@@ -75,19 +78,34 @@ public class OrderController {
     }
 	
     // Spring Security 세션의 권한을 즉시 갱신하는 메서드
-    private void refreshUserAuthentication(String role) {
+    private void refreshUserAuthentication(String role, HttpServletRequest request) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if (auth != null) {
+            // 1. 새로운 권한 생성
             List<GrantedAuthority> updatedAuthorities = new ArrayList<>();
-            // role이 "SUBSCRIBER"면 "ROLE_SUBSCRIBER"로 권한 등록
             updatedAuthorities.add(new SimpleGrantedAuthority("ROLE_" + role));
 
+            // 2. UserDetails(User) 객체도 새로운 권한을 가진 새 객체로 재생성
+            String username = auth.getName(); // 사용자 이메일/아이디
+            String password = auth.getCredentials() != null ? auth.getCredentials().toString() : "";
+            User newUserPrincipal = new User(username, password, updatedAuthorities);
+
+            // 3. 새로운 Authentication 토큰 생성
             Authentication newAuth = new UsernamePasswordAuthenticationToken(
-                auth.getPrincipal(),
+                newUserPrincipal,
                 auth.getCredentials(),
                 updatedAuthorities
             );
+            
+            // 4. SecurityContext 및 세션 강제 동기화
             SecurityContextHolder.getContext().setAuthentication(newAuth);
+            
+            if (request != null) {
+            	HttpSession session = request.getSession(false);
+            	if (session != null) {
+            		session.setAttribute("SPRING_SECURITY_CONTEXT", SecurityContextHolder.getContext());
+            	}
+            }
         }
     }
     
@@ -109,12 +127,6 @@ public class OrderController {
 				return "redirect:/guest/bookDetail?bno=" + cdto.getBno();
 			}
 			
-			// 대여 권수 3권이면 결제 X
-	        if (mbdao.activeRentBooksCount(mno) >= 3) {
-	            rttr.addFlashAttribute("msg", "동시 대여는 최대 3권까지만 가능합니다.");
-	            return "redirect:/guest/bookDetail?bno=" + cdto.getBno();
-	        }
-			
 			// 이미 대여 중인 도서는 바로 결제 X
 			MemberBooksDTO rentCheck = new MemberBooksDTO();
 			rentCheck.setMno(mno);
@@ -123,6 +135,12 @@ public class OrderController {
 				rttr.addFlashAttribute("msg", "이미 대여 중이거나 대여 진행 중인 도서입니다.");
 				return "redirect:/guest/bookDetail?bno=" + cdto.getBno();
 			}
+			
+			// 대여 권수 3권이면 결제 X
+	        if (mbdao.activeRentBooksCount(mno) >= 3) {
+	            rttr.addFlashAttribute("msg", "동시 대여는 최대 3권까지만 가능합니다.");
+	            return "redirect:/guest/bookDetail?bno=" + cdto.getBno();
+	        }
 		}
 		
 		// 현재 회원이 정기권 구독자인지 확인
@@ -178,7 +196,8 @@ public class OrderController {
 	@RequestMapping("/pay/paySuccess")
 	@ResponseBody
 	public Map<String, Object> paySuccess(@RequestBody Map<String, Object> reqData,
-            							@AuthenticationPrincipal User user) {
+            							@AuthenticationPrincipal User user, 
+            							HttpServletRequest request) {
 		// JS에서 보낸 JSON 데이터를 reqData.get()으로 꺼내서 사용
 	    String paymentId = (String) reqData.get("paymentId");
 	    String ctype = (String) reqData.get("ctype");
@@ -277,7 +296,7 @@ public class OrderController {
 		    		mdto.setMgrade("SUBSCRIBER");
 		    		
 		    		mdao.memberGradeUpdate(mdto);
-		    		refreshUserAuthentication("SUBSCRIBER");
+		    		refreshUserAuthentication("SUBSCRIBER", request);
 		    		
 		    		mpdto.setMno(oldto.getMno());
 			    	mpdto.setOlno(oldto.getOlno());
@@ -437,7 +456,8 @@ public class OrderController {
 	@RequestMapping("/pay/cartPaySuccess")
 	@ResponseBody
 	public Map<String, Object> cartPaySuccess(@RequestBody Map<String, Object> reqData,
-            								@AuthenticationPrincipal User user) {
+            								@AuthenticationPrincipal User user, 
+            								HttpServletRequest request) {
 		// JS에서 보낸 JSON 데이터를 reqData.get()으로 꺼내서 사용
 	    String paymentId = (String) reqData.get("paymentId");
 	    List<Integer> cnoList = (List<Integer>) reqData.get("cnoList");
@@ -572,7 +592,7 @@ public class OrderController {
 			    		mdto.setMgrade("SUBSCRIBER");
 			    		
 			    		mdao.memberGradeUpdate(mdto);
-			    		refreshUserAuthentication("SUBSCRIBER");
+			    		refreshUserAuthentication("SUBSCRIBER", request);
 			    		
 			    		mpdto.setMno(oldto.getMno());
 				    	mpdto.setOlno(oldto.getOlno());
@@ -748,8 +768,6 @@ public class OrderController {
     	mbdao.memberBookExtend(mbno, extendDays);
 	    
 	    oddto.setMpno(null);
-	    
-	    oddao.orderDetailInsert(oddto);
 	    
 		result.put("success", true);
 	    return result;
