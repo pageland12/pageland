@@ -193,7 +193,7 @@
             <div class="nav-center-group">
                 <span class="menu-icon">☰</span>
                 <ul class="nav-menu">
-                    <li><a href="/guest/allBookList" class="highlight">BEST</a></li>
+                    <li><a href="/main" class="highlight">BEST</a></li>
                     <li><a href="/guest/allBookAgeList">연령별</a></li>
                     <li><a href="/guest/allBookList">전체 상품</a></li>
                     <li><a href="/guest/allPassList">구독 서비스</a></li>

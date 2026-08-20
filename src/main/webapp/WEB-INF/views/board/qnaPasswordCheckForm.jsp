@@ -4,19 +4,39 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
-<title>비밀번호 확인</title>
+    <meta charset="UTF-8">
+    <title>비밀번호 확인</title>
+    <link rel="stylesheet" type="text/css" href="<c:url value='/css/form.css'/>">
 </head>
 <body>
-	* 비밀번호를 입력하세요. <br>
-	<form name="qnaPasswordCheckForm" method="post" action="/board/qnaPasswordCheck">
-		<input type="hidden" name="mode" value="${mode}">
-		<input type="hidden" name="qno" value="${qno}">
-		비밀번호 : <input type="password" name="qpasswd">
-		<input type="submit" value="전송">
-	</form>
-	<c:if test="${not empty msg}">
-		<p style="color:red; font-weight:bold">${msg}</p>
-	</c:if>
+    <%@ include file="../guest/header.jsp" %>
+
+    <div class="login-wrapper">
+        <div class="login-container">
+            <h2 class="login-title">비밀번호 확인</h2>
+            
+            <form name="qnaPasswordCheckForm" method="post" action="/board/qnaPasswordCheck">
+                <input type="hidden" name="mode" value="${mode}">
+                <input type="hidden" name="qno" value="${qno}">
+                
+                <div class="form-group">
+                    <label class="form-label" for="qpasswd">비밀번호</label>
+                    <input type="password" id="qpasswd" name="qpasswd" class="form-input" placeholder="비밀번호를 입력해 주세요" autofocus required>
+                </div>
+
+                <div class="button-group">
+                    <input type="submit" class="btn-submit" value="전송">
+                    <button type="button" class="btn-cancel" onclick="history.back()">취소</button>
+                </div>
+            </form>
+
+            <!-- 에러 메시지 표시 영역 -->
+            <c:if test="${not empty msg}">
+                <p class="error-msg">${msg}</p>
+            </c:if>
+        </div>
+    </div>
+
+    <%@ include file="../guest/footer.jsp" %>
 </body>
 </html>
