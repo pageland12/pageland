@@ -34,4 +34,7 @@ public interface ICartDAO {
 	// --- 페이징 처리 전용 메서드 추가 ---
 	public List<CartDTO> mcartListPaging(@Param("mno") int mno, @Param("startRow") int startRow, @Param("endRow") int endRow);
 	public int getTotalCountByMno(int mno);
+	
+	// 장바구니에 도서가 얼마나 담겨있는지 확인
+	public int getTotalCountByMnoCtype(int mno);
 }

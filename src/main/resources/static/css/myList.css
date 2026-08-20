@@ -1,0 +1,417 @@
+@charset "UTF-8";
+
+.mypage-wrapper {
+    width: 100%;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 50px 30px 60px 30px;
+    box-sizing: border-box;
+    display: flex;
+    gap: 40px;
+    align-items: flex-start;
+}
+
+.mypage-main {
+    flex: 1;
+    background-color: #FFFFFF;
+    border-radius: 12px;
+    padding: 30px;
+    border: 1px solid #EFE0D3;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.02);
+    box-sizing: border-box;
+}
+
+.content-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 18px;
+    margin-bottom: 25px;
+    border-bottom: 2px solid #5A4A42;
+}
+
+.content-title {
+    font-size: 1.45rem;
+    font-weight: 800;
+    color: #2C221E;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.content-subtitle {
+    font-size: 0.9rem;
+    color: #7A6A60;
+}
+
+.content-count {
+    font-size: 0.95rem;
+    color: #7A6A60;
+}
+
+.content-count strong {
+    color: #8B5E3C;
+    font-size: 1.05rem;
+}
+
+/* 테이블 스타일링 */
+.custom-table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: center;
+    font-size: 0.92rem;
+}
+
+.custom-table thead th {
+    background-color: #FAF0E6;
+    color: #5A4A42;
+    padding: 14px 10px;
+    font-weight: 700;
+    border-top: 1px solid #E8D8CA;
+    border-bottom: 1px solid #E8D8CA;
+    white-space: nowrap;
+}
+
+.custom-table tbody td {
+    padding: 16px 10px;
+    border-bottom: 1px solid #F0E8E0;
+    color: #333333;
+    vertical-align: middle;
+}
+
+.custom-table tbody tr:hover {
+    background-color: #FCF9F6;
+}
+
+/* 도서/이용권 이미지 및 썸네일 */
+.book-thumb {
+    width: 90px;
+    height: 115px;
+    object-fit: cover;
+    border-radius: 6px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+    display: block;
+    margin: 0 auto;
+}
+
+.pass-thumb {
+    width: 85px;
+    height: 85px;
+    object-fit: cover;
+    border-radius: 8px;
+    border: 1px solid #E8D8CA;
+    display: block;
+}
+
+.no-img-box {
+    width: 65px;
+    height: 80px;
+    background-color: #EFE0D3;
+    color: #7A6A60;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    font-weight: 700;
+    border-radius: 4px;
+    margin: 0 auto;
+}
+
+.pass-img-wrapper .no-img-box {
+    width: 85px;
+    height: 85px;
+    font-size: 12px;
+    border-radius: 8px;
+    margin: 0;
+}
+
+.book-title-cell {
+    font-weight: 700;
+    color: #2C221E;
+    text-align: left;
+    padding-left: 15px !important;
+    line-height: 1.4;
+    max-width: 220px;
+}
+
+.book-title-cell a,
+.post-title-cell a {
+    color: #2C221E;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.book-title-cell a:hover,
+.post-title-cell a:hover {
+    color: #8B5E3C;
+    text-decoration: underline;
+}
+
+/* 탭 스타일 */
+.tab-container {
+    margin-bottom: 20px;
+}
+
+.tab-btn {
+    display: inline-block;
+    padding: 8px 18px;
+    background-color: #8B5E3C;
+    color: #FFFFFF;
+    font-weight: 700;
+    font-size: 0.95rem;
+    border-radius: 8px;
+    text-decoration: none;
+}
+
+/* 패스 리스트 카드 스타일 */
+.pass-list-container {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.pass-card {
+    display: flex;
+    align-items: center;
+    padding: 20px;
+    background-color: #FCF9F6;
+    border: 1px solid #EFE0D3;
+    border-radius: 10px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.pass-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+}
+
+.pass-img-wrapper {
+    margin-right: 22px;
+    flex-shrink: 0;
+}
+
+.pass-info {
+    flex-grow: 1;
+}
+
+.pass-name-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 8px;
+}
+
+.pass-name {
+    font-size: 1.15rem;
+    font-weight: 800;
+    color: #2C221E;
+}
+
+.pass-detail-text {
+    font-size: 0.95rem;
+    color: #555555;
+    margin-bottom: 4px;
+}
+
+.pass-detail-sub {
+    font-size: 0.85rem;
+    color: #888888;
+}
+
+.pass-status-box {
+    text-align: right;
+    min-width: 90px;
+    flex-shrink: 0;
+}
+
+.status-active {
+    color: #2E7D32;
+    font-weight: 800;
+    font-size: 1rem;
+    background-color: #E8F5E9;
+    padding: 6px 12px;
+    border-radius: 6px;
+    border: 1px solid #C8E6C9;
+}
+
+/* 결제 내역 전용 클래스 */
+.order-no {
+    font-weight: 700;
+    color: #5A4A42;
+}
+
+.price-text {
+    color: #555555;
+}
+
+.sale-text {
+    color: #D32F2F;
+    font-weight: 600;
+}
+
+.total-price {
+    color: #8B5E3C;
+    font-weight: 800;
+    font-size: 1rem;
+}
+
+.pay-badge {
+    display: inline-block;
+    padding: 4px 10px;
+    background-color: #F5EFEB;
+    color: #5A4A42;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    border: 1px solid #E3D6CC;
+}
+
+/* 뱃지 및 상태 스타일 */
+.badge {
+    display: inline-block;
+    padding: 4px 8px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 700;
+}
+
+.badge-dday { background-color: #E8F4FD; color: #1976D2; border: 1px solid #B3E5FC; }
+.badge-urgent { background-color: #FFF3E0; color: #E65100; border: 1px solid #FFE0B2; }
+.badge-overdue { background-color: #FFEBEE; color: #C62828; border: 1px solid #FFCDD2; }
+
+.badge-category,
+.badge-npass {
+    display: inline-block;
+    padding: 4px 10px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    border-radius: 20px;
+    background-color: #E3F2FD;
+    color: #1976D2;
+    border: 1px solid #BBDEFB;
+}
+
+.badge-review,
+.badge-sub {
+    display: inline-block;
+    padding: 4px 10px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    border-radius: 20px;
+    background-color: #E8F5E9;
+    color: #2E7D32;
+    border: 1px solid #C8E6C9;
+}
+
+.badge-review-done {
+    display: inline-block;
+    padding: 5px 12px;
+    background-color: #F0EDE8;
+    color: #8A7A70;
+    font-size: 0.85rem;
+    font-weight: 600;
+    border-radius: 20px;
+    border: 1px solid #DFD7CF;
+}
+
+/* 버튼 및 폼 요소 */
+.select-box {
+    padding: 6px 10px;
+    border: 1px solid #D1C4BA;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    background-color: #FFF;
+    outline: none;
+}
+
+.btn {
+    padding: 6px 12px;
+    border: none;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    white-space: nowrap;
+}
+
+.btn-review {
+    padding: 7px 16px;
+    background-color: #8B5E3C;
+    color: #FFFFFF;
+    border: none;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.1s ease;
+    white-space: nowrap;
+}
+.btn-review:hover { background-color: #6F4A2F; transform: translateY(-1px); }
+
+.btn-extend { background-color: #8B5E3C; color: #FFFFFF; }
+.btn-extend:hover { background-color: #6F4A2F; }
+
+.btn-free { background-color: #2E7D32; color: #FFFFFF; }
+.btn-free:hover { background-color: #1B5E20; }
+
+.btn-return { background-color: #5A4A42; color: #FFFFFF; }
+.btn-return:hover { background-color: #3E322C; }
+
+.btn-overdue { background-color: #D32F2F; color: #FFFFFF; }
+.btn-overdue:hover { background-color: #B71C1C; }
+
+.btn-disabled { background-color: #E0E0E0; color: #9E9E9E; cursor: not-allowed; }
+
+.inline-form {
+    display: inline-flex;
+    gap: 6px;
+    align-items: center;
+    justify-content: center;
+}
+
+.extra-info-text { font-size: 0.88rem; color: #666666; }
+.extra-info-rating { color: #E65100; font-weight: 600; }
+.meta-text { color: #7A6A60; font-size: 0.88rem; }
+
+.empty-msg {
+    text-align: center;
+    padding: 60px 0;
+    color: #888888;
+    font-size: 1rem;
+}
+
+/* 페이징 영역 */
+.pagination {
+    text-align: center;
+    margin-top: 35px;
+}
+
+.pagination a {
+    display: inline-block;
+    padding: 6px 12px;
+    margin: 0 3px;
+    color: #5A4A42;
+    text-decoration: none;
+    border: 1px solid #E0D2C7;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    transition: background-color 0.2s;
+}
+
+.pagination a:hover {
+    background-color: #F2E3D5;
+}
+
+.pagination .current-page {
+    display: inline-block;
+    padding: 6px 12px;
+    margin: 0 3px;
+    background-color: #8B5E3C;
+    color: #FFFFFF;
+    font-weight: 700;
+    border-radius: 4px;
+    border: 1px solid #8B5E3C;
+    font-size: 0.9rem;
+}

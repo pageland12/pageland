@@ -6,7 +6,7 @@
 <head>
     <meta charset="UTF-8">
     <title>도서 상세</title>
-    <link rel="stylesheet" type="text/css" href="<c:url value='/css/GuestdetailCss.css'/>">
+    <link rel="stylesheet" href="/css/GuestdetailCss.css">
 </head>
 <body>
 	<%@ include file="header.jsp" %>
@@ -17,15 +17,11 @@
 			<input type="hidden" value="" name="pno">
 			<input type="hidden" value="book" name="ctype">
 			
-			<!-- 상단 2단 레이아웃 (좌: 이미지 / 우: 정보 및 옵션) -->
 			<div class="product-top-section">
-				
-				<!-- 좌측 대표 썸네일 -->
 				<div class="product-image-area">
 					<img alt="${book.bname}" src="${book.bimg}">
 				</div>
 				
-				<!-- 우측 상품 정보 -->
 				<div class="product-info-area">
 					<h1 class="product-title">${book.bname}</h1>
 					
@@ -38,11 +34,25 @@
 						<span class="info-label">가격</span>
 						<span class="info-value price">${book.bprice}원</span>
 					</div>
+
+					<div class="info-row">
+						<span class="info-label">재고수량</span>
+						<span class="info-value">
+							<c:choose>
+								<c:when test="${book.bstock <= 0}">
+									<span class="soldout-text">품절</span>
+								</c:when>
+								<c:otherwise>
+									${book.bstock}개
+								</c:otherwise>
+							</c:choose>
+						</span>
+					</div>
 					
 					<div class="info-row">
 						<span class="info-label">기간</span>
 						<span class="info-value">
-							<select name="cstock" required>
+							<select name="cstock" <c:if test="${book.bstock <= 0}">disabled</c:if> required>
 								<option value="">선택</option>
 								<option value="1">15일</option>
 								<option value="2">30일</option>
@@ -51,16 +61,23 @@
 						</span>
 					</div>
 					
-					<!-- 버튼 영역 -->
+					<!-- 버튼 영역 (8:2 비율) -->
 					<div class="button-group">
-						<input type="submit" class="btn-cart" value="장바구니 담기">
-						<input type="submit" class="btn-buy" formaction="/pay/payForm" value="바로 구매">
-						<button type="button" class="btn-list" onclick="location.href='/guest/allBookList'">도서 목록</button>
+						<c:choose>
+							<c:when test="${book.bstock <= 0}">
+								<div class="btn-soldout">품절된 상품입니다</div>
+								<button type="button" class="btn-list" onclick="location.href='/guest/allBookList'">도서 목록</button>
+							</c:when>
+							<c:otherwise>
+								<input type="submit" class="btn-cart" value="장바구니 담기">
+								<input type="submit" class="btn-buy" formaction="/pay/payForm" value="바로 구매">
+								<button type="button" class="btn-list" onclick="location.href='/guest/allBookList'">도서 목록</button>
+							</c:otherwise>
+						</c:choose>
 					</div>
 				</div>
 			</div>
 			
-			<!-- 하단 상세 설명 이미지 -->
 			<div class="product-detail-section">
 				<h2 class="detail-title">상세 정보</h2>
 				<img class="detail-content-img" alt="도서정보" src="${book.binfo}">
