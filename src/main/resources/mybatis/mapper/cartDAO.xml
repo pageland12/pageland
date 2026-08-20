@@ -62,6 +62,14 @@
 		   AND BNO=#{bno}
 	</select>
 	
+	<select id="getTotalCountByMnoCtype" resultType="int">
+		SELECT COUNT(*)
+		  FROM cart
+		 WHERE mno = #{mno}
+		   AND CTYPE='book'
+	</select>
+	
+	
 	
 	<insert id="cartInsert">
 		INSERT INTO CART(CNO,CTYPE,CSTOCK,MNO,BNO,PNO)
