@@ -259,7 +259,7 @@
                                         </c:if>
                                     </td>
                                     <td class="book-title-cell">${book.bname}</td>
-                                    <td>"${book.mbstart}</td>
+                                    <td>${book.mbstart}</td>
                                     <td>${book.mbend}</td>
                                     <td>
                                         <c:choose>
