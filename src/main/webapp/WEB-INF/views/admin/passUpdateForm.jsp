@@ -11,7 +11,7 @@
 <body>
 
     <!-- 상단 헤더 포함 -->
-    <%@ include file="header.jsp" %>
+    <%@ include file="../guest/header.jsp" %>
 
     <main class="main-content">
         <div class="page-title">구독권 정보 수정</div>
@@ -67,7 +67,7 @@
     </main>
 
     <!-- 하단 푸터 포함 -->
-    <%@ include file="footer.jsp" %>
+    <%@ include file="../guest/footer.jsp" %>
 
 </body>
 </html>
