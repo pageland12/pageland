@@ -10,7 +10,7 @@
 </head>
 <body>
     <%@ include file="header.jsp" %>
-    <link rel="stylesheet" type="text/css" href="<c:url value='/css/detailCss.css'/>">
+    <link rel="stylesheet" type="text/css" href="<c:url value='/css/GuestdetailCss.css'/>">
     <div class="detail-container">
         <form name="passCartForm" method="post" action="/member/cartInsert">
             <input type="hidden" value="${pass.pno}" name="pno">
