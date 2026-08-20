@@ -9,24 +9,31 @@
         color: #5A4A42;
         border-bottom: 1px solid #EFE0D3;
         font-family: 'Malgun Gothic', '맑은 고딕', sans-serif;
-        position: relative; /* 메가메뉴 위치기준 */
+        position: relative;
+        z-index: 100;
     }
 
+    /* 상단 배너 영역 */
     .top-banner {
         background-color: #F5C042;
         color: #FFFFFF;
-        text-align: center;
-        padding: 12px 0;
+        width: 100%;
+        height: 44px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
         font-size: 14px;
         font-weight: bold;
         transition: background-color 0.5s ease;
+        overflow: hidden;
     }
 
     .top-banner span {
-        display: inline-block;
+        position: absolute;
         transition: opacity 0.3s ease, transform 0.3s ease;
         opacity: 1;
         transform: translateY(0);
+        white-space: nowrap;
     }
 
     .top-banner span.fade-out {
@@ -34,42 +41,31 @@
         transform: translateY(-5px);
     }
 
+    /* 메인 헤더 컨테이너 */
     .header-container {
         width: 100%;
-        max-width: 1680px;
+        max-width: 1200px;
         margin: 0 auto;
-        padding: 15px 50px 20px 50px;
+        padding: 15px 20px 20px 20px;
         box-sizing: border-box;
-
-        display: grid;
-        grid-template-columns: auto 1fr;
-        column-gap: 50px;
-        align-items: center;
-    }
-
-    .logo-area {
-        grid-row: span 2; 
         display: flex;
+        flex-direction: column;
         align-items: center;
-        transform: translateX(-75px);
+        position: relative;
     }
 
-    .logo-area img {
-        height: 120px;
-        width: auto;
-        object-fit: contain;
-        display: block;
-    }
-
+    /* 최상단 유저 바 */
     .top-user-bar {
+        position: absolute;
+        right: 20px;
+        top: 15px;
         display: flex;
-        justify-content: flex-end;
-        padding-bottom: 5px;
+        align-items: center;
     }
 
     .user-menu {
         display: flex;
-        gap: 18px;
+        gap: 12px;
         align-items: center;
         font-size: 14px;
     }
@@ -83,86 +79,147 @@
         color: #2C221E;
     }
 
-    .nav-bar {
+    .user-menu .divider {
+        color: #D4C4B7;
+        font-size: 12px;
+        margin: 0 2px;
+    }
+
+    /* 로고 영역 */
+    .logo-area {
         display: flex;
-        justify-content: space-between;
+        justify-content: center;
+        align-items: center;
+        margin-bottom: 15px;
+        height: 100px;
+    }
+
+    .logo-area img {
+        width: 250px;
+        height: 100px;
+        object-fit: contain;
+        display: block;
+        cursor: pointer;
+        transition: transform 0.2s ease;
+    }
+
+    .logo-area img.logo-hover-effect {
+        transform: scale(1.05);
+    }
+
+    /* 네비게이션 바 영역 */
+    .nav-bar {
+        width: 100%;
+        display: flex;
+        justify-content: center;
         align-items: center;
         padding-top: 5px;
+        position: relative;
     }
 
-    .nav-center-group {
-        display: flex;
-        align-items: center;
-        gap: 35px;
-    }
-
+    /* 햄버거 아이콘 */
     .menu-icon {
+        position: absolute;
+        left: 10px;
         font-size: 28px;
         cursor: pointer;
         color: #222;
         display: flex;
         align-items: center;
         user-select: none;
-        transition: color 0.2s;
+        transition: color 0.2s ease;
     }
 
     .menu-icon:hover {
         color: #8B5E3C;
     }
 
-    .nav-menu {
-        display: flex;
-        gap: 50px;
-        list-style: none;
-        margin: 0;
-        padding: 0;
+    /* 상단 네비게이션 메뉴 그리드 */
+    .menu-grid-wrapper {
+        width: 100%;
+        max-width: 960px;
+        display: grid;
+        grid-template-columns: repeat(6, 1fr);
         align-items: center;
+        margin: 0 auto;
+        padding: 0;
+        list-style: none;
     }
 
-    .nav-menu a {
+    /* 네비게이션 드롭다운 내부 그리드 ([수정] align-items: start 로 상단 라인 고정) */
+    .dropdown-grid-wrapper {
+        width: 100%;
+        max-width: 960px;
+        display: grid;
+        grid-template-columns: repeat(6, 1fr);
+        align-items: start; /* 핵심: 모든 카테고리 제목을 맨 위로 고정 */
+        margin: 0 auto;
+        padding: 0;
+    }
+
+    .nav-menu > li {
+        position: relative;
+        white-space: nowrap;
+        text-align: center;
+        padding: 10px 0;
+    }
+
+    .nav-menu > li > a {
         color: #222222;
         text-decoration: none;
         font-weight: bold;
-        font-size: 20px;
+        font-size: 19px;
         letter-spacing: -0.5px;
-        white-space: nowrap;
+        display: inline-block;
     }
 
-    .nav-menu a.highlight {
-        color: #000000;
-        font-weight: 900;
-    }
-
-    .nav-menu a:hover {
+    .nav-menu > li > a:hover {
         color: #8B5E3C;
     }
 
-    .nav-select {
-        border: none;
-        background: transparent;
-        font-weight: bold;
-        font-size: 20px;
-        color: #222;
-        cursor: pointer;
-        outline: none;
-        padding: 0;
+    /* 서브메뉴 스타일 (개별 호버용) */
+    .submenu {
+        position: absolute;
+        top: 100%;
+        left: 50%;
+        transform: translateX(-50%);
+        background-color: #FFFFFF;
+        border: 1px solid #EFE0D3;
+        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.05);
+        list-style: none;
+        padding: 10px 0;
+        margin: 0;
+        min-width: 140px;
+        display: none;
+        z-index: 10;
+        border-radius: 4px;
     }
 
-    .icon-menu {
-        display: flex;
-        align-items: center;
+    .nav-menu > li:hover .submenu {
+        display: block;
     }
 
-    .icon-btn {
-        background: none;
-        border: none;
-        font-size: 28px;
-        cursor: pointer;
-        color: #333;
+    .submenu li {
+        padding: 8px 20px;
+        text-align: center;
+    }
+
+    .submenu li a {
+        color: #5A4A42;
         text-decoration: none;
+        font-size: 15px;
+        font-weight: normal;
+        display: block;
+        white-space: nowrap;
+        transition: color 0.2s ease;
     }
 
-    /* --- [신규 추가] 전체 메뉴 드롭다운 (All Menu Dropdown) 스타일 --- */
+    .submenu li a:hover {
+        color: #8B5E3C;
+        font-weight: bold;
+    }
+
+    /* 전체 메뉴 드롭다운 (All Menu Dropdown) 스타일 */
     .all-menu-dropdown {
         display: none;
         position: absolute;
@@ -187,20 +244,26 @@
     }
 
     .all-menu-container {
-        max-width: 1400px;
-        margin: 0 auto;
-        padding: 0 50px;
-        display: grid;
-        grid-template-columns: repeat(4, 1fr);
-        gap: 40px;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        padding: 0 20px;
+        box-sizing: border-box;
     }
 
+    .menu-category {
+        text-align: center;
+    }
+
+    /* [수정] h4 margin-top: 0 고정으로 높이 완벽 통일 */
     .menu-category h4 {
         margin: 0 0 15px 0;
         padding-bottom: 8px;
         font-size: 18px;
         color: #8B5E3C;
         border-bottom: 2px solid #FAF0E6;
+        white-space: nowrap;
+        display: inline-block;
     }
 
     .menu-category ul {
@@ -211,6 +274,7 @@
 
     .menu-category ul li {
         margin-bottom: 10px;
+        white-space: nowrap;
     }
 
     .menu-category ul li a {
@@ -227,99 +291,122 @@
 </style>
 
 <header>
+    <!-- 상단 배너 -->
     <div class="top-banner" id="topBanner">
         <span id="bannerText">사자니 부담되고~ 사고나니 후회될 땐, 빌려보세요!</span>
     </div>
 
+    <!-- 메인 헤더 영역 -->
     <div class="header-container">
-        <div class="logo-area">
-            <a href="/">
-                <img src="/images/logo.png" alt="페이지랜드">
-            </a>
-        </div>
-
+        <!-- 유저 메뉴 -->
         <div class="top-user-bar">
             <div class="user-menu">
                 <sec:authorize access="isAnonymous()">
                     <a href="/loginForm">로그인</a>
+                    <span class="divider">|</span>
                     <a href="/guest/writeForm">회원가입</a>
                 </sec:authorize>
 
                 <sec:authorize access="hasAnyRole('NORMAL', 'SUBSCRIBER')">
                     <a href="/logout">로그아웃</a>
+                    <span class="divider">|</span>
                     <a href="/member/memberMain">마이페이지</a>
+                    <span class="divider">|</span>
+                    <a href="/cart/cartList">장바구니</a>
+                    <span class="divider">|</span>
                     <a href="/member/orderList">주문조회</a>
                 </sec:authorize>
 
                 <sec:authorize access="hasRole('ADMIN')">
                     <a href="/logout">로그아웃</a>
+                    <span class="divider">|</span>
                     <a href="/admin/adminMain">관리자페이지</a>
                 </sec:authorize>
             </div>
         </div>
 
-        <div class="nav-bar">
-            <div class="nav-center-group">
-                <span class="menu-icon" id="allMenuBtn">☰</span>
-                <ul class="nav-menu">
-                    <li><a href="/main" class="highlight">BEST</a></li>
-                    <li><a href="/guest/allBookAgeList">연령별</a></li>
-                    <li><a href="/guest/allBookList">전체 상품</a></li>
-                    <li><a href="/guest/allPassList">구독 서비스</a></li>
-                    <li><a href="/guest/allBookGenreList">분야별</a></li>
-                    <li><a href="/guest/allBookPublisherList">출판사별</a></li>
-                    <li>
-                        <select class="nav-select" onchange="if(this.value) location.href=this.value;">
-                            <option value="">고객센터</option>
-                            <option value="/guest/noticeList">공지사항</option>
-                            <option value="/guest/eventList">이벤트</option>
-                            <option value="/guest/qnaList">Q&A</option>
-                            <option value="/guest/ratingList">후기</option>
-                        </select>
-                    </li>
-                </ul>
-            </div>
-
-            <div class="icon-menu">
-                <a href="/cart/cartList" class="icon-btn" title="장바구니">🛒</a>
-            </div>
+        <!-- 로고 영역 -->
+        <div class="logo-area">
+            <a href="/">
+                <img src="/images/logo1.png" 
+                     alt="페이지랜드" 
+                     id="mainLogo"
+                     onmouseover="this.src='/images/logo2.png'; this.classList.add('logo-hover-effect');" 
+                     onmouseout="this.src='/images/logo1.png'; this.classList.remove('logo-hover-effect');">
+            </a>
         </div>
+
+        <!-- 네비게이션 바 -->
+        <nav class="nav-bar">
+            <span class="menu-icon" id="allMenuBtn">☰</span>
+            <ul class="nav-menu menu-grid-wrapper">
+                <li><a href="/guest/allBookList">전체 상품</a></li>
+                <li><a href="/guest/allBookAgeList">연령별</a></li>
+                <li><a href="/guest/allBookGenreList">분야별</a></li>
+                <li><a href="/guest/allBookPublisherList">출판사별</a></li>
+                <li><a href="/guest/allPassList">구독 서비스</a></li>
+                <li><a href="/guest/noticeList">고객센터</a></li>
+            </ul>
+        </nav>
     </div>
 
     <!-- 전체 메뉴 드롭다운 영역 -->
     <div class="all-menu-dropdown" id="allMenuDropdown">
         <div class="all-menu-container">
-            <div class="menu-category">
-                <h4>연령별</h4>
-                <ul>
-                    <li><a href="/guest/allBookAgeList?category=0-3세">0 - 3세</a></li>
-                    <li><a href="/guest/allBookAgeList?category=4-7세">4 - 7세</a></li>
-                    <li><a href="/guest/allBookAgeList?category=초등 저학년">초등 저학년</a></li>
-                    <li><a href="/guest/allBookAgeList?category=초등 고학년">초등 고학년</a></li>
-                </ul>
-            </div>
-            <div class="menu-category">
-                <h4>분야별</h4>
-                <ul>
-                    <li><a href="/guest/allBookGenreList?genre=picture">그림책</a></li>
-                    <li><a href="/guest/allBookGenreList?genre=fairytale">동화책</a></li>
-                    <li><a href="/guest/allBookGenreList?genre=comic">학습만화</a></li>
-                </ul>
-            </div>
-            <div class="menu-category">
-                <h4>출판사별</h4>
-                <ul>
-                    <li><a href="/guest/allBookPublisherList">전체 출판사 목록</a></li>
-                </ul>
-            </div>
-            <div class="menu-category">
-                <h4>고객센터</h4>
-                <ul>
-                    <li><a href="/guest/noticeList">공지사항</a></li>
-                    <li><a href="/guest/eventList">이벤트</a></li>
-                    <li><a href="/guest/qnaList">Q&A</a></li>
-                    <li><a href="/guest/ratingList">후기</a></li>
-                </ul>
+            <div class="dropdown-grid-wrapper">
+                <!-- 1. 전체 상품 -->
+                <div class="menu-category">
+                    <h4>전체 상품</h4>
+                </div>
+
+                <!-- 2. 연령별 -->
+                <div class="menu-category">
+                    <h4>연령별</h4>
+                    <ul>
+                        <li><a href="/guest/allBookAgeList?category=0-3세">0 - 3세</a></li>
+                        <li><a href="/guest/allBookAgeList?category=4-7세">4 - 7세</a></li>
+                        <li><a href="/guest/allBookAgeList?category=초등 저학년">초등 저학년</a></li>
+                        <li><a href="/guest/allBookAgeList?category=초등 고학년">초등 고학년</a></li>
+                    </ul>
+                </div>
+
+                <!-- 3. 분야별 -->
+                <div class="menu-category">
+                    <h4>분야별</h4>
+                    <ul>
+                        <li><a href="/guest/allBookGenreList?genre=생활/창작">생활/창작</a></li>
+                        <li><a href="/guest/allBookGenreList?genre=수학/영어">수학/영어</a></li>
+                        <li><a href="/guest/allBookGenreList?genre=자연/과학">자연/과학</a></li>
+                        <li><a href="/guest/allBookGenreList?genre=전래/명작">전래/명작</a></li>
+                    </ul>
+                </div>
+
+                <!-- 4. 출판사별 -->
+                <div class="menu-category">
+                    <h4>출판사별</h4>
+                    <ul>
+                        <li><a href="/guest/allBookPublisherList?publisher=그레이트북스">그레이트북스</a></li>
+                        <li><a href="/guest/allBookPublisherList?publisher=아람북스">아람북스</a></li>
+                        <li><a href="/guest/allBookPublisherList?publisher=키즈스콜레">키즈스콜레</a></li>
+                        <li><a href="/guest/allBookPublisherList?publisher=프뢰벨">프뢰벨</a></li>
+                    </ul>
+                </div>
+
+                <!-- 5. 구독 서비스 -->
+                <div class="menu-category">
+                    <h4>구독 서비스</h4>
+                </div>
+
+                <!-- 6. 고객센터 -->
+                <div class="menu-category">
+                    <h4>고객센터</h4>
+                    <ul>
+                        <li><a href="/guest/noticeList">공지사항</a></li>
+                        <li><a href="/guest/eventList">이벤트</a></li>
+                        <li><a href="/guest/qnaList">Q&A</a></li>
+                        <li><a href="/guest/ratingList">후기</a></li>
+                    </ul>
+                </div>
             </div>
         </div>
     </div>
@@ -327,7 +414,7 @@
 
 <script>
     document.addEventListener("DOMContentLoaded", function() {
-        // Top Banner Animation
+        // 상단 배너
         const bannerData = [
             {
                 text: "사자니 부담되고~ 사고나니 후회될 땐, 빌려보세요!",
@@ -355,21 +442,21 @@
             }, 300);
         }, 3000);
 
-        // 전체 메뉴 드롭다운 토글 기능
+        // 전체 메뉴 드롭다운 토글
         const allMenuBtn = document.getElementById("allMenuBtn");
         const allMenuDropdown = document.getElementById("allMenuDropdown");
 
-        // ☰ 아이콘 클릭 시 메뉴 토글
-        allMenuBtn.addEventListener("click", function(e) {
-            e.stopPropagation();
-            allMenuDropdown.classList.toggle("active");
-        });
+        if (allMenuBtn && allMenuDropdown) {
+            allMenuBtn.addEventListener("click", function(e) {
+                e.stopPropagation();
+                allMenuDropdown.classList.toggle("active");
+            });
 
-        // 외부 영역 클릭 시 메뉴 닫기
-        document.addEventListener("click", function(e) {
-            if (!allMenuDropdown.contains(e.target) && e.target !== allMenuBtn) {
-                allMenuDropdown.classList.remove("active");
-            }
-        });
+            document.addEventListener("click", function(e) {
+                if (!allMenuDropdown.contains(e.target) && e.target !== allMenuBtn) {
+                    allMenuDropdown.classList.remove("active");
+                }
+            });
+        }
     });
 </script>
