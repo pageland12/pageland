@@ -10,7 +10,7 @@
 <body>
 
     <!-- 상단 헤더 포함 -->
-    <%@ include file="header.jsp" %>
+    <%@ include file="../guest/header.jsp" %>
 
     <!-- 본문 영역 -->
     <main class="main-content">
@@ -51,7 +51,7 @@
     </main>
 
     <!-- 하단 푸터 포함 -->
-    <%@ include file="footer.jsp" %>
+    <%@ include file="../guest/footer.jsp" %>
 
 </body>
 </html>

@@ -11,7 +11,7 @@
 </head>
 <body>
 
-    <%@ include file="header.jsp" %>
+    <%@ include file="../guest/header.jsp" %>
 
     <div class="main-content">
         <div class="page-title">등록 구독권 관리</div>
@@ -55,7 +55,7 @@
         </div>
     </div>
 
-    <%@ include file="footer.jsp" %>
+    <%@ include file="../guest/footer.jsp" %>
 
 </body>
 </html>
