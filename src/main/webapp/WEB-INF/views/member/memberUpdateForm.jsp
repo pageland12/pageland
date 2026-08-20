@@ -54,7 +54,7 @@
                                     <input type="button" value="주소검색" class="btn-search" onclick="goPopup();">
                                 </div>
                                 <input type="text" name="maddr1" class="form-control input-full" readonly placeholder="기본주소" value="${maddrArray[0]}">
-                                <input type="text" name="maddr2" class="form-control input-full" placeholder="상세주소" value="${maddrArray[1]}">
+                                <input type="text" name="maddr2" class="form-control input-full" readonly placeholder="상세주소" value="${maddrArray[1]}">
                             </div>
                         </td>
                     </tr>
