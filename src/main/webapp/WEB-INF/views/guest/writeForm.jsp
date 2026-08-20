@@ -45,7 +45,7 @@
 	                    <input type="button" value="주소검색" class="btn-sub" onclick="goPopup();">
 	                </div>
 	                <input type="text" name="maddr1" placeholder="기본주소" readonly style="margin-bottom: 8px;">
-	                <input type="text" name="maddr2" placeholder="상세주소 입력">
+	                <input type="text" name="maddr2" placeholder="상세주소 입력" readonly>
 	            </div>
 	
 	            <div class="form-group">
