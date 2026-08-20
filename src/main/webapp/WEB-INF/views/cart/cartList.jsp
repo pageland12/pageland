@@ -59,7 +59,7 @@
                                 <span class="badge-type">도서 대여</span>
                                 <div class="item-name">${cart.bname}</div>
                                 <div class="item-subtext">정가: <fmt:formatNumber value="${cart.bprice}" pattern="#,###"/>원</div>
-                                <div class="item-subtext">대여 기간: ${cart.cstock * 15}일 (${cart.cstock}개)</div>
+                                <div class="item-subtext">대여 기간: ${cart.cstock * 15}일</div>
                                 <div class="item-price">
                                     결제가: <fmt:formatNumber value="${cart.bprice * cart.cstock}" pattern="#,###"/>원
                                 </div>
