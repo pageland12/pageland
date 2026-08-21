@@ -77,8 +77,16 @@ public class QnaController {
 		dto.setMno(mDto.getMno());
 				
 		if (qupload != null && !qupload.isEmpty()) {
-	        String qfiles = qupload.getOriginalFilename();
-	        qupload.transferTo(new File("C:\\pageland\\src\\main\\resources\\static\\images\\" + qfiles));
+			String qfiles = qupload.getOriginalFilename();
+	        
+	        // 저장 디렉터리 준비
+	        File uploadDir = new File("C:\\pageland_images\\");
+	        if (!uploadDir.exists()) {
+	            uploadDir.mkdirs();
+	        }
+	        
+	        // 파일 저장
+	        qupload.transferTo(new File(uploadDir, qfiles));
 	        dto.setQfiles(qfiles);
 	    }
 		
@@ -164,8 +172,16 @@ public class QnaController {
 		dto.setQpasswd(passwordEncoder.encode(dto.getQpasswd()));
 		
 		if (qupload != null && !qupload.isEmpty()) {
-	        String qfiles = qupload.getOriginalFilename();
-	        qupload.transferTo(new File("C:\\pageland\\src\\main\\resources\\static\\images\\" + qfiles));
+			String qfiles = qupload.getOriginalFilename();
+	        
+	        // 저장 디렉터리 준비
+	        File uploadDir = new File("C:\\pageland_images\\");
+	        if (!uploadDir.exists()) {
+	            uploadDir.mkdirs();
+	        }
+	        
+	        // 파일 저장
+	        qupload.transferTo(new File(uploadDir, qfiles));
 	        dto.setQfiles(qfiles);
 	    }
 		

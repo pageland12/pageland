@@ -104,8 +104,16 @@ public class AdminBoardController {
 		dto.setMno(mDto.getMno());
 				
 		if (abupload != null && !abupload.isEmpty()) {
-	        String abfiles = abupload.getOriginalFilename();
-	        abupload.transferTo(new File("C:\\pageland\\src\\main\\resources\\static\\images\\" + abfiles));
+			String abfiles = abupload.getOriginalFilename();
+	        
+	        // 저장 디렉터리 준비
+	        File uploadDir = new File("C:\\pageland_images\\");
+	        if (!uploadDir.exists()) {
+	            uploadDir.mkdirs();
+	        }
+	        
+	        // 파일 저장
+	        abupload.transferTo(new File(uploadDir, abfiles));
 	        dto.setAbfiles(abfiles);
 	    }
 			
@@ -150,8 +158,16 @@ public class AdminBoardController {
 	@RequestMapping("/admin/abUpdate")
 	public String abUpdate(@RequestParam(value = "abupload", required = false) MultipartFile abupload, AdminBoardDTO dto) throws IOException {
 		if (abupload != null && !abupload.isEmpty()) {
-	        String abfiles = abupload.getOriginalFilename();
-	        abupload.transferTo(new File("C:\\pageland\\src\\main\\resources\\static\\images\\" + abfiles));
+			String abfiles = abupload.getOriginalFilename();
+	        
+	        // 저장 디렉터리 준비
+	        File uploadDir = new File("C:\\pageland_images\\");
+	        if (!uploadDir.exists()) {
+	            uploadDir.mkdirs();
+	        }
+	        
+	        // 파일 저장
+	        abupload.transferTo(new File(uploadDir, abfiles));
 	        dto.setAbfiles(abfiles);
 	    }
 		

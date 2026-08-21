@@ -119,9 +119,17 @@ public class RatingController {
 		
 		if (rupload != null && !rupload.isEmpty()) {
 			String rfiles = rupload.getOriginalFilename();
-			rupload.transferTo(new File("C:\\pageland\\src\\main\\resources\\static\\images\\" + rfiles));
-			dto.setRfiles(rfiles);
-		}
+	        
+	        // 저장 디렉터리 준비
+	        File uploadDir = new File("C:\\pageland_images\\");
+	        if (!uploadDir.exists()) {
+	            uploadDir.mkdirs();
+	        }
+	        
+	        // 파일 저장
+	        rupload.transferTo(new File(uploadDir, rfiles));
+	        dto.setRfiles(rfiles);
+	    }
 		
 		dao.ratingWrite(dto);
 		
@@ -166,8 +174,16 @@ public class RatingController {
 		dto.setMno(mDto.getMno());
 		
 		if (rupload != null && !rupload.isEmpty()) {
-	        String rfiles = rupload.getOriginalFilename();
-	        rupload.transferTo(new File("C:\\pageland\\src\\main\\resources\\static\\images\\" + rfiles));
+			String rfiles = rupload.getOriginalFilename();
+	        
+	        // 저장 디렉터리 준비
+	        File uploadDir = new File("C:\\pageland_images\\");
+	        if (!uploadDir.exists()) {
+	            uploadDir.mkdirs();
+	        }
+	        
+	        // 파일 저장
+	        rupload.transferTo(new File(uploadDir, rfiles));
 	        dto.setRfiles(rfiles);
 	    }
 		

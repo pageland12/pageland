@@ -37,6 +37,11 @@ public class MemberController {
 		return "guest/main";
 	}
 	
+	@RequestMapping("/guest/mainPopup")
+	public String mainPopup() {
+		return "guest/mainPopup";
+	}
+	
 	@RequestMapping("/main")
 	public String main() {
 		return "redirect:/";

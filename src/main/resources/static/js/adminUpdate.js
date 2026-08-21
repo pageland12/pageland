@@ -18,7 +18,7 @@ function check() {
 	}
 	
 	if(!expMpoint.test(mpoint.value) || mpoint.value.length > 6) {
-        alert("회원 포인트를 올바르게(6자 이내) 입력해주세요.");
+        alert("회원 포인트를 올바르게(6자 이내 숫자로만) 입력해주세요.");
         mpoint.value = "";
         mpoint.focus();
         return false;
