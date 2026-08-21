@@ -73,7 +73,7 @@
 	  		  FROM (
 	  		  	SELECT * 
 	  		  		FROM BOOK 
-	  		  		ORDER BY BNO ASC
+	  		  		ORDER BY BNO DESC
 	  		  ) INNER_LIST
 	      )
 	      	WHERE RNUM BETWEEN #{startRow} AND #{endRow}

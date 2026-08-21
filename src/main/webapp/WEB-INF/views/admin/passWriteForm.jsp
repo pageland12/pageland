@@ -28,7 +28,7 @@
                     <tr>
                         <th>구독권 종류</th>
                         <td>
-                            <select name="ptype">
+                            <select name="ptype" onchange="handleTypeChange()">
                                 <option value="">선택</option>
                                 <option value="정기권">정기권</option>
                                 <option value="N회권">N회권</option>

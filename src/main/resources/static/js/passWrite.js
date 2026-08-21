@@ -61,15 +61,20 @@ function check() {
 		return false;
 	}
 	
+	// 정기권 선택 시
 	if (ptype.value == "정기권") {
+		// N회권 횟수 비활성화 및 초기화
+		pcount.disabled = true;
+		pcount.value = "";
+		pperiod.disabled = false;
+	
 		if (!pperiod.value) {
 			alert("기간을 입력하세요.");
 			pperiod.focus();
 			return false;
 		}
 		
-		// 구독권 기간
-		if(pperiod.value && !expPperiod.test(pperiod.value)) {
+		if (!expPperiod.test(pperiod.value)) {
 			alert("기간은 숫자만 최대 3자리 이내로 올바르게 입력하세요.");
 			pperiod.value = "";
 			pperiod.focus();
@@ -77,15 +82,20 @@ function check() {
 		}
 	}
 	
+	// N회권 선택 시
 	if (ptype.value == "N회권") {
+		// 정기권 기간 비활성화 및 초기화
+		pperiod.disabled = true;
+		pperiod.value = "";
+		pcount.disabled = false;
+	
 		if (!pcount.value) {
 			alert("횟수를 입력하세요.");
 			pcount.focus();
 			return false;
 		}
 		
-		// N회권 개수
-		if(pcount.value && !expPcount.test(pcount.value)) {
+		if (!expPcount.test(pcount.value)) {
 			alert("횟수는 숫자만 최대 3자리 이내로 올바르게 입력하세요.");
 			pcount.value = "";
 			pcount.focus();
@@ -94,4 +104,24 @@ function check() {
 	}
 	
 	return true;
+}
+
+function handleTypeChange() {
+	let ptype = document.passWriteForm.ptype.value;
+	let pperiod = document.passWriteForm.pperiod;
+	let pcount = document.passWriteForm.pcount;
+
+	if (ptype === "정기권") {
+		pperiod.disabled = false;
+		pcount.disabled = true;
+		pcount.value = ""; // 기존 입력값 비우기
+	} else if (ptype === "N회권") {
+		pcount.disabled = false;
+		pperiod.disabled = true;
+		pperiod.value = ""; // 기존 입력값 비우기
+	} else {
+		// 미선택 상태
+		pperiod.disabled = false;
+		pcount.disabled = false;
+	}
 }

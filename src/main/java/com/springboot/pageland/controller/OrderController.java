@@ -794,6 +794,12 @@ public class OrderController {
 	        return "redirect:/member/myBookList";
 	    }
 		
+		// 현재 연체 중인 도서가 있으면 바로 결제 X
+		if (mbdao.overdueBooksCount(mdto.getMno()) > 0) {
+			rttr.addFlashAttribute("msg", "현재 연체 중인 도서가 있습니다. 연체료 정산 및 반납 후 이용해 주세요.");
+			return "redirect:/member/myBookList";
+		}
+		
 		int extendDays = cstock * 15;
     	mbdao.memberBookExtend(mbno, extendDays);
 	    

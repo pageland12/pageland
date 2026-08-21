@@ -7,8 +7,9 @@
 <meta charset="UTF-8">
 <title>Pageland</title>
 <link rel="stylesheet" href="/css/guestBookList.css">
+<script src="/js/main.js" language="javascript"></script>
 </head>
-<body>
+<body onload="goMainPopup()">
 	<%@ include file="header.jsp" %>
 	
 	<main class="main-content">
