@@ -121,7 +121,7 @@ public class RatingController {
 			String rfiles = rupload.getOriginalFilename();
 	        
 	        // 저장 디렉터리 준비
-	        File uploadDir = new File("C:\\pageland_images\\");
+	        File uploadDir = new File("C:\\pageland\\pageland_images\\");
 	        if (!uploadDir.exists()) {
 	            uploadDir.mkdirs();
 	        }
@@ -177,7 +177,7 @@ public class RatingController {
 			String rfiles = rupload.getOriginalFilename();
 	        
 	        // 저장 디렉터리 준비
-	        File uploadDir = new File("C:\\pageland_images\\");
+	        File uploadDir = new File("C:\\pageland\\pageland_images\\");
 	        if (!uploadDir.exists()) {
 	            uploadDir.mkdirs();
 	        }
